@@ -1,0 +1,72 @@
+#corner-login-button {
+  /* display: inline-block; */
+  /* line-height: 22px; */
+  /* width: 70px; */
+  /* font-size: 8pt; */
+  /* font-family: tahoma; */
+  margin-top: 20px;
+  margin-right: 40px;
+  position:absolute;
+  top:0;
+  right:0;
+}
+
+#landing {
+  display: table;
+  grid-template-columns: 1fr 0.7fr 1fr;
+  margin: 0 auto 0 auto;
+  margin-top: 100px;
+  text-align: center;
+  gap: 20px;
+}
+
+#title-archbishopric-en {
+  /* border-style: solid;
+  border-color: black;
+  border-width: 1px; */
+  padding: 1px;
+  background-image: url("../img/title-en-uae.png");
+  /* background-size: 6cm; */
+  background-size: 100%;
+  background-repeat: no-repeat;
+  background-position: center center;
+  /* height: 3.44cm; */
+  width: 330px;
+  text-align: center;
+  display: table-cell;
+}
+
+#logo-archbishopric-uae {
+  width: 300px;
+  height: 500px;
+  background-image: url("../img/logo-archbishopric-uae-2_73cm-3_44cm-600dpi.jpg");
+  background-size: 100%;
+  background-repeat: no-repeat;
+  background-position: center center;
+  text-align: center;
+  margin: auto;
+  display: table-cell;
+}
+
+#title-archbishopric-ar {
+  /* border-style: solid;
+  border-color: black;
+  border-width: 1px; */
+  padding: 1px;
+  background-image: url("../img/title-ar-uae.png");
+  /* background-size: 5.9cm; */
+  background-size: 100%;
+  background-repeat: no-repeat;
+  background-position: center center;
+  /* height: 3.44cm; */
+  width: 300px;
+  text-align: center;
+  display: table-cell;
+}
+
+#msg-box {
+  margin: 0 auto 0 auto;
+  text-align: center;
+  font-size: xx-large;
+  color: maroon;
+}
