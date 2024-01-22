@@ -1,0 +1,75 @@
+@import "app/Views/scss/_root.scss";
+
+$auth-header-height: spacing(6);
+$logo-img-height: 200px;
+$login-form-width: 440px;
+$mfa-setup-form-width: 700px;
+$mfa-code-entry-form-width: 440px;
+
+
+#auth-header {
+    height: $auth-header-height;
+}
+
+#content {
+    @include mt(0);
+}
+
+.logo-canvas {
+    text-align: center!important;
+    @include mt(0);
+}
+
+.login-form-logo {
+    width: fit-content;
+}
+
+.logo-img {
+    max-width: 100%;
+    height: $logo-img-height;
+    display: block; /* remove extra space below image */
+    margin: auto;
+}
+
+.login-form {
+    @include m(2);
+    @include font-size(15);
+}
+
+.login-form form {
+    width: $login-form-width;
+    margin: auto;
+    @include mb(1);
+    background: $oc-gray-1;
+    box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.3);
+    @include p(4);
+}
+
+.login-form h2 {
+    @include mb(3);
+}
+
+.mfa-code-entry-form {
+    width: $mfa-code-entry-form-width;
+    @include m(2);
+    margin: auto;
+    @include font-size(15);
+}
+
+.mfa-code-entry-form form {
+    @include mb(1);
+    background: $oc-gray-1;
+    box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.3);
+    @include p(4);
+}
+
+.mfa-setup-form {
+    width: $mfa-setup-form-width;
+    margin: auto;
+    @include mt(1);
+    @include font-size(15);
+}
+
+.clickable {
+    cursor: pointer;
+}

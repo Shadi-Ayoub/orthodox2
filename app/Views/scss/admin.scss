@@ -1,0 +1,255 @@
+@import "app/Views/scss/_root.scss";
+
+$dashboard-main-header-height: 100px;
+$dashboard-header-logo-width: 80px;
+
+// .fa-certificate, .fa-users-gear, .fa-book-bible, .fa-dove, .fa-scroll,
+// .fa-user-gear, .fa-people-group, .fa-people-roof, .fa-star {
+//     color: $oc-gold-5;
+// }
+
+.dropdown-item {
+    @include pl(1);
+}
+
+.dropdown-menu .active {
+    color: $oc-black;
+    text-decoration: none;
+    background-color: $oc-gray-1;
+}
+
+#dashboard-header {
+    height: $dashboard-main-header-height;
+}
+
+///////////////////////////////////////////////////////
+/// Main Dropdown Menu                               //
+///////////////////////////////////////////////////////
+#dashboard-header #main-menu-dropdown {
+    background-color: $oc-gold-1;
+    @include mr(3);
+    @include ml(3);
+}
+
+#dashboard-header #main-menu-dropdown svg {
+    width: calc(2 * #{$font-size-base});
+    @include m(1,2);
+}
+
+#dashboard-header #main-menu-dropdown .dropdown-item {
+    font-size: calc(1 * #{$font-size-base});
+}
+
+#dashboard-header #main-menu-dropdown .dropdown-item svg {
+    fill: $oc-gold-5;
+    width: calc(1 * #{$font-size-base});
+    @include ml(1);
+    @include mr(2);
+}
+///////////////////////////////////////////////////////
+
+///////////////////////////////////////////////////////
+/// Header Logo                                      //
+///////////////////////////////////////////////////////
+#navbar-logo .orthodoxy-brand-image {
+    width: $dashboard-header-logo-width;
+}
+
+#navbar-logo .brand-text {
+    font-size: calc(1.8 * #{$font-size-base});
+    color: $oc-gold-5;
+    font-weight: bold;
+}
+///////////////////////////////////////////////////////
+
+///////////////////////////////////////////////////////
+/// Notifications Dropdown Menu                      //
+///////////////////////////////////////////////////////
+#dashboard-header #notifications-menu-dropdown {
+    @include mr(1);
+    @include ml(0);
+}
+
+#dashboard-header #notifications-menu-dropdown i {
+    font-size: calc(1.5 * #{$font-size-base});
+    @include mr(3);
+}
+
+#navbar-right #notifications-menu-dropdown .counter {
+    font-size: calc(.7 * #{$font-size-base});
+    /* font-weight: bold; */
+}
+
+#dashboard-header #notifications-menu-dropdown .dropdown-item {
+    font-size: calc(1 * #{$font-size-base});
+}
+
+#dashboard-header #notifications-menu-dropdown .dropdown-item svg {
+    fill: $oc-gold-5;
+    width: calc(1 * #{$font-size-base});
+    @include ml(1);
+    @include mr(2);
+}
+///////////////////////////////////////////////////////
+
+///////////////////////////////////////////////////////
+/// Language Dropdown Menu                           //
+///////////////////////////////////////////////////////
+#dashboard-header #lang-menu-dropdown {
+    @include mr(1);
+    @include ml(0);
+}
+
+#dashboard-header #lang-menu-dropdown i {
+    font-size: calc(1.5 * #{$font-size-base});
+    @include mr(3);
+}
+
+#dashboard-header #lang-menu-dropdown .dropdown-item {
+    font-size: calc(1 * #{$font-size-base});
+}
+
+#dashboard-header #lang-menu-dropdown .dropdown-item i {
+    font-size: calc(1 * #{$font-size-base});
+    @include m(1,2);
+}
+///////////////////////////////////////////////////////
+
+///////////////////////////////////////////////////////
+/// Profile Dropdown Menu                            //
+///////////////////////////////////////////////////////
+#dashboard-header #profile-menu-dropdown {
+    @include mr(1);
+    @include ml(0);
+}
+
+#dashboard-header #profile-menu-dropdown svg {
+    width: calc(1.5 * #{$font-size-base});
+    @include mr(3);
+}
+
+#dashboard-header #profile-menu-dropdown .dropdown-item {
+    font-size: calc(1 * #{$font-size-base});
+}
+
+#dashboard-header #profile-menu-dropdown .dropdown-item svg {
+    fill: $oc-gold-5;
+    width: calc(1 * #{$font-size-base});
+    @include ml(1);
+    @include mr(2);
+}
+
+///////////////////////////////////////////////////////
+
+///////////////////////////////////////////////////////
+/// Congregation Dropdown Menu                       //
+///////////////////////////////////////////////////////
+#dashboard-header #congregation-menu-dropdown {
+    @include mr(3);
+    @include ml(0);
+}
+
+#dashboard-header #congregation-menu-dropdown svg {
+    width: calc(2 * #{$font-size-base});
+    @include mr(1);
+}
+
+#dashboard-header #congregation-menu-dropdown .dropdown-item {
+    font-size: calc(1 * #{$font-size-base});
+}
+
+#dashboard-header #congregation-menu-dropdown .dropdown-item svg {
+    fill: $oc-gold-5;
+    width: calc(1 * #{$font-size-base});
+    @include ml(1);
+    @include mr(2);
+}
+
+///////////////////////////////////////////////////////
+
+#content {
+    margin-top: $dashboard-main-header-height + 10;
+    padding-left: spacing(2);
+    padding-right: spacing(2);
+}
+
+// #navbar-right .lang-dropdown i, #navbar-right .notifications-dropdown i {
+//     margin-top: 3px;
+//     font-size: 1.5em;
+//     margin-right: 15px;
+//     margin-left: 0px;
+// }
+
+#navbar-right .navbar-nav {
+    padding: 0 !important;
+    margin-top: 10px;
+}
+
+#navbar-right {
+    height: 50px;
+    padding-left: 0px;
+    padding-right: 15px;
+}
+
+#navbar-right svg {
+    display: inline-block;
+    width: 1.5em;
+}
+
+#dashboard-footer {
+    background-color: $oc-blue-0;
+}
+
+#dashboard-footer .container-fluid {
+    flex-direction:initial;
+}
+
+#dashboard-footer #copyright {
+    @include pl(3);
+    @include pr(0);
+    float: left;
+}
+
+#dashboard-footer #version {
+    @include pr(3);
+    @include pl(0);
+    float: right;
+}
+
+#dashboard-version .version-container {
+    direction: ltr;
+    display: inline-block;
+    @include mx(2);
+}
+
+#dashboard-version span.digit {
+    background: $oc-yellow-4;
+    @include border-radius($border-radius-lg);
+    color: $oc-black;
+    display: inline-block;
+    font-weight: bold;
+    line-height: $line-height-base;
+    text-align: center;
+    width: 1.6em;
+  }
+
+  #dashboard-version .dot-container {
+    display: inline-block;
+    width: 1rem;
+    height: 1rem;
+    @include m(0);
+    @include mx(1);
+    /* outline: solid 1px black; */
+    /* display: flex; */
+    justify-content: center;
+    align-items: center;
+  }
+  
+  #dashboard-version .dot-container .dot {
+    margin: auto;
+    margin-top: 50%;
+    width: .3rem;
+    height: .3rem;
+    border-radius: 50%;
+    background-color: $oc-black;
+  }

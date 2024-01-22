@@ -6,6 +6,9 @@ class HomeController extends BaseController
 {
     public function index(): string
     {
-        return view('home');
+        $logged_in = $this->session->get('isLoggedIn');
+        $data = ["logged_in" => $logged_in];
+        
+        return view('home', $data);
     }
 }

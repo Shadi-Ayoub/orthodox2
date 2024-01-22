@@ -99,6 +99,7 @@ return [
     
     'nationality'                       => 'الجنسية',
     'next'                              => 'التالي',
+    'notification'                      => 'إشعار',
 
     'occupation'                        => 'المهنة',
     'other_info'                        => 'معلومات أُخرى',
@@ -125,6 +126,7 @@ return [
     'separated'                         => 'منفصل',
     'serial_no'                         => 'رقم التسلسل',
     'services'                          => 'الخدمات',
+    'settings'                          => 'الإعدادات',
     'single'                            => 'أعزب',
     'state'                             => 'الولاية',
     'street_address'                    => 'عنوان الشارع',

@@ -1,0 +1,186 @@
+.dropdown-item {
+  padding-left: 0.25rem ;
+}
+.dropdown-menu .active {
+  color: #000000;
+  text-decoration: none;
+  background-color: #f1f3f5;
+}
+#dashboard-header {
+  height: 100px;
+}
+#dashboard-header #main-menu-dropdown {
+  background-color: #F1EBC5;
+  margin-right: 1rem ;
+  margin-left: 1rem ;
+}
+#dashboard-header #main-menu-dropdown svg {
+  width: calc(2 * 16px);
+  margin-top: 0.25rem ;
+  margin-bottom: 0.25rem ;
+  margin-right: 0.5rem ;
+  margin-left: 0.5rem ;
+}
+#dashboard-header #main-menu-dropdown .dropdown-item {
+  font-size: calc(1 * 16px);
+}
+#dashboard-header #main-menu-dropdown .dropdown-item svg {
+  fill: #C5B358;
+  width: calc(1 * 16px);
+  margin-left: 0.25rem ;
+  margin-right: 0.5rem ;
+}
+#navbar-logo .orthodoxy-brand-image {
+  width: 80px;
+}
+#navbar-logo .brand-text {
+  font-size: calc(1.8 * 16px);
+  color: #C5B358;
+  font-weight: bold;
+}
+#dashboard-header #notifications-menu-dropdown {
+  margin-right: 0.25rem ;
+  margin-left: 0 ;
+}
+#dashboard-header #notifications-menu-dropdown i {
+  font-size: calc(1.5 * 16px);
+  margin-right: 1rem ;
+}
+#navbar-right #notifications-menu-dropdown .counter {
+  font-size: calc(.7 * 16px);
+  /* font-weight: bold; */
+}
+#dashboard-header #notifications-menu-dropdown .dropdown-item {
+  font-size: calc(1 * 16px);
+}
+#dashboard-header #notifications-menu-dropdown .dropdown-item svg {
+  fill: #C5B358;
+  width: calc(1 * 16px);
+  margin-left: 0.25rem ;
+  margin-right: 0.5rem ;
+}
+#dashboard-header #lang-menu-dropdown {
+  margin-right: 0.25rem ;
+  margin-left: 0 ;
+}
+#dashboard-header #lang-menu-dropdown i {
+  font-size: calc(1.5 * 16px);
+  margin-right: 1rem ;
+}
+#dashboard-header #lang-menu-dropdown .dropdown-item {
+  font-size: calc(1 * 16px);
+}
+#dashboard-header #lang-menu-dropdown .dropdown-item i {
+  font-size: calc(1 * 16px);
+  margin-top: 0.25rem ;
+  margin-bottom: 0.25rem ;
+  margin-right: 0.5rem ;
+  margin-left: 0.5rem ;
+}
+#dashboard-header #profile-menu-dropdown {
+  margin-right: 0.25rem ;
+  margin-left: 0 ;
+}
+#dashboard-header #profile-menu-dropdown svg {
+  width: calc(1.5 * 16px);
+  margin-right: 1rem ;
+}
+#dashboard-header #profile-menu-dropdown .dropdown-item {
+  font-size: calc(1 * 16px);
+}
+#dashboard-header #profile-menu-dropdown .dropdown-item svg {
+  fill: #C5B358;
+  width: calc(1 * 16px);
+  margin-left: 0.25rem ;
+  margin-right: 0.5rem ;
+}
+#dashboard-header #congregation-menu-dropdown {
+  margin-right: 1rem ;
+  margin-left: 0 ;
+}
+#dashboard-header #congregation-menu-dropdown svg {
+  width: calc(2 * 16px);
+  margin-right: 0.25rem ;
+}
+#dashboard-header #congregation-menu-dropdown .dropdown-item {
+  font-size: calc(1 * 16px);
+}
+#dashboard-header #congregation-menu-dropdown .dropdown-item svg {
+  fill: #C5B358;
+  width: calc(1 * 16px);
+  margin-left: 0.25rem ;
+  margin-right: 0.5rem ;
+}
+#content {
+  margin-top: 110px;
+  padding-left: 0.5rem;
+  padding-right: 0.5rem;
+}
+#navbar-right .navbar-nav {
+  padding: 0 !important;
+  margin-top: 10px;
+}
+#navbar-right {
+  height: 50px;
+  padding-left: 0px;
+  padding-right: 15px;
+}
+#navbar-right svg {
+  display: inline-block;
+  width: 1.5em;
+}
+#dashboard-footer {
+  background-color: #e7f5ff;
+}
+#dashboard-footer .container-fluid {
+  flex-direction: initial;
+}
+#dashboard-footer #copyright {
+  padding-left: 1rem ;
+  padding-right: 0 ;
+  float: left;
+}
+#dashboard-footer #version {
+  padding-right: 1rem ;
+  padding-left: 0 ;
+  float: right;
+}
+#dashboard-version .version-container {
+  direction: ltr;
+  display: inline-block;
+  margin-right: 0.5rem ;
+  margin-left: 0.5rem ;
+}
+#dashboard-version span.digit {
+  background: #ffd43b;
+  border-radius: 0.5rem;
+  color: #000000;
+  display: inline-block;
+  font-weight: bold;
+  line-height: 1.5;
+  text-align: center;
+  width: 1.6em;
+}
+#dashboard-version .dot-container {
+  display: inline-block;
+  width: 1rem;
+  height: 1rem;
+  margin-top: 0 ;
+  margin-bottom: 0 ;
+  margin-right: 0 ;
+  margin-left: 0 ;
+  margin-right: 0.25rem ;
+  margin-left: 0.25rem ;
+  /* outline: solid 1px black; */
+  /* display: flex; */
+  justify-content: center;
+  align-items: center;
+}
+#dashboard-version .dot-container .dot {
+  margin: auto;
+  margin-top: 50%;
+  width: 0.3rem;
+  height: 0.3rem;
+  border-radius: 50%;
+  background-color: #000000;
+}

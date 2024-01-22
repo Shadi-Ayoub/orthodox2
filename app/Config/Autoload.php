@@ -47,7 +47,13 @@ class Autoload extends AutoloadConfig
     public $psr4 = [
         APP_NAMESPACE => APPPATH, // For custom app namespace
         'Config'      => APPPATH . 'Config',
-        'Libraries\Cognito' => APPPATH . 'Libraries/Cognito',
+        'Libraries\Services\Settings' => APPPATH . 'Libraries/Services/Settings',
+        'Libraries\Services\Utility' => APPPATH . 'Libraries/Services/Utility',
+        'Libraries\Services\Cognito' => APPPATH . 'Libraries/Services/Cognito',
+        'Libraries\Services\Component' => APPPATH . 'Libraries/Services/Component',
+        'Libraries\Services\Recaptcha' => APPPATH . 'Libraries/Services/Recaptcha',
+        'Libraries\Services\Cookie' => APPPATH . 'Libraries/Services/Cookie',
+        'Libraries\Services\QR' => APPPATH . 'Libraries/Services/QR',
     ];
 
     /**

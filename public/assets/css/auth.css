@@ -1,0 +1,68 @@
+#auth-header {
+  height: 8rem;
+}
+#content {
+  margin-top: 0 ;
+}
+.logo-canvas {
+  text-align: center !important;
+  margin-top: 0 ;
+}
+.login-form-logo {
+  width: fit-content;
+}
+.logo-img {
+  max-width: 100%;
+  height: 200px;
+  display: block;
+  /* remove extra space below image */
+  margin: auto;
+}
+.login-form {
+  margin-top: 0.5rem ;
+  margin-bottom: 0.5rem ;
+  margin-right: 0.5rem ;
+  margin-left: 0.5rem ;
+  font-size: 0.9375rem;
+}
+.login-form form {
+  width: 440px;
+  margin: auto;
+  margin-bottom: 0.25rem ;
+  background: #f1f3f5;
+  box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.3);
+  padding-top: 2rem ;
+  padding-bottom: 2rem ;
+  padding-right: 2rem ;
+  padding-left: 2rem ;
+}
+.login-form h2 {
+  margin-bottom: 1rem ;
+}
+.mfa-code-entry-form {
+  width: 440px;
+  margin-top: 0.5rem ;
+  margin-bottom: 0.5rem ;
+  margin-right: 0.5rem ;
+  margin-left: 0.5rem ;
+  margin: auto;
+  font-size: 0.9375rem;
+}
+.mfa-code-entry-form form {
+  margin-bottom: 0.25rem ;
+  background: #f1f3f5;
+  box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.3);
+  padding-top: 2rem ;
+  padding-bottom: 2rem ;
+  padding-right: 2rem ;
+  padding-left: 2rem ;
+}
+.mfa-setup-form {
+  width: 700px;
+  margin: auto;
+  margin-top: 0.25rem ;
+  font-size: 0.9375rem;
+}
+.clickable {
+  cursor: pointer;
+}

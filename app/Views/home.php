@@ -8,21 +8,21 @@ scratch. This page gets rid of all links and provides the needed markup only.
         <meta charset="utf-8">
         <title>Greek Orthodox archbishopric - Control Panel</title>
         <link rel="stylesheet" href="assets/css/landing.css">
-        <link rel="stylesheet" href="assets/plugins/bootstrap-4.0.0-dist/css/bootstrap.min.css">
+        <link rel="stylesheet" href="assets/plugins/bootstrap-5.1.3-dist/css/bootstrap.min.css">
     </head>
     <body>
         <div id="corner-login-button">
             <?php
-                //if (auth()->loggedIn()) {
+                if ($logged_in) {
             ?>
-                    <!-- <button type="button" onclick="location.href='<?= site_url('admin') ?>';" class="btn btn-block btn-info">Dashboard</button> -->
+                    <button type="button" onclick="location.href='<?= base_url('admin','https') ?>';" class="btn btn-block btn-info">Dashboard</button>
             <?php
-                //}
-                //else {
+                }
+                else {
             ?>
                     <button type="button" onclick="location.href='<?= base_url('login','https') ?>';" class="btn btn-info">Login</button>
             <?php
-                //}
+                }
             ?>
         </div>
         <div id="landing" >

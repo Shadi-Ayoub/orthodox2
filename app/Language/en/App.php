@@ -99,6 +99,7 @@ return [
 
     'nationality'                       => 'Nationality',
     'next'                              => 'Next',
+    'notification'                      => 'Notification',
     
     'occupation'                        => 'Occupation',
     'other_info'                        => 'Other',
@@ -126,6 +127,7 @@ return [
     'separated'                         => 'Separated',
     'serial_no'                         => 'Serial No.',
     'services'                          => 'Services',
+    'settings'                          => 'Settings',
     'single'                            => 'Single',
     'state'                             => 'State',
     'street_address'                    => 'Street Address',

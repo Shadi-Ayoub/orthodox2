@@ -1,70 +1,85 @@
 <?= $this->extend('auth/layout') ?>
 
-<?= $this->section('title') ?>
+<?php
+    $component = service('component');
+?>
+
+<?= $this->section('pageTitle') ?>
     Change Password
 <?= $this->endSection() ?>
 
-<?= $this->section('main') ?>
+<?= $this->section('pageMeta') ?>
+<?= $this->endSection() ?>
 
+<?= $this->section('pageStyles') ?>
+<?= $this->endSection() ?>
+
+
+
+<?= $this->section('pageContent') ?>
     <div class="login-form">
-        <form action="/change-password" method="post">
+        <form id="form-change-password" action="/change-password" method="post">
             <h2 class="text-center">Change Password</h2>
             <?php
                 if(isset($message) && trim($message) !== "") {
-            ?>
-                    <!-- Error Alert -->
-                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                        <strong>Error!</strong> <?= $message; ?>
-                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                    </div>
-            <?php
+                    $component->alert($message_type, $message);
                 }
             ?>
-            <!-- <div class="form-group"> -->
-                <div class="input-group mb-3">
-                    <!-- <div class="input-group-prepend"> -->
-                        <span class="input-group-text">
-                            <i class="fa fa-user"></i>
-                        </span>
-                    <!-- </div> -->
-                    <input type="password" class="form-control" name="old-password" placeholder="Old Password" required="required">
-                </div>
-            <!-- </div> -->
-            <!-- <div class="form-group"> -->
-                <div class="input-group mb-3">
-                    <!-- <div class="input-group-prepend"> -->
-                        <span class="input-group-text">
-                            <i class="fa fa-lock"></i>
-                        </span>                    
-                    <!-- </div> -->
-                    <input type="password" class="form-control" name="new-password" placeholder="New Password" required="required">				
-                </div>
-            <!-- </div> -->
-            <!-- <div class="form-group"> -->
-                <div class="input-group mb-3">
-                    <!-- <div class="input-group-prepend"> -->
-                        <span class="input-group-text">
-                            <i class="fa fa-lock"></i>
-                        </span>                    
-                    <!-- </div> -->
-                    <input type="password" class="form-control" name="confirm-new-password" placeholder="Confirm New Password" required="required">			
-                </div>
-            <!-- </div> -->
+
             <?php
-                if($forced == "yes") {
+                $component->password("old-password","Old Password");
+                $component->password("new-password","New Password");
+                $component->password("confirm-new-password","Confirm New Password");
+
+                $note = "<b>Password requirements</b>" . "<br />" .
+                        "Contains at least 1 number" . "<br />" .
+                        "Contains at least 1 special character" . "<br />" .
+                        "Contains at least 1 uppercase letter" . "<br />" .
+                        "Contains at least 1 lowercase letter";
+
+                $component->alert("info",$note, false, false);
             ?>
-                    <input type="hidden" name="forced" value="<?= esc($forced); ?>" />
-                    <input type="hidden" name="username" value="<?= esc($username); ?>" />
-                    <input type="hidden" name="session" value="<?= esc($session); ?>" />
-            <?php
-                }
-            ?>
-            <!-- <div class="form-group"> -->
+
             <div class="d-grid mb-3">
-                <button type="submit" class="btn btn-primary login-btn btn-block">Change Password</button>
+                <button type="submit" id="btn-change-password" class="btn btn-primary login-btn btn-block">Change Password</button>
             </div>
-            <!-- </div> -->
         </form>
     </div>
+<?= $this->endSection() ?>
 
+<?= $this->section('pageScripts') ?>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
+    
+    <script>
+        function isMatching() {
+            var password = $("#new-password").val();
+            var confirmPassword = $("#confirm-new-password").val();
+
+            if (password != confirmPassword)
+                return false;
+            else
+                return true;
+        }
+
+        $(document).ready(function(){
+            $('#form-change-password').submit(function() {
+                $('#overlay').fadeIn();
+            });
+            
+            $( "#btn-change-password11" ).click(function() {
+                chk = isMatching();
+
+                var errorModal = new bootstrap.Modal(document.getElementById('modal-error'), {keyboard: false});
+
+                if(chk) {
+                    $( "#btn-change-password" ).submit();
+                }
+                else {
+                    //var errorModal = new bootstrap.Modal(document.getElementById('modal-error'), {keyboard: false})
+                    errorModal.show();
+                }
+            })
+        });
+
+    </script>
 <?= $this->endSection() ?>

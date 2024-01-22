@@ -1,0 +1,64 @@
+input addCongregationInput {
+    code: String!,
+    nameEnglish: String!,
+    nameNative: String!
+}
+
+type Congregation {
+	id: ID!
+	code: String
+	nameEnglish: String
+	nameNative: String
+}
+
+# type CongregationCode {
+# 	id: ID
+# 	code: String
+# }
+
+# type CongregationsGroupedByCode {
+# 	code: String!
+# 	congregations: [Congregation!]!
+# }
+
+# type PaginatedCongregations {
+# 	congregations: [Congregation!]!
+# 	nextToken: String
+# }
+
+# type PaginatedCongregationsCodes {
+# 	congregationCodes: [CongregationCode!]!
+# 	nextToken: String
+# }
+
+# type PaginatedCongregationsGroupedByCode {
+# 	code: String!
+# 	congregations: [Congregation!]!
+# 	nextToken: String
+# }
+
+type Mutation {
+    addCongregation(input: addCongregationInput!): Congregation
+	# addCongregation(
+	# 	id: ID,
+	# 	code: String!,
+	# 	nameEnglish: String!,
+	# 	nameNative: String!
+	# ): Congregation!
+	# addCongregationCode(id: ID, code: String!): CongregationCode!
+}
+
+type Query {
+    getAllCongregations: [Congregation]
+	# getCongregationById(id: ID!): Congregation!
+	# getAllCongregationsByCode(code: String!, limit: Int, nextToken: String): PaginatedCongregations!
+	# getAllCongregations(limit: Int, nextToken: String): PaginatedCongregations!
+	# getSelectedCongregations(codes: [String!]!): CongregationsGroupedByCode!
+	# getAllCongregationsGroupedByCode(limit: Int, nextToken: String): CongregationsGroupedByCode!
+	# getAllCongregationsCodes(limit: Int, nextToken: String): PaginatedCongregationsCodes!
+}
+
+schema {
+	query: Query
+	mutation: Mutation
+}
