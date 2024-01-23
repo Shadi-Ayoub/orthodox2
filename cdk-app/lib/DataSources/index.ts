@@ -1,5 +1,7 @@
-import createCongregationsDataSource from "./congregarionsDataSource"
+import {IDataSource} from './DataSourceTypes'
+import createCongregationDataSource from "./CongregarionDataSource"
 
 export {
-    createCongregationsDataSource,
+    IDataSource,
+    createCongregationDataSource,
 }
