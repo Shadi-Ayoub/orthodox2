@@ -7,8 +7,14 @@
   "scripts": {
     "build": "tsc",
     "watch": "tsc -w",
-    "test": "jest",
-    "cdk": "cdk"
+
+    "test": "jest --verbose",
+    "test-cdk": "jest --verbose ./1-Stack",
+    "test-cdk-appsync": "jest --verbose cdk.appsync.test.ts",
+    "test-cdk-appsync-1": "jest --verbose -t \"APPSYNC-TEST 1: AddCongregation Resolver\"",
+
+    "cdk": "cdk",
+    "deploy-dev": "./cdk-deploy-dev.sh"
   },
   "devDependencies": {
     "@types/jest": "^29.5.11",
@@ -20,8 +26,15 @@
     "typescript": "~5.3.3"
   },
   "dependencies": {
+    "@aws-sdk/client-appsync": "^3.504.0",
+    "@aws-sdk/util-dynamodb": "^3.504.0",
+    "@graphql-tools/schema": "^10.0.2",
     "aws-cdk-lib": "^2.122.0",
+    "aws-sdk": "^2.1546.0",
     "constructs": "^10.0.0",
+    "dotenv": "^16.4.1",
+    "graphql": "^16.8.1",
+    "graphql-tag": "^2.12.6",
     "source-map-support": "^0.5.21"
   }
 }

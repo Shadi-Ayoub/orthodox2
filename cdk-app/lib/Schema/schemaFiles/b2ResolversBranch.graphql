@@ -1,0 +1,9 @@
+type Query {
+	getBranchesById(ids: [String!]!, limit: Int, nextToken: String):PaginatedBranches!
+	getAllBranchesByCongregationId(congregationId: ID!, limit: Int, nextToken: String): PaginatedBranches!
+    getAllBranches(limit: Int, nextToken: String): PaginatedBranches!
+}
+
+type Mutation {
+	addBranch(input: addBranchInput!): Branch
+}

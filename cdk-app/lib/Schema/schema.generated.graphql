@@ -1,0 +1,83 @@
+"""Keep the schema type definition only in this file"""
+schema {
+  query: Query
+  mutation: Mutation
+}
+
+input addCongregationInput {
+  id: ID
+  nameEnglish: String!
+  nameNative: String!
+  city: String
+  country: String
+  contactNo1: String
+  contactNo2: String
+  email: String
+  addressLine1: String
+  addressLine2: String
+}
+
+type Congregation {
+  id: ID!
+  nameEnglish: String
+  nameNative: String
+  city: String
+  country: String
+  contactNo1: String
+  contactNo2: String
+  email: String
+  addressLine1: String
+  addressLine2: String
+  branches: [Branch]
+}
+
+type PaginatedCongregations {
+  congregations: [Congregation!]!
+  nextToken: String
+}
+
+input addBranchInput {
+  id: ID
+  congregationId: ID!
+  nameEnglish: String
+  nameNative: String
+  city: String
+  country: String
+  contactNo1: String
+  contactNo2: String
+  email: String
+  addressLine1: String
+  addressLine2: String
+}
+
+type Branch {
+  id: ID!
+  congregationId: ID!
+  nameEnglish: String
+  nameNative: String
+  city: String
+  country: String
+  contactNo1: String
+  contactNo2: String
+  email: String
+  addressLine1: String
+  addressLine2: String
+}
+
+type PaginatedBranches {
+  branches: [Branch!]!
+  nextToken: String
+}
+
+type Query {
+  getCongregationsById(ids: [String!]!, limit: Int, nextToken: String): PaginatedCongregations!
+  getAllCongregations(limit: Int, nextToken: String): PaginatedCongregations!
+  getBranchesById(ids: [String!]!, limit: Int, nextToken: String): PaginatedBranches!
+  getAllBranchesByCongregationId(congregationId: ID!, limit: Int, nextToken: String): PaginatedBranches!
+  getAllBranches(limit: Int, nextToken: String): PaginatedBranches!
+}
+
+type Mutation {
+  addCongregation(input: addCongregationInput!): Congregation
+  addBranch(input: addBranchInput!): Branch
+}

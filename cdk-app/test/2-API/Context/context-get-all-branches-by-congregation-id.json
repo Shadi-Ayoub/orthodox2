@@ -1,0 +1,36 @@
+{
+    "arguments" : {
+        "congregationId": "2dfee7ad-d655-4d6d-86f7-f3ac142f3d19",
+        "limit": 20
+    },
+    "source" : {},
+    "result" : {
+        "key": {
+            "id": {
+                "S": "b768fef9-0ae7-48d1-b575-02162a6cc01b"
+            }
+        },
+        "branches": [{
+            "id": "b768fef9-0ae7-48d1-b575-02162a6cc01b",
+            "congregationId": "4064ec4e-18e6-4410-83a1-54865e12f6f8",
+            "nameEnglish": "Greek Orthodox Archbishopric in UAE",
+            "nameNative": "مطرانية الروم الأرثوذكس في الإمارات",
+            "city": "Dubai",
+            "country": "UAE",
+            "contactNo1": "123456",
+            "contactNo2": "123456",
+            "email": "email@orthodox.com",
+            "addressLine1": "address-line 1",
+            "addressLine2": "address-line 2"
+        }],
+        "nextToken": ""
+    },
+    "identity": {
+        "sub" : "uuid",
+        "issuer" : " https://cognito-idp.{region}.amazonaws.com/{userPoolId}",
+        "username" : "Nadia",
+        "claims" : { },
+        "sourceIp" :[  "x.x.x.x" ],
+        "defaultAuthStrategy" : "ALLOW"
+    }
+}

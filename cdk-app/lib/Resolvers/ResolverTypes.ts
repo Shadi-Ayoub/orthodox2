@@ -1,12 +1,15 @@
 import * as cdk from 'aws-cdk-lib';
 import { Construct } from 'constructs';
 
-export interface IResolverDataSorce {
-    [key: string]: cdk.aws_appsync.DynamoDbDataSource;
+export enum ResolverType {
+    Query = "Query",
+    Mutation = "Mutation"
 }
 
-export interface IResolver {
+export interface IResolverFunction {
+    name: string;
     scope: Construct;
     api: cdk.aws_appsync.GraphqlApi;
-    dataSource: IResolverDataSorce;
+    dataSource: cdk.aws_appsync.DynamoDbDataSource;
+    code: string;
 }

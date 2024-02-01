@@ -1,0 +1,8 @@
+type Query {
+	getCongregationsById(ids: [String!]!, limit: Int, nextToken: String): PaginatedCongregations!
+    getAllCongregations(limit: Int, nextToken: String): PaginatedCongregations!
+}
+
+type Mutation {
+    addCongregation(input: addCongregationInput!): Congregation
+}

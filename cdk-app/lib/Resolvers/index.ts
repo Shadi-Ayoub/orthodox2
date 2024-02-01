@@ -1,8 +1,6 @@
-import {IResolverDataSorce, IResolver} from './ResolverTypes'
-import createCongregationResolver from './CongregationResolver'
+import {ResolverType, IResolverFunction} from './ResolverTypes'
 
 export {
-    IResolverDataSorce,
-    IResolver,
-    createCongregationResolver,
+    ResolverType,
+    IResolverFunction,
 }

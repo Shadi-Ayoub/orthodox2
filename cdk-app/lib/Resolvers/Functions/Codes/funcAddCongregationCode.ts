@@ -1,12 +1,12 @@
 const funcAddCongregationCode = `import { runtime, util } from '@aws-appsync/utils'
+import * as ddb from '@aws-appsync/utils/dynamodb'
+
 export function request(ctx) {
-  // runtime.earlyReturn({ id: ctx.args.input.nameEnglish })
+  // return runtime.earlyReturn({ id: ctx.error.message })
   // const date = Date.now().toString();
-  return {
-    operation: 'PutItem',
-    key: util.dynamodb.toMapValues({id: util.autoId()}),
-    attributeValues: util.dynamodb.toMapValues(ctx.args.input),
-  };
+  const item = { ...ctx.arguments.input }
+	const key = { id: ctx.args.id ?? util.autoId() }
+	return ddb.put({ key, item })
 }
 
 export function response(ctx) {

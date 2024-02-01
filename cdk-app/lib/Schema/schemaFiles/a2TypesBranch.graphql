@@ -1,0 +1,32 @@
+input addBranchInput {
+	id: ID
+	congregationId: ID!
+	nameEnglish: String
+	nameNative: String
+	city: String
+	country: String
+	contactNo1: String
+	contactNo2: String
+	email: String
+	addressLine1: String
+	addressLine2: String
+}
+
+type Branch {
+	id: ID!
+	congregationId: ID!
+	nameEnglish: String
+	nameNative: String
+	city: String
+	country: String
+	contactNo1: String
+	contactNo2: String
+	email: String
+	addressLine1: String
+	addressLine2: String
+}
+
+type PaginatedBranches {
+    branches: [Branch!]!
+    nextToken: String
+}

@@ -124,3 +124,64 @@ mutation MyMutation2 {
     nameNative
   }
 }
+
+mutation MyMutation {
+  addBranch(input: {city: "city1", congregationId: "2dfee7ad-d655-4d6d-86f7-f3ac142f3d19", country: "UAE", id: "", name: "branch1"}) {
+    city
+    congregationId
+    id
+    country
+    name
+  }
+}
+
+id	nameEnglish	code	nameNative
+2dfee7ad-d655-4d6d-86f7-f3ac142f3d19	Greek Orthodox Archbishopric in UAE	ORTHODOX-UAE4	مطرانية الروم الأرثوذكس في الإمارات
+4064ec4e-18e6-4410-83a1-54865e12f6f8	Greek Orthodox Archbishopric in UAE	ORTHODOX-UAE5	مطرانية الروم الأرثوذكس في الإمارات
+3c49fa40-b4bb-422b-8dab-2c9c5a9fde6e	Greek Orthodox Archbishopric in UAE	ORTHODOX-UAE4	مطرانية الروم الأرثوذكس في الإمارات
+ae23308a-f7f6-44c6-ac16-fcf242e0060e	Greek Orthodox Archbishopric in UAE	ORTHODOX-UAE2	مطرانية الروم الأرثوذكس في الإمارات
+a4bdbb48-6bc6-44d9-8f62-624ffabde065	Greek Orthodox Archbishopric in UAE	ORTHODOX-UAE5	مطرانية الروم الأرثوذكس في الإمارات
+bbacb8bb-3c49-4aa6-ba7d-2e2e880a4e5b	Greek Orthodox Archbishopric in UAE	ORTHODOX-UAE3	مطرانية الروم الأرثوذكس في الإمارات
+421a9ef5-a822-4fd2-a5a3-7c7c6ff85db3	Greek Orthodox Archbishopric in UAE	ORTHODOX-UAE5	مطرانية الروم الأرثوذكس في الإمارات
+b768fef9-0ae7-48d1-b575-02162a6cc01b	Greek Orthodox Archbishopric in UAE	ORTHODOX-UAE2	مطرانية الروم الأرثوذكس في الإمارات
+
+return runtime.earlyReturn({ id: ctx.error.message })
+
+mutation MyMutation {
+  addBranch(input: {city: "city1", congregationId: "4064ec4e-18e6-4410-83a1-54865e12f6f8", country: "UAE", id: "", name: "branch1"}) {
+    city
+    congregationId
+    id
+    country
+    name
+  }
+}
+
+mutation MyMutation {
+  addCongregation(input: {addressLine1: "Addrerss Line 1", addressLine2: "Address Line 2", city: "Dubai", contactNo1: "123456", contactNo2: "123456", country: "uae", email: "email@domain.com", nameEnglish: "Greek Orthodox Archbishopric in UAE", nameNative: "مطرانية الروم الأرثوذكس في الإمارات"}) {
+    addressLine1
+    addressLine2
+    city
+    contactNo1
+    contactNo2
+    country
+    email
+    id
+    nameEnglish
+    nameNative
+  }
+}
+
+
+query MyQuery2 {
+  getAllBranchesByCongregationId(congregationId: "4064ec4e-18e6-4410-83a1-54865e12f6f8", limit: 20) {
+    nextToken
+    branches {
+      city
+      congregationId
+      country
+      id
+      name
+    }
+  }
+}

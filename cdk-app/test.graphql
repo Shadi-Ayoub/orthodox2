@@ -1,0 +1,9 @@
+mutation MyMutation {
+  addBranch(input: {city: "city1", congregationId: "2dfee7ad-d655-4d6d-86f7-f3ac142f3d19", country: "UAE", id: "", nameEnglish: "branch2"}) {
+    city
+    congregationId
+    id
+    country
+    nameEnglish
+  }
+}

@@ -1,0 +1,39 @@
+"""
+Keep the schema type definition only in this file
+"""
+schema {
+	query: Query
+	mutation: Mutation
+}
+
+input addCongregationInput {
+	id: ID
+    nameEnglish: String!
+    nameNative: String!
+	city: String
+	country: String
+	contactNo1: String
+	contactNo2: String
+	email: String
+	addressLine1: String
+	addressLine2: String
+}
+
+type Congregation {
+	id: ID!
+	nameEnglish: String
+	nameNative: String
+	city: String
+	country: String
+	contactNo1: String
+	contactNo2: String
+	email: String
+	addressLine1: String
+	addressLine2: String
+	branches: [Branch]
+}
+
+type PaginatedCongregations {
+	congregations: [Congregation!]!
+	nextToken: String
+}
