@@ -8,6 +8,8 @@
 * To bootstrap AWS CDK:
     cdk bootstrap aws://732706519267/us-east-1
 
+* Insomnia PassPhrase = abcd1234
+
 * Minimum IAM user permissions to bootstrap AWS CDK (https://github.com/aws/aws-cdk/issues/21937):
 {
 	"Version": "2012-10-17",

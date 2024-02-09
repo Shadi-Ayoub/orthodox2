@@ -29,11 +29,14 @@ class Component {
         require 'html/spinner.php';
     }
 
-    public function modal($type, $message) {
+    public function modal($type, $text="") {
 
         switch($type) {
             case "error":
                 require "html/modal_error.php";
+                break;
+            case "about-technical":
+                require "html/modals/about-technical-modal.php";
                 break;
             default:
                 require "html/modal_error.php";

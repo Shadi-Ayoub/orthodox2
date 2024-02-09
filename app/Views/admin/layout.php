@@ -39,13 +39,13 @@
     
     <main role="main" class="admin-container">
         <?php $component->spinner(); ?>
+        <?php $component->modal('about-technical'); ?>
 
         <?php
             require("header.php");
         ?>
 
         <div id="content" >
-            
             <?= $this->renderSection('pageContent') ?>
         </div>
 

@@ -1,11 +1,3 @@
-"""
-Keep the schema type definition only in this file
-"""
-schema {
-	query: Query
-	mutation: Mutation
-}
-
 input addCongregationInput {
 	id: ID
     nameEnglish: String!

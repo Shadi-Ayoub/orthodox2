@@ -4,6 +4,11 @@ schema {
   mutation: Mutation
 }
 
+type Setting {
+  id: ID!
+  settings: String!
+}
+
 input addCongregationInput {
   id: ID
   nameEnglish: String!
@@ -70,6 +75,7 @@ type PaginatedBranches {
 }
 
 type Query {
+  getSettings: Setting!
   getCongregationsById(ids: [String!]!, limit: Int, nextToken: String): PaginatedCongregations!
   getAllCongregations(limit: Int, nextToken: String): PaginatedCongregations!
   getBranchesById(ids: [String!]!, limit: Int, nextToken: String): PaginatedBranches!
@@ -78,6 +84,7 @@ type Query {
 }
 
 type Mutation {
+  updateSettings(id: ID!, setting: String): Setting
   addCongregation(input: addCongregationInput!): Congregation
   addBranch(input: addBranchInput!): Branch
 }

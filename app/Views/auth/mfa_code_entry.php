@@ -44,6 +44,10 @@
     <script>
         $(document).ready(function(){
             $('#totp').focus();
+
+            $('#form-mfa-code').submit(function() {
+                $('#overlay').fadeIn();
+            });
         });
     </script>
 

@@ -167,6 +167,21 @@ $dashboard-header-logo-width: 80px;
 
 ///////////////////////////////////////////////////////
 
+///////////////////////////////////////////////////////
+/// About Menu Button                                //
+///////////////////////////////////////////////////////
+#dashboard-header #about-menu-button {
+    @include mr(3);
+    @include ml(0);
+}
+
+#dashboard-header #about-menu-button svg {
+    width: calc(0.5 * #{$font-size-base});
+    @include mr(1);
+}
+
+///////////////////////////////////////////////////////
+
 #content {
     margin-top: $dashboard-main-header-height + 10;
     padding-left: spacing(2);

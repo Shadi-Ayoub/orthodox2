@@ -43,6 +43,8 @@ abstract class BaseController extends Controller
      */
     protected $session;
 
+    protected $graphql;
+
     /**
      * @return void
      */

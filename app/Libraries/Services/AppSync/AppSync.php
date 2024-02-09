@@ -56,42 +56,4 @@ class AppSync {
         // Create AppSync client
         $this->_appsync = new AppSyncClient($config);
     }
-
-    public function query($query, $variables=[]) {
-        $result = [
-            "successful"    => false,
-            "message"       => "",
-            "error_code"    => "",
-            "error_message" => "",
-            "result"   => null,
-        ];
-
-        try {
-            // Execute the GraphQL query
-            $query_result = $this->_appsync->query([
-                'query' => $query,
-                'variables' => $variables,
-            ]);
-
-            $result["successful"] = true;
-            $result["message"] = "Query was successful!";
-            $result["result"] = $query_result;
-        
-            return $result;
-        } catch (AwsException $exception) {
-            $result["successful"] = false;
-            $result["message"] = "Something went wrong!";
-            $result["error_message"] = $exception->getAwsErrorMessage();
-            $result["error_code"] = $exception->getAwsErrorCode();
-
-            return $result;
-        } catch (Exception $exception) {
-            $result["successful"] = false;
-            $result["message"] = "Something went wrong!";
-            $result["error_message"] = $exception->getMessage();
-            $result["error_code"] = "400"; // Bad request
-            
-            return $result;
-        }
-    }
 }

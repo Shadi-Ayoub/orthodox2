@@ -50,6 +50,8 @@ class Autoload extends AutoloadConfig
         'Libraries\Services\Settings' => APPPATH . 'Libraries/Services/Settings',
         'Libraries\Services\Utility' => APPPATH . 'Libraries/Services/Utility',
         'Libraries\Services\Cognito' => APPPATH . 'Libraries/Services/Cognito',
+        'Libraries\Services\AppSync' => APPPATH . 'Libraries/Services/AppSync',
+        'Libraries\Services\GraphQL' => APPPATH . 'Libraries/Services/GraphQL',
         'Libraries\Services\Component' => APPPATH . 'Libraries/Services/Component',
         'Libraries\Services\Recaptcha' => APPPATH . 'Libraries/Services/Recaptcha',
         'Libraries\Services\Cookie' => APPPATH . 'Libraries/Services/Cookie',

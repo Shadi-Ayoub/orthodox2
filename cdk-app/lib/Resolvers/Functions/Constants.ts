@@ -1,3 +1,6 @@
+export const FUNCTION_NAME_GET_ALL_SETTINGS = 'funcGetAllSettings';
+export const FUNCTION_NAME_UPDATE_SETTINGS = 'funcUpdateSettings';
+
 export const FUNCTION_NAME_ADD_CONGREGATION = 'funcAddCongregation';
 export const FUNCTION_NAME_GET_CONGREGATIONS = 'funcGetCongregations';
 export const FUNCTION_NAME_GET_CONGREGATIONS_BY_ID = 'funcGetCongregationsById';

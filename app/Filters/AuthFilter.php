@@ -20,10 +20,32 @@ class AuthFilter implements FilterInterface {
 
         switch($segment1) {
             case "admin":
-            case "dashboard":
+            // case "dashboard":
             case "logout":
+            case "settings":
                 if (!$session->get('isLoggedIn')) {
                     return redirect()->to('/admin/login');
+                }
+
+                $cognito = service('cognito');
+
+                if ($cognito->is_access_token_expired()) {
+                    return redirect()->to('/admin/login');
+                }
+
+                $result = $cognito->refreshTokensIfRequired();
+
+                if($result) {
+                    $session->set([
+                        ACCESS_TOKEN_NAME   => $result[ACCESS_TOKEN_NAME],
+                        ID_TOKEN_NAME       => $result[ID_TOKEN_NAME],
+                    ]);
+
+                    if($result["refreshTokenUpdated"]) {
+                        $session->set([
+                            REFRESH_TOKEN_NAME => $result[REFRESH_TOKEN_NAME],
+                        ]);
+                    }
                 }
                 break;
             case "change_password":
@@ -42,3 +64,4 @@ class AuthFilter implements FilterInterface {
         // Do something here if needed after the request
     }
 }
+

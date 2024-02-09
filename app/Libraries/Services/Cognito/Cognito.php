@@ -168,50 +168,8 @@ class Cognito {
      *
      * @param $username
      */
-    public function logout($username, $user_pool_id) {
-        $result = [
-            "successful"    => false,
-            "message"       => "",
-            "error_code"    => "",
-            "error_message" => "",
-            "auth_result"   => null,
-        ];
-
-        if (isset($this->_cognito)) {
-            try {
-                $auth_result = $this->_cognito->AdminUserGlobalSignOut([
-                    'Username'          => $username,
-                    'UserPoolId'        => $user_pool_id,
-                ]);
-
-                $result["successful"] = true;
-                $result["message"] = "User is logged-out successfully!";
-                $result["result"] = $auth_result;
-
-                return $result;
-            } catch (CognitoIdentityProviderException $exception) {
-                $result["successful"] = false;
-                $result["message"] = "Something went wrong!";
-                $result["error_message"] = $exception->getAwsErrorMessage();
-                $result["error_code"] = $exception->getAwsErrorCode();
-
-                return $result;
-            } catch (AwsException $exception) {
-                $result["successful"] = false;
-                $result["message"] = "Something went wrong!";
-                $result["error_message"] = $exception->getAwsErrorMessage();
-                $result["error_code"] = $exception->getAwsErrorCode();
-
-                return $result;
-            } catch (Exception $exception) {
-                $result["successful"] = false;
-                $result["message"] = "Something went wrong!";
-                $result["error_message"] = $exception->getMessage();
-                $result["error_code"] = "400"; // Bad request
-                
-                return $result;
-            }
-        }
+    public function logout() {
+        return $this->_revokeTokens();
     }
 
     public function change_password($para, $forced=false){
@@ -512,4 +470,174 @@ class Cognito {
     public function update_user_preferences($user_pool_id, $username, $preferences) {
         return $this->set_user_attributes($user_pool_id, $username, serialize($preferences));
     }
+
+    /**
+     * Checks if a token is expired.
+     *
+     * @param string $token JWT to check expiration.
+     * @return bool Returns true if the token is expired, false otherwise.
+     */
+    private function _is_token_expired(string $token): bool {
+        $tokenParts = explode('.', $token);
+        if (count($tokenParts) < 3) {
+            // Not a valid JWT
+            return true;
+        }
+
+        $payload = json_decode(base64_decode(str_replace('_', '/', str_replace('-', '+', $tokenParts[1]))), true);
+        if (!$payload) {
+            // Invalid payload
+            return true;
+        }
+
+        $now = new \DateTimeImmutable();
+        if (isset($payload['exp']) && $now->getTimestamp() >= $payload['exp']) {
+            // Token is expired
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
+     * Retrieves and checks if the stored access or ID token is expired.
+     *
+     * @param \CodeIgniter\Session\Session $session CodeIgniter session instance.
+     * @param string $tokenKey The session key where the token is stored.
+     * @return bool Returns true if the stored token is expired or not found, false otherwise.
+     */
+    private function _is_stored_token_expired(string $tokenKey): bool {
+        $session = service('session');
+        $token = $session->get($tokenKey);
+        if (!$token) {
+            // Token not found in session
+            return true;
+        }
+
+        return $this->_is_token_expired($token);
+    }
+
+    public function is_access_token_expired() {
+        $session = service('session');
+        $token = $session->get(ACCESS_TOKEN_NAME);
+        if (!$token) {
+            // Token not found in session
+            return true;
+        }
+
+        return $this->_is_token_expired($token);
+    }
+
+    public function refreshTokensIfRequired() {
+        $result = false;
+        if ($this->_is_stored_token_expired(ACCESS_TOKEN_NAME) || 
+            $this->_is_stored_token_expired(ID_TOKEN_NAME)) {
+            $result = $this->_refresh_tokens_and_get_new_refresh_token();
+        }
+
+        return $result;
+    }
+
+    // use Aws\CognitoIdentityProvider\CognitoIdentityProviderClient;
+
+    // Assuming $client is an instance of CognitoIdentityProviderClient
+    // and you have already set up necessary variables and credentials
+
+    // Function to refresh tokens and check for a new refresh token
+    private function _refresh_tokens_and_get_new_refresh_token() {
+        try {
+            $session = service('session');
+            $refreshToken = $session->get(REFRESH_TOKEN_NAME);
+            $result = $this->_cognito->initiateAuth([
+                'AuthFlow' => 'REFRESH_TOKEN_AUTH',
+                'AuthParameters' => [
+                    'REFRESH_TOKEN' => $refreshToken,
+                ],
+                'ClientId' => $this->_client_id,
+            ]);
+
+            $newAccessToken = $result['AuthenticationResult']['AccessToken'];
+            $newIdToken = $result['AuthenticationResult']['IdToken'];
+
+            // Check if a new refresh token is provided in the response
+            $newRefreshToken = isset($result['AuthenticationResult']['RefreshToken']) 
+                                ? $result['AuthenticationResult']['RefreshToken'] 
+                                : null;
+
+            if ($newRefreshToken) {
+                // A new refresh token has been issued
+                return [
+                    ACCESS_TOKEN_NAME => $newAccessToken,
+                    ID_TOKEN_NAME => $newIdToken,
+                    REFRESH_TOKEN_NAME => $newRefreshToken, // The new refresh token
+                    'refreshTokenUpdated' => true,
+                ];
+            } else {
+                // The original refresh token is still valid and no new refresh token was issued
+                return [
+                    ACCESS_TOKEN_NAME => $newAccessToken,
+                    ID_TOKEN_NAME => $newIdToken,
+                    REFRESH_TOKEN_NAME => $refreshToken, // Return the original refresh token
+                    'refreshTokenUpdated' => false,
+                ];
+            }
+        } catch (\Aws\Exception\AwsException $e) {
+            // Handle errors appropriately
+            echo $e->getMessage();
+        }
+    }
+
+    // Function to revoke all tokens
+    private function _revokeTokens() {
+        $result = [
+            "successful"    => false,
+            "message"       => "",
+            "error_code"    => "",
+            "error_message" => "",
+        ];
+
+        try {
+            $session = service('session');
+            $access_token = $session->get(ACCESS_TOKEN_NAME);
+            if (!$access_token) {
+                // Token not found in session
+                $result["successful"] = false;
+                $result["message"] = "No Access Token Stored in the Session!";
+                $result["error_message"] = "No Access Token Stored in the Session!";
+                
+                return $result;
+            }
+            $this->_cognito->globalSignOut([
+                'AccessToken' => $access_token,
+            ]);
+
+            // Tokens are revoked, force the user to re-authenticate
+            $result["successful"] = true;
+            $result["message"] = "User is logged-out successfully!";
+
+            return $result;
+        } catch (CognitoIdentityProviderException $exception) {
+            $result["successful"] = false;
+            $result["message"] = "Something went wrong!";
+            $result["error_message"] = $exception->getAwsErrorMessage();
+            $result["error_code"] = $exception->getAwsErrorCode();
+
+            return $result;
+        } catch (AwsException $exception) {
+            $result["successful"] = false;
+            $result["message"] = "Something went wrong!";
+            $result["error_message"] = $exception->getAwsErrorMessage();
+            $result["error_code"] = $exception->getAwsErrorCode();
+
+            return $result;
+        } catch (Exception $exception) {
+            $result["successful"] = false;
+            $result["message"] = "Something went wrong!";
+            $result["error_message"] = $exception->getMessage();
+            $result["error_code"] = "400"; // Bad request
+            
+            return $result;
+        }
+    }
+
 }

@@ -5,5 +5,6 @@
         <?= $this->include('admin/components/language-dropdown-menu') ?>
         <?= $this->include('admin/components/profile-dropdown-menu') ?>
         <?= $this->include('admin/components/congregation-dropdown-menu') ?>
+        <?= $this->include('admin/components/about') ?>
     </ul>
 </div>

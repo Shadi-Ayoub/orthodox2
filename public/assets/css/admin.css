@@ -111,6 +111,14 @@
   margin-left: 0.25rem ;
   margin-right: 0.5rem ;
 }
+#dashboard-header #about-menu-button {
+  margin-right: 1rem ;
+  margin-left: 0 ;
+}
+#dashboard-header #about-menu-button svg {
+  width: calc(0.5 * 16px);
+  margin-right: 0.25rem ;
+}
 #content {
   margin-top: 110px;
   padding-left: 0.5rem;

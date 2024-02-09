@@ -27,6 +27,9 @@ export class CdkStack extends cdk.Stack {
   branchDataSource: appsync.DynamoDbDataSource;
   branchTable: cdk.aws_dynamodb.Table;
 
+  settingDataSource: appsync.DynamoDbDataSource;
+  settingTable: cdk.aws_dynamodb.Table;
+
   constructor(scope: Construct, id: string, props?: cdk.StackProps) {
     super(scope, id, props);
 
@@ -73,6 +76,10 @@ export class CdkStack extends cdk.Stack {
     this.branchDataSource = resultBranchDataSource.ds;
     this.branchTable = resultBranchDataSource.ddbTable;
 
+    const resultSettingDataSource = this.createDataSource(datasource.createSettingDataSource);
+    this.settingDataSource = resultSettingDataSource.ds;
+    this.settingTable = resultSettingDataSource.ddbTable;
+
 /*==========================End of Data Sources Section======================*/
 
 /*=======================Create the Functions (Operations)===================*/
@@ -89,11 +96,13 @@ export class CdkStack extends cdk.Stack {
     
     // Creates a function for adding Congregations
     param.name = constants.FUNCTION_NAME_ADD_CONGREGATION;
+    param.dataSource = this.congregationDataSource,
     param.code = functionCodes.funcAddCongregationCode;
     const funcAddCongregation = this.createFunction(param);
 
     // Creates a function for getting Congregations
     param.name = constants.FUNCTION_NAME_GET_CONGREGATIONS_BY_ID;
+    param.dataSource = this.congregationDataSource,
     param.code = functionCodes.funcGetCongregationsByIdCode;
     const funcGetCongregationsById = this.createFunction(param);
 
@@ -105,13 +114,29 @@ export class CdkStack extends cdk.Stack {
 
     // Creates a function for getting all Branches under a Congregation
     param.name = constants.FUNCTION_NAME_GET_ALL_BRANCHES_BY_CONGREGATION_ID;
+    param.dataSource = this.branchDataSource;
     param.code = functionCodes.funcGetAllBranchesByCongregationIdCode;
     const funcGetAllBranchesByCongregationId = this.createFunction(param);
+
+    // Creates a function for getting all Branches under a Congregation
+    param.name = constants.FUNCTION_NAME_GET_ALL_SETTINGS;
+    param.dataSource = this.settingDataSource;
+    param.code = functionCodes.funcGetAllSettingsCode;
+    const funcGetAllSettings = this.createFunction(param);
+
+    // Creates a function for getting all Branches under a Congregation
+    param.name = constants.FUNCTION_NAME_UPDATE_SETTINGS;
+    param.dataSource = this.settingDataSource;
+    param.code = functionCodes.funcUpdateSettingsCode;
+    const funcUpdateSettings = this.createFunction(param);
 
 
 /*============================End of Functions Section=======================*/
 
 /*=============================Create the Resolvers==========================*/
+
+    this.createBasicPipelineResolver('getAllSettings', ResolverType.Query, [funcGetAllSettings]);
+    this.createBasicPipelineResolver('updateSettings', ResolverType.Mutation, [funcUpdateSettings]);
 
     this.createBasicPipelineResolver('getAllCongregations', ResolverType.Query, [funcGetCongregations]);
     this.createBasicPipelineResolver('getCongregationsById', ResolverType.Query, [funcGetCongregationsById]);

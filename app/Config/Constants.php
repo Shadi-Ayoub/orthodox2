@@ -95,11 +95,22 @@ define('EVENT_PRIORITY_HIGH', 10);
 
 /*
  | --------------------------------------------------------------------
- | AWS Cognito
+ | Extra Constants
  | --------------------------------------------------------------------
  |
  | 
  */
+define('GRAPGQL_QUERIES_PATH', APPPATH . 'Libraries/Services/GraphQL/Queries/');
+define('GRAPHQL_QUERY_ERROR_TYPE_INVALID_QUERY', 'InvalidQuery');
+define('GRAPHQL_QUERY_ERROR_TYPE_UNAUTHORIZED', 'UnauthorizedException');
+
+// Query name is the query .graphql file name
+define('GRAPHQL_QUERY_NAME_UPDATE_SETTINGS', 'mutation_update_settings');
+
+define('ACCESS_TOKEN_NAME', 'accessToken');
+define('ID_TOKEN_NAME', 'idToken');
+define('REFRESH_TOKEN_NAME', 'refreshToken');
+
 // defined('COGNITO_USER_ACCOUNT_STATUS_CONFIRMED') || define("COGNITO_USER_ACCOUNT_STATUS_CONFIRMED", 0);
 // defined('COGNITO_USER_ACCOUNT_STATUS_NEW_PASSWORD_REQUIRED') || define("COGNITO_USER_ACCOUNT_STATUS_NEW_PASSWORD_REQUIRED", 1);
 // defined('COGNITO_USER_ACCOUNT_STATUS_UNKNOWN') || define("COGNITO_USER_ACCOUNT_STATUS_UNKNOWN", 2);

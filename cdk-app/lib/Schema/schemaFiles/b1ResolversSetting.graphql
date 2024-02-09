@@ -1,0 +1,7 @@
+type Query {
+    getSettings: Setting!
+}
+
+type Mutation {
+	updateSettings(id: String!, settings: String): Setting
+}

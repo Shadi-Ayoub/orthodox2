@@ -3,6 +3,8 @@ import funcAddCongregationCode from './funcAddCongregationCode';
 import funcGetCongregationsByIdCode from './funcGetCongregationsByIdCode';
 import funcAddBranchCode from './funcAddBranchCode';
 import funcGetAllBranchesByCongregationIdCode from './funcGetAllBranchesByCongregationIdCode';
+import funcGetAllSettingsCode from './funcGetAllSettingsCode';
+import funcUpdateSettingsCode from './funcUpdateSettingsCode';
 
 export {
     funcGetCongregationsCode,
@@ -10,4 +12,6 @@ export {
     funcGetCongregationsByIdCode,
     funcAddBranchCode,
     funcGetAllBranchesByCongregationIdCode,
+    funcGetAllSettingsCode,
+    funcUpdateSettingsCode,
 }

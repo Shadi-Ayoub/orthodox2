@@ -33,7 +33,8 @@ class AuthController extends BaseController
         if ($_SERVER["REQUEST_METHOD"] === "POST") {
             try {
                 $auth_result = $this->_cognito->login($_POST["username"],$_POST["password"], $user_pool_id);
-               
+            //    var_dump($user_pool_id);
+            //    return;
                 // New accounts may require users to change password upon login for the first time!
                 // In such cases, the AWS Cognito "confirmation status" will be "Force change password"
                 if($auth_result["status"] == $this->_cognito::USER_ACCOUNT_STATUS_CONFIRMED && $auth_result["access_token"] !== null) {
@@ -168,26 +169,22 @@ class AuthController extends BaseController
         return view("auth/login", $data);
     }
 
-    public function logout($message="") {
-        $user_pool_id = $this->_get_user_pool_id();
+    public function logout() {
+        // $user_pool_id = $this->_get_user_pool_id();
 
         // ADMIN | USER
         $access_type = $this->_get_user_access_type();
 
-        $auth_result = $this->_cognito->logout($this->session->get("username"), $user_pool_id);
+        $auth_result = $this->_cognito->logout();
 
         $msg = "";
         $msg_type = "";
-
-        if (trim($message) !== "") {
-            $msg = $message . "<br />";
-        }
 
         if ($auth_result["successful"]) {
             $msg = $msg . "You were logged out successfully";
             $msg_type = "success-message";
         } else {
-            $msg = $msg . "Could not log you out for some reason!!!";
+            $msg = $msg . "Could not revoke all tokens for some reason!!!";
             $msg_type = "fail-message";
         }
 
@@ -234,7 +231,8 @@ class AuthController extends BaseController
         }
 
         //POST request
-
+        // var_dump($this->session);
+        // return;
         $forced = $this->session->get("forced");
 
         if($forced == "yes") {
@@ -401,14 +399,17 @@ class AuthController extends BaseController
             $totp = $_POST["totp"];
 
             $mfa_code_verification_result = $this->_cognito->verify_mfa_code($totp, $username, $session);
+            // var_dump($mfa_code_verification_result);
+            // return;
 
             if($mfa_code_verification_result["successful"]) {
                 $accessToken = $mfa_code_verification_result["result"]["AuthenticationResult"]["AccessToken"];
                 $idToken = $mfa_code_verification_result["result"]["AuthenticationResult"]["IdToken"];
+                $refreshToken = $mfa_code_verification_result["result"]["AuthenticationResult"]["RefreshToken"];
 
                 $user= $this->_cognito->get_user_info($this->session->get("userPoolId"), $username);
-                $arr_user_attributes = $user->get('UserAttributes');
-                $arr_access_codes = json_decode($this->_cognito->get_user_attribute_value($arr_user_attributes, "custom:ACCESS_CODES"));
+                // $arr_user_attributes = $user->get('UserAttributes');
+                // $arr_access_codes = json_decode($this->_cognito->get_user_attribute_value($arr_user_attributes, "custom:ACCESS_CODES"));
                 // var_dump($user->get('UserAttributes'));
                 // return;
 
@@ -416,9 +417,10 @@ class AuthController extends BaseController
 
                 $this->session->set([
                     "isLoggedIn"        => true,
-                    "accessToken"       => $accessToken,
-                    "idToken"           => $idToken,
-                    "userAccessCodes"   => $arr_access_codes,
+                    ACCESS_TOKEN_NAME   => $accessToken,
+                    ID_TOKEN_NAME       => $idToken,
+                    REFRESH_TOKEN_NAME  => $refreshToken,
+                    "user"              => $user,
                 ]);
 
                 return redirect()->to("/admin");
@@ -461,7 +463,9 @@ class AuthController extends BaseController
         $uri = $this->request->getUri();
         $segment1 = $uri->getSegment(1);
         
-        if($segment1 == "admin") {
+        if( $segment1 == "admin" ||
+            $segment1 == "login" ||
+            $segment1 == "logout" ) {
             return $_ENV['COGNITO_ADMIN_USER_POOL_ID'];
         }
 

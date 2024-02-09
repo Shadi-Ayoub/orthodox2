@@ -1,0 +1,12 @@
+"""
+Keep the schema type definition only in this file
+"""
+schema {
+	query: Query
+	mutation: Mutation
+}
+
+type Setting {
+	id: String!
+	settings: String!
+}

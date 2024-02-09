@@ -12,6 +12,8 @@
     "test-cdk": "jest --verbose ./1-Stack",
     "test-cdk-appsync": "jest --verbose cdk.appsync.test.ts",
     "test-cdk-appsync-1": "jest --verbose -t \"APPSYNC-TEST 1: AddCongregation Resolver\"",
+    "test-cdk-appsync-2": "jest --verbose -t \"APPSYNC-TEST 2: GetAllBranchesByCongregationId Resolver\"",
+    "test-cdk-appsync-3": "jest --verbose -t \"APPSYNC-TEST 3: GetCongregationsById Resolver\"",
 
     "cdk": "cdk",
     "deploy-dev": "./cdk-deploy-dev.sh"

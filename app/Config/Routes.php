@@ -7,13 +7,16 @@ use CodeIgniter\Router\RouteCollection;
  */
 $routes->get('/', 'HomeController::index');
 
+$routes->get('/error/graphql', 'ErrorController::graphql');
+
 $routes->match(['get', 'post'], '/admin/login', 'AuthController::login'); // Admin login
 
 $routes->match(['get', 'post'], '/login', 'AuthController::login'); // User login
 
 $routes->get('/admin', 'AdminController::index', ['filter' => 'auth:admin']);
 
-$routes->get('/admin/settings', 'AdminController::settings', ['filter' => 'auth:admin']);
+$routes->get('/settings', 'AdminController::settings', ['filter' => 'auth:admin']);
+$routes->post('/settings/reset', 'AdminController::settings_reset', ['filter' => 'auth:admin']);
 
 $routes->match(['get', 'post'], '/change-password', 'AuthController::change_password', ['filter' => 'auth:change_password']);
 

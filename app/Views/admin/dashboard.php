@@ -12,10 +12,6 @@
 
 <?= $this->section('pageContent') ?>
     <?= "Dashboard"; ?>
-    <?php
-        // $arr = ["code1", "code2", "code3"];
-        // echo json_encode($arr);
-    ?>
 <?= $this->endSection() ?>
 
 <?= $this->section('pageScripts') ?>
