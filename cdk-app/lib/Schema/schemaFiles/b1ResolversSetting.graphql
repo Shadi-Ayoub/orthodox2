@@ -1,7 +1,8 @@
 type Query {
-    getSettings: Setting!
+    getAllSettings: [Setting]
 }
 
 type Mutation {
-	updateSettings(id: String!, settings: String): Setting
+	updateSettingsById(id: String!, settings: String): Setting
+    # updateAllSettings(settings: String): [Setting]
 }

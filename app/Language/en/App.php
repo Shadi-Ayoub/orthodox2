@@ -54,6 +54,7 @@ return [
     'error_server'                      => 'Server Error!',
     'etc'                               => 'etc.',
 
+    'faith_hubspot'                     => 'Faith HubSpot',
     'families'                          => 'Families',
     'family_name'                       => 'Family Name',
     'father_name'                       => 'Father Name',

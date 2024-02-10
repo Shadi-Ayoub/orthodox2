@@ -39,7 +39,7 @@ class AppSync {
         $this->_region = $_ENV['APPSYNC_API_REGION'];
         $this->_version = $_ENV['APPSYNC_API_VERSION'];
         $this->_endpoint = $_ENV['APPSYNC_API_ENDPOINT'];
-        $this->_key = $_ENV['APPSYNC_API_KEY'];
+        // $this->_key = $_ENV['APPSYNC_API_KEY'];
         $this->_secret_access_key = $_ENV['APP_USER_SECRET_ACCESS_KEY'];
 
         // Configuration array for the AppSync client

@@ -19,8 +19,8 @@ class GraphQL {
     /**
      * Class constructor
      */
-    public function __construct($end_point, $api_key, $id_token) {
-        $this->_initialize($end_point, $api_key, $id_token);
+    public function __construct($end_point, $id_token) {
+        $this->_initialize($end_point, $id_token);
     }
 
     /**
@@ -29,9 +29,12 @@ class GraphQL {
     public function __destruct() {
     }
 
-    public function query($query_name, $variables) {
+    public function query($query_name, $variables=[]) {
 
         $graphqlPayloadJson = $this->_payload($query_name, $variables);
+
+        // var_dump($graphqlPayloadJson);
+        // die();
 
         $this->_connect();
         
@@ -39,6 +42,8 @@ class GraphQL {
         
         $this->_close();
 
+        // var_dump($graphqlPayloadJson);
+        // die();
         // Check for errors and handle the response
         if (isset($result->errors)) {
             $query_result["successful"] = false;
@@ -87,9 +92,9 @@ class GraphQL {
     //     return json_encode(["query" => $query, "variables" => $variables]);
     // }
 
-    private function _initialize($end_point, $api_key, $id_token) {
+    private function _initialize($end_point, $id_token) {
         $this->_end_point = $end_point;
-        $this->_api_key = $api_key;
+        // $this->_api_key = $api_key;
         $this->_id_token = $id_token;
     }
 
@@ -101,20 +106,31 @@ class GraphQL {
             'Authorization: ' . $this->_id_token, 
             "x-api-key: " . $this->_api_key,
         ];
-
+        
         $this->_ch = curl_init($this->_end_point); // cURL Session Handle
         curl_setopt($this->_ch, CURLOPT_HTTPHEADER, $headers);
         curl_setopt($this->_ch, CURLOPT_POST, true);
         curl_setopt($this->_ch, CURLOPT_RETURNTRANSFER, true);
     }
 
-    private function _payload($query_name, $variables) {
+    private function _payload($query_name, $variables=[]) {
         $q = file_get_contents(GRAPGQL_QUERIES_PATH . $query_name . ".graphql");
 
         if ($q === false) {
             die('Failed to read the query file.'); // Handle error; the file couldn't be read
         }
 
+        // Ensure $variables is an associative array to represent a JSON object
+        // if (!is_array($variables) || (is_array($variables) && array_values($variables) === $variables)) {
+        //     $variables = []; // Reset to an empty associative array if not an associative array
+        // }
+
+        // Initialize $variables as an empty stdClass object if null or not an array
+        // if (!is_array($variables)) {
+        //     $variables = new stdClass();
+        // }
+        $variables = (object)[];
+        
         $query =    <<<GRAPHQL
                     $q
                     GRAPHQL;
@@ -127,6 +143,15 @@ class GraphQL {
         
         // Execute the POST request
         $response = curl_exec($this->_ch);
+
+        if (curl_errno($this->_ch)) {
+            $session = service("session");
+            $response = service("response");
+
+            $session->setFlashdata("fail-message", curl_error($this->_ch));
+            $response->redirect(site_url('/error/graphql'))->send();
+            exit;
+        }
 
         return json_decode($response);
     }

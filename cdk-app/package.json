@@ -7,14 +7,12 @@
   "scripts": {
     "build": "tsc",
     "watch": "tsc -w",
-
     "test": "jest --verbose",
     "test-cdk": "jest --verbose ./1-Stack",
     "test-cdk-appsync": "jest --verbose cdk.appsync.test.ts",
     "test-cdk-appsync-1": "jest --verbose -t \"APPSYNC-TEST 1: AddCongregation Resolver\"",
     "test-cdk-appsync-2": "jest --verbose -t \"APPSYNC-TEST 2: GetAllBranchesByCongregationId Resolver\"",
     "test-cdk-appsync-3": "jest --verbose -t \"APPSYNC-TEST 3: GetCongregationsById Resolver\"",
-
     "cdk": "cdk",
     "deploy-dev": "./cdk-deploy-dev.sh"
   },
@@ -29,6 +27,7 @@
   },
   "dependencies": {
     "@aws-sdk/client-appsync": "^3.504.0",
+    "@aws-sdk/client-cognito-identity-provider": "^3.511.0",
     "@aws-sdk/util-dynamodb": "^3.504.0",
     "@graphql-tools/schema": "^10.0.2",
     "aws-cdk-lib": "^2.122.0",

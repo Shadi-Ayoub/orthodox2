@@ -54,6 +54,7 @@ return [
     'error_server'                      => 'خطأ سيرفر',
     'etc'                               => 'الخ',
 
+    'faith_hubspot'                     => 'Faith HubSpot',
     'families'                          => 'العائلات',
     'family_name'                       => 'اسم العائلة',
     'father_name'                       => 'اسم الأب',

@@ -8,7 +8,7 @@ use Psr\Log\LoggerInterface;
 
 class AdminController extends BaseController {
 
-    private $_appsync;
+    // private $_appsync;
     private $_graphql;
     private $_cognito;
     private $_settings;
@@ -19,9 +19,6 @@ class AdminController extends BaseController {
     }
 
     public function index() {
-        // var_dump($this->session->get());
-        $settings = $this->_settings->reset();
-        // var_dump($settings);
         return view("admin/dashboard");
     }
 
@@ -48,28 +45,43 @@ class AdminController extends BaseController {
             $message_type = "warning";
         }
 
+        $settings_array = $this->_settings->get_all();
+        
+        // $settings = $this->_settings->reset();
+        // $json = json_encode($settings["response"]->data->updateSettings);
+        // $settings_array = json_decode($json, true);
+        // foreach ($settings_array as $key => $value) {
+        //     $settings_array[$key] = json_decode($value, true);
+        // }
+
         $data = [
             "message"           => $message,
             "message_type"      => $message_type,
+            "settings"          => $settings_array,
         ];
+
+        // var_dump($this->session->get());
+        // $settings = $this->_settings->reset();
+        // var_dump($settings);
 
         return view("admin/settings", $data);
     }
 
     public function settings_reset() {
-        $default_settings = $this->default();
+        $settings = $this->_settings->reset();
+        // $default_settings = $settings_service->default();
        
-        $jsonSettingsString = json_encode($default_settings);
+        // $jsonSettingsString = json_encode($default_settings);
 
-        $variables = ["id" => "general", "settings" => $jsonSettingsString];
+        // $variables = ["id" => "login", "settings" => $jsonSettingsString];
 
-        $query_name = 'mutation_update_settings';
-        $access_token = $this->session->get("accessToken");
+        // $query_name = 'mutation_update_settings_by_id';
+        // $access_token = $this->session->get("accessToken");
 
-        $query_result = $this->_graphql->query($query_name, $variables,  $access_token);
+        // $query_result = $this->_graphql->query($query_name, $variables,  $access_token);
         
-        // var_dump($access_token);
-        return;
+        // var_dump($settings);
+        // die();
 
         $message = "Settings were reset to default values successfully...";
         return redirect()->to("/settings")->withCookies()->with("success-message", $message);
@@ -82,7 +94,7 @@ class AdminController extends BaseController {
         //     'code' => $this->session("congregation_code"),
         // ];
         try {
-            $settings = $this->_appsync->query($query_get_settings);
+            //$settings = $this->_appsync->query($query_get_settings);
             // var_dump("hiiii".$settings);
             return [];
         } catch (Exception $exception) {
@@ -100,10 +112,11 @@ class AdminController extends BaseController {
         // Do Not Edit This Line
         parent::initController($request, $response, $logger);
 
-        $this->_appsync = service("appsync");
+        // $this->_appsync = service("appsync");
         $this->_cognito = service("cognito");
         $this->_settings = service("settings");
-        $this->_graphql = service("graphql", $_ENV['APPSYNC_API_ENDPOINT'], $_ENV['APPSYNC_API_KEY'], $this->session->get(ID_TOKEN_NAME));
+        // $this->_graphql = service("graphql", $_ENV['APPSYNC_API_ENDPOINT'], $_ENV['APPSYNC_API_KEY'], $this->session->get(ID_TOKEN_NAME));
+        $this->_graphql = service("graphql", $_ENV['APPSYNC_API_ENDPOINT'], $this->session->get(ID_TOKEN_NAME));
 
         $this->_admin_user_info = $this->_get_login_user_info();
     }

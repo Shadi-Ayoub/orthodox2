@@ -24,7 +24,7 @@ class Cognito {
 
     public function __construct() {
         $this->_initialize();
-        $settings = service("settings")->get();
+        // $settings = service("settings")->get_all();
     }
 
     public function __destruct() {

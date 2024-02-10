@@ -1,0 +1,6 @@
+mutation UpdateSettingsById($id: String!, $settings: String!) {
+    updateSettingsById(id: $id, settings: $settings) {
+      id
+      settings
+    }
+}

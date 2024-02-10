@@ -30,6 +30,12 @@
         <input type="hidden" name="reset-settings-confirmed" value="">
     </form>
 
+    <?php
+         echo "<pre>";
+         print_r($settings);
+         echo "</pre>";
+    ?>
+
     <!-- Modal -->
     <div class="modal fade" id="modal-confirm-reset-settings" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog">

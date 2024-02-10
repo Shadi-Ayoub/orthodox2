@@ -20,8 +20,8 @@
 
 <?= $this->section('pageContent') ?>
     <div class="login-form">
-        <form id="form-login" action="/<?= $access_type == AuthController::ACCESS_TYPE_ADMIN ? "admin/" : ""; ?>login" method="post">
-            <h2 class="text-center"><?= $access_type == AuthController::ACCESS_TYPE_ADMIN ? "Admin " : ""; ?>Sign in</h2>
+        <form id="form-login" action="/<?= $access_type == ACCESS_TYPE_ADMIN ? "login/" : ""; ?>admin" method="post">
+            <h2 class="text-center"><?= $access_type == ACCESS_TYPE_ADMIN ? "Admin " : ""; ?>Sign in</h2>
 
             <?php
                 if(isset($message) && trim($message) !== "") {

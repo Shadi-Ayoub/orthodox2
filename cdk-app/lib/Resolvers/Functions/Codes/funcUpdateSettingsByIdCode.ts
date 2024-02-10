@@ -1,5 +1,5 @@
 
-const funcUpdateSettingsCode = `import { util } from '@aws-appsync/utils';
+const funcUpdateSettingsByIdCode = `import { util } from '@aws-appsync/utils';
 import * as ddb from '@aws-appsync/utils/dynamodb';
 
 export function request(ctx) {
@@ -24,4 +24,4 @@ export function response(ctx) {
 }
 `;
 
-export default funcUpdateSettingsCode;
+export default funcUpdateSettingsByIdCode;

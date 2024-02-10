@@ -8,10 +8,10 @@ use App\Controllers\AuthController;
 
 class AuthFilter implements FilterInterface {
     public function before(RequestInterface $request, $arguments = null) {
+
         $session = \Config\Services::session();
-
         $segment1 = "";
-
+        
         if($arguments !== null) {
             $segment1 = $arguments[0];
         } else {
@@ -24,13 +24,19 @@ class AuthFilter implements FilterInterface {
             case "logout":
             case "settings":
                 if (!$session->get('isLoggedIn')) {
-                    return redirect()->to('/admin/login');
+                    return redirect()->to('/login/admin');
                 }
 
                 $cognito = service('cognito');
 
                 if ($cognito->is_access_token_expired()) {
-                    return redirect()->to('/admin/login');
+                    $message = "Your Session has expired!";
+
+                    if($session->get('accessType') == ACCESS_TYPE_ADMIN) {
+                        return redirect()->to("/login/admin")->withCookies()->with("warning-message", $message);
+                    }
+
+                    return redirect()->to("/login")->withCookies()->with("warning-message", $message);
                 }
 
                 $result = $cognito->refreshTokensIfRequired();

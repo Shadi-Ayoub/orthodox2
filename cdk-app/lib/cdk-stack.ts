@@ -1,5 +1,7 @@
 import * as cdk from 'aws-cdk-lib';
 import * as appsync from 'aws-cdk-lib/aws-appsync';
+import * as cognito from 'aws-cdk-lib/aws-cognito';
+import { CognitoIdentityProviderClient, UpdateUserPoolClientCommand } from "@aws-sdk/client-cognito-identity-provider";
 import { Construct } from 'constructs';
 
 import SchemaGenerator from './Schema/lib/SchemaGenerator';
@@ -8,6 +10,8 @@ import {IResolverFunction, ResolverType} from './Resolvers/ResolverTypes';
 import * as constants from './Resolvers/Functions/Constants';
 import * as functionCodes from './Resolvers/Functions/Codes';
 import * as resolverCodes from './Resolvers/codes';
+
+require('dotenv').config({path : __dirname + '/../../.env'});
 
 /**
  * Create the following in sequence:
@@ -40,9 +44,32 @@ export class CdkStack extends cdk.Stack {
     
 /*===============================API Definition==============================*/
 
+    // Reference the existing Cognito User Pools
+    const adminUserPoolId = process.env.COGNITO_ADMIN_USER_POOL_ID as string;
+    const userUserPoolId = process.env.COGNITO_USER_POOL_ID as string;
+    const userPoolAdmin = cognito.UserPool.fromUserPoolId(this, 'ExistingUserPool1', adminUserPoolId);
+    const userPoolUser = cognito.UserPool.fromUserPoolId(this, 'ExistingUserPool2', userUserPoolId);
+
     this.api = new appsync.GraphqlApi(this, this.apiName, {
       name: this.apiName,
       definition: appsync.Definition.fromFile('lib/Schema/Schema.generated.graphql'),
+      authorizationConfig: {
+        defaultAuthorization: {
+          authorizationType: appsync.AuthorizationType.USER_POOL,
+          userPoolConfig: {
+            userPool: userPoolAdmin,
+          },
+        },
+        additionalAuthorizationModes: [
+          {
+            authorizationType: appsync.AuthorizationType.USER_POOL,
+            userPoolConfig: {
+              userPool: userPoolUser,
+            },
+          },
+          // You can add other authorization modes here (e.g., API_KEY, IAM, OIDC)
+        ],
+      },
     });
 
 /*===========================================================================*/
@@ -124,11 +151,11 @@ export class CdkStack extends cdk.Stack {
     param.code = functionCodes.funcGetAllSettingsCode;
     const funcGetAllSettings = this.createFunction(param);
 
-    // Creates a function for getting all Branches under a Congregation
-    param.name = constants.FUNCTION_NAME_UPDATE_SETTINGS;
+    // Creates a function for updating settings by id (updating a settings section)
+    param.name = constants.FUNCTION_NAME_UPDATE_SETTINGS_BY_ID;
     param.dataSource = this.settingDataSource;
-    param.code = functionCodes.funcUpdateSettingsCode;
-    const funcUpdateSettings = this.createFunction(param);
+    param.code = functionCodes.funcUpdateSettingsByIdCode;
+    const funcUpdateSettingsById = this.createFunction(param);
 
 
 /*============================End of Functions Section=======================*/
@@ -136,7 +163,7 @@ export class CdkStack extends cdk.Stack {
 /*=============================Create the Resolvers==========================*/
 
     this.createBasicPipelineResolver('getAllSettings', ResolverType.Query, [funcGetAllSettings]);
-    this.createBasicPipelineResolver('updateSettings', ResolverType.Mutation, [funcUpdateSettings]);
+    this.createBasicPipelineResolver('updateSettingsById', ResolverType.Mutation, [funcUpdateSettingsById]);
 
     this.createBasicPipelineResolver('getAllCongregations', ResolverType.Query, [funcGetCongregations]);
     this.createBasicPipelineResolver('getCongregationsById', ResolverType.Query, [funcGetCongregationsById]);
@@ -146,6 +173,19 @@ export class CdkStack extends cdk.Stack {
     this.createBasicPipelineResolver('addBranch', ResolverType.Mutation, [funcAddBranch]);
 
 /*============================End of Resolvers Section=======================*/
+
+/*===============================Initial Configurations===========================*/
+// (async () => {
+//   const adminUserPoolId = process.env.COGNITO_ADMIN_USER_POOL_ID as string;
+//   const userUserPoolId = process.env.COGNITO_USER_POOL_ID as string;
+//   const clientId = process.env.COGNITO_APP_CLIENT_ID as string;;
+
+//   // Set both access and ID token expiry to 1 hour and refresh token to 30 days
+//   await this.updateTokenExpiry(adminUserPoolId, clientId, 60, 60,30);
+//   await this.updateTokenExpiry(userUserPoolId, clientId, 60, 60, 30);
+// })();
+/*============================End of Configurations Section=======================*/
+
 
   }
 
@@ -198,5 +238,24 @@ export class CdkStack extends cdk.Stack {
       pipelineConfig: functions,
     });
    
+  }
+
+  async updateTokenExpiry(userPoolId: string, clientId: string, accessTokenValidity: number = 60, idTokenValidity: number = 60, refreshTokenValidity: number = 30): Promise<void> {
+    const command = new UpdateUserPoolClientCommand({
+      UserPoolId: userPoolId,
+      ClientId: clientId,
+      AccessTokenValidity: accessTokenValidity,
+      IdTokenValidity: idTokenValidity,
+      RefreshTokenValidity: refreshTokenValidity,
+    });
+
+    try {
+      const region = process.env.COGNITO_REGION as string;
+      const client = new CognitoIdentityProviderClient({ region });
+      const response = await client.send(command);
+      console.log(`Token expiry updated for User Pool Client: ${clientId}`, response);
+    } catch (error) {
+      console.error(`Error updating token expiry for User Pool Client: ${clientId}`, error);
+    }
   }
 }

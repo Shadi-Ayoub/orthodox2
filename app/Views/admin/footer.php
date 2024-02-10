@@ -5,7 +5,7 @@
   <div class="container-fluid">
     <!-- Default to the left -->
     <div id="copyright" class="d-none d-sm-block">
-      <?= lang('app.copyright'); ?> &copy; <?= date("Y"); ?> <?= anchor('/', lang('app.greek_orthodox_archbishopric')); ?>. <?= lang('app.all_rights_reserved'); ?>.
+      <?= lang('app.copyright'); ?> &copy; <?= date("Y"); ?> <?= anchor('/', lang('app.faith_hubspot')); ?>. <?= lang('app.all_rights_reserved'); ?>.
     </div>
 
     <!-- To the right -->

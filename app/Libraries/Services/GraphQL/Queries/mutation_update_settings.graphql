@@ -1,6 +1,0 @@
-mutation UpdateSettings($id: String!, $settings: String!) {
-    updateSettings(id: $id, settings: $settings) {
-      id
-      settings
-    }
-}
