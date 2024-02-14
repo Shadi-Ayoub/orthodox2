@@ -14,12 +14,31 @@ class AdminController extends BaseController {
     private $_settings;
     private $_admin_user_info;
 
+    public $breadcrumbs;
+
     public function __construct() {
-       
+       // $this->breadcrumb = new Breadcrumbs();
+       $this->breadcrumbs = service('breadcrumbs');
+       $this->db = \Config\Database::connect();
+       $this->lang = service('request')->getLocale();
     }
 
     public function index() {
-        return view("admin/dashboard");
+        $uri_string = uri_string();
+        $utility = service('utility');
+        $lang = service('request')->getLocale(); 
+
+        // if($uri_string == 'admin') {
+
+        $this->breadcrumbs->add(lang('app.home'), site_url(''));
+        $this->breadcrumbs->add(lang('app.dashboard'));
+
+        $data['breadcrumbs'] = $this->breadcrumbs->render();
+        $data['content_title'] = "";
+
+
+        // }
+        return view("admin/dashboard", $data);
     }
 
     private function get_congregations() {}
@@ -31,6 +50,14 @@ class AdminController extends BaseController {
     }
 
     public function settings() {
+        $this->breadcrumbs->add(lang('app.home'), '/');
+       	$this->breadcrumbs->add(lang('app.dashboard'), site_url('admin'));
+		$this->breadcrumbs->add(lang('app.settings'));
+
+		$data['breadcrumbs'] = $this->breadcrumbs->render();
+
+		$data['content_title'] = lang('app.settings');
+
         $message = "";
         $message_type = "";
         // $data = $this->_settings->get_settings();
@@ -45,47 +72,35 @@ class AdminController extends BaseController {
             $message_type = "warning";
         }
 
-        $settings_array = $this->_settings->get_all();
-        
-        // $settings = $this->_settings->reset();
-        // $json = json_encode($settings["response"]->data->updateSettings);
-        // $settings_array = json_decode($json, true);
-        // foreach ($settings_array as $key => $value) {
-        //     $settings_array[$key] = json_decode($value, true);
-        // }
+        $settings_array = [];
+        if (session()->getFlashdata('settings')) { // ex. after setings reset
+            $settings_array = session()->getFlashdata('settings');
+        } else {
+            $settings_array = $this->_settings->get_all();
+        }
 
-        $data = [
-            "message"           => $message,
-            "message_type"      => $message_type,
-            "settings"          => $settings_array,
-        ];
+        $default_settings_array = $this->_settings->default();
 
-        // var_dump($this->session->get());
-        // $settings = $this->_settings->reset();
-        // var_dump($settings);
+        $data["message"] = $message;
+        $data["message_type"] = $message_type;
+        $data["settings_array"] = $settings_array;
+        $data["default_settings_array"] = $default_settings_array;
 
         return view("admin/settings", $data);
     }
 
     public function settings_reset() {
         $settings = $this->_settings->reset();
-        // $default_settings = $settings_service->default();
-       
-        // $jsonSettingsString = json_encode($default_settings);
-
-        // $variables = ["id" => "login", "settings" => $jsonSettingsString];
-
-        // $query_name = 'mutation_update_settings_by_id';
-        // $access_token = $this->session->get("accessToken");
-
-        // $query_result = $this->_graphql->query($query_name, $variables,  $access_token);
-        
-        // var_dump($settings);
-        // die();
 
         $message = "Settings were reset to default values successfully...";
-        return redirect()->to("/settings")->withCookies()->with("success-message", $message);
-        // return view("admin/settings_reset");
+        return redirect()->to("/settings")->withCookies()->with("success-message", $message)->with("settings", $settings);
+    }
+
+    public function settings_save() {
+        $settings = $this->_settings->save();
+
+        $message = "New settings were saved successfully...";
+        return redirect()->to("/settings")->withCookies()->with("success-message", $message)->with("settings", $settings);
     }
 
     private function _get_settings() {

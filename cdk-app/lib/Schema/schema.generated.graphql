@@ -85,6 +85,7 @@ type Query {
 
 type Mutation {
   updateSettingsById(id: String!, settings: String): Setting
+  updateSettings(settings: String!): [Setting]
   addCongregation(input: addCongregationInput!): Congregation
   addBranch(input: addBranchInput!): Branch
 }

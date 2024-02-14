@@ -103,12 +103,17 @@ define('EVENT_PRIORITY_HIGH', 10);
 define('ACCESS_TYPE_USER', 'User'); // Normal User
 define('ACCESS_TYPE_ADMIN', 'Admin'); // System Administrator
 
+define('DYNAMODB_TABLE_NAME_SETTINGS', 'FaithHubSpotSettingTable');
+
 define('GRAPGQL_QUERIES_PATH', APPPATH . 'Libraries/Services/GraphQL/Queries/');
 define('GRAPHQL_QUERY_ERROR_TYPE_INVALID_QUERY', 'InvalidQuery');
 define('GRAPHQL_QUERY_ERROR_TYPE_UNAUTHORIZED', 'UnauthorizedException');
 
 // Query name is the query .graphql file name
 define('GRAPHQL_QUERY_NAME_UPDATE_SETTINGS_BY_ID', 'mutation_update_settings_by_id');
+define('GRAPHQL_QUERY_NAME_UPDATE_SETTINGS', 'mutation_update_settings');
+
+
 define('GRAPHQL_QUERY_NAME_GET_ALL_SETTINGS', 'query_get_all_settings');
 
 define('ACCESS_TOKEN_NAME', 'accessToken');

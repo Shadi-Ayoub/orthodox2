@@ -1,0 +1,6 @@
+mutation UpdateSettings($settings: [String]) {
+    updateSettings(settings: $settings) {
+      id
+      settings
+    }
+}

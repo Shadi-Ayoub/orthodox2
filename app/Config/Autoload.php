@@ -48,6 +48,7 @@ class Autoload extends AutoloadConfig
         APP_NAMESPACE => APPPATH, // For custom app namespace
         'Config'      => APPPATH . 'Config',
         'Libraries\Services\Settings' => APPPATH . 'Libraries/Services/Settings',
+        'Libraries\Services\Breadcrumbs' => APPPATH . 'Libraries/Services/Breadcrumbs',
         'Libraries\Services\Utility' => APPPATH . 'Libraries/Services/Utility',
         'Libraries\Services\Cognito' => APPPATH . 'Libraries/Services/Cognito',
         'Libraries\Services\AppSync' => APPPATH . 'Libraries/Services/AppSync',

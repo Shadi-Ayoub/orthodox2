@@ -10,6 +10,10 @@
 <?= $this->section('pageStyles') ?>
 <?= $this->endSection() ?>
 
+<?= $this->section('breadcrumbsBar') ?>
+    <?= $breadcrumbs; ?>
+<?= $this->endSection() ?>
+
 <?= $this->section('pageContent') ?>
     <?= "Dashboard"; ?>
 <?= $this->endSection() ?>

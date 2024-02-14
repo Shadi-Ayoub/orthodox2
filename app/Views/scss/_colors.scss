@@ -85,16 +85,32 @@ $oc-pink-list: (
   "9": #a61e4d
 );
 
-$oc-pink-0: map-get($oc-pink-list, "0");
-$oc-pink-1: map-get($oc-pink-list, "1");
-$oc-pink-2: map-get($oc-pink-list, "2");
-$oc-pink-3: map-get($oc-pink-list, "3");
-$oc-pink-4: map-get($oc-pink-list, "4");
-$oc-pink-5: map-get($oc-pink-list, "5");
-$oc-pink-6: map-get($oc-pink-list, "6");
-$oc-pink-7: map-get($oc-pink-list, "7");
-$oc-pink-8: map-get($oc-pink-list, "8");
-$oc-pink-9: map-get($oc-pink-list, "9");
+//  Maroon
+//  ───────────────────────────────────
+
+$oc-maroon-list: (
+  "0": #f3e6e6,
+  "1": #e8cccc,
+  "2": #dcb2b2,
+  "3": #d19999,
+  "4": #c58080,
+  "5": #b96666,
+  "6": #ae4d4d,
+  "7": #a23333,
+  "8": #971919,
+  "9": #8b0000
+);
+
+$oc-maroon-0: map-get($oc-maroon-list, "0");
+$oc-maroon-1: map-get($oc-maroon-list, "1");
+$oc-maroon-2: map-get($oc-maroon-list, "2");
+$oc-maroon-3: map-get($oc-maroon-list, "3");
+$oc-maroon-4: map-get($oc-maroon-list, "4");
+$oc-maroon-5: map-get($oc-maroon-list, "5");
+$oc-maroon-6: map-get($oc-maroon-list, "6");
+$oc-maroon-7: map-get($oc-maroon-list, "7");
+$oc-maroon-8: map-get($oc-maroon-list, "8");
+$oc-maroon-9: map-get($oc-maroon-list, "9");
 
 
 //  Grape
@@ -407,6 +423,7 @@ $oc-color-list: (
   $oc-gray-list:      "gray",
   $oc-red-list:      "red",
   $oc-pink-list:      "pink",
+  $oc-maroon-list:      "maroon",
   $oc-grape-list:      "grape",
   $oc-violet-list:      "violet",
   $oc-indigo-list:      "indigo",

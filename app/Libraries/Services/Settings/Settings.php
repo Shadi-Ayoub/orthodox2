@@ -30,24 +30,36 @@ class Settings {
     // }
 
     public function default() {
-        $default_settings = [
-            [0] => [
-                "id" => "login",
-                "settings" => [
-                    "force_password_change" => "yes",
-                    "force_mfa"             => "yes",
-                ]
-            ],
-            [1] => [
-                "id" => "test",
-                "settings" => [
-                    "setting 1" => "yes",
-                    "setting 2" => "yes",
-                ]
-            ]
+        // $default_settings = [
+        //     [
+        //         "id" => "login",
+        //         "settings" => [
+        //             "force_password_change" => "yes",
+        //             "force_mfa"             => "yes",
+        //         ]
+        //     ],
+        //     [
+        //         "id" => "test",
+        //         "settings" => [
+        //             "setting 1" => "yes",
+        //             "setting 2" => "yes",
+        //         ]
+        //     ]
             
+        // ];
+
+        $default_settings = [
+            'login' => [
+                'force_password_change' => 'no',
+                'force_mfa_admin'       => 'yes',
+                'force_mfa_user'        => 'no',
+            ],
+            'test' => [
+                'setting 1' => 'no',
+                'setting 2' => 'no',
+            ],
         ];
-          
+
         return $default_settings;
     }
 
@@ -64,19 +76,21 @@ class Settings {
         } else {
             $json = json_encode($query_result["response"]->data->getAllSettings);
             $settings_array = json_decode($json, true);
-            // $settings_array_reshaped = [];
-            
-            $i = 0;
+
+            $settings_array_transformed = [];
+            $k = "";
             foreach ($settings_array as $one_setting) {
                 foreach ($one_setting as $key => $value) {
-                    if($key === "settings") {
-                        $settings_array[$i][$key] = json_decode($value, true);
+                    if($key === "id") {
+                        $k = $value;
                     }
-                }
-                $i++;
+                    else if($key === "settings") {
+                        $settings_array_transformed[$k] = json_decode($value, true);
+                    }
+                };
             }
 
-            return $settings_array;
+            return $settings_array_transformed;
         }
 
 
@@ -85,41 +99,67 @@ class Settings {
         return $query_result;
     }
 
-    public function update() {
-        return $this->_settings;
-    }
+    public function update($settings_array) {
+        // First transform the settings array to an array of items of type Setting
+        $transformed = [];
+        foreach ($settings_array as $key => $value) {
+            $arr = ['id' => $key, 'settings' => json_encode($value)];
+            $transformed[] = json_encode($arr);
+        }
 
-    public function reset() {
-        $default_settings = $this->default();
-        
-        $variables = ["id" => "login", "settings" => json_encode($default_settings)];
+        $variables = ['settings' => $transformed];
 
-        $query_result = $this->_graphql->query(GRAPHQL_QUERY_NAME_UPDATE_SETTINGS_BY_ID, $variables);
-        
-        // var_dump(GRAPHQL_QUERY_NAME_UPDATE_SETTINGS_BY_ID);
-        // die();
+        $query_result = $this->_graphql->query(GRAPHQL_QUERY_NAME_UPDATE_SETTINGS, $variables);
+
         if($query_result["successful"] === false) {
             $session = service("session");
             $response = service("response");
 
-            $session->setFlashdata("fail-message", "The query was not successful for some reason!");
+            $session->setFlashdata("fail-message", "The \"Update Settings\" query was not successful for some reason!");
             $response->redirect(site_url('/error/graphql'))->send();
             exit;
         } else {
-            $json = json_encode($query_result["response"]->data->updateSettingsById);
+            $json = json_encode($query_result["response"]->data->updateSettings);
             $settings_array = json_decode($json, true);
-            foreach ($settings_array as $key => $value) {
-                if($key === "settings") {
-                    $settings_array[$key] = json_decode($value, true);
-                }
+            
+            $settings_array_transformed = [];
+            $k = "";
+            foreach ($settings_array as $one_setting) {
+                foreach ($one_setting as $key => $value) {
+                    if($key === "id") {
+                        $k = $value;
+                    }
+                    else if($key === "settings") {
+                        $settings_array_transformed[$k] = json_decode($value, true);
+                    }
+                };
             }
-            return $settings_array;
-        }
-        
 
-        // $message = "Settings were reset to default values successfully...";
-        // return redirect()->to("/settings")->withCookies()->with("success-message", $message);
-        // return view("admin/settings_reset");
+            return $settings_array_transformed;
+        }
+    }
+
+    public function reset() {
+        $default_settings = $this->default();
+
+        return $this->update($default_settings);
+    }
+
+    public function save() {
+        $new_settings_string = $_POST["save-settings-json-string"];
+        $new_settings_array = json_decode($new_settings_string, true);
+        // echo $new_settings . "<br />";
+        // var_dump($settingsArray);
+        // echo "<br />";
+        // // Check the output
+        // echo "<pre>";
+        // print_r($settingsArray);
+        // echo "</pre>";
+        // echo "<br />";
+        // echo $settingsArray['login']['force_mfa_admin']; // Outputs: yes
+        // die();
+
+        return $this->update($new_settings_array);
     }
 
     /**

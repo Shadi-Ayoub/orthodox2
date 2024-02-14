@@ -5,6 +5,7 @@ import funcAddBranchCode from './funcAddBranchCode';
 import funcGetAllBranchesByCongregationIdCode from './funcGetAllBranchesByCongregationIdCode';
 import funcGetAllSettingsCode from './funcGetAllSettingsCode';
 import funcUpdateSettingsByIdCode from './funcUpdateSettingsByIdCode';
+import funcUpdateSettingsCode from './funcUpdateSettingsCode';
 
 export {
     funcGetCongregationsCode,
@@ -14,4 +15,5 @@ export {
     funcGetAllBranchesByCongregationIdCode,
     funcGetAllSettingsCode,
     funcUpdateSettingsByIdCode,
+    funcUpdateSettingsCode
 }

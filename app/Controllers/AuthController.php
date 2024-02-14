@@ -441,6 +441,9 @@ class AuthController extends BaseController
                 $message = $mfa_code_verification_result["error_message"];
 
                 if($mfa_code_verification_result["error_code"] === "NotAuthorizedException") {
+                    if($this->session->get("accessType") === ACCESS_TYPE_ADMIN) {
+                        return redirect()->to("/login/admin")->with("fail-message", $message);
+                    }
                     return redirect()->to("/login")->with("fail-message", $message);
                 }
         

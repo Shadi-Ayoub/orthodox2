@@ -19,6 +19,7 @@ class AuthFilter implements FilterInterface {
         }
 
         switch($segment1) {
+            case "graphql":
             case "admin":
             // case "dashboard":
             case "logout":
@@ -58,10 +59,18 @@ class AuthFilter implements FilterInterface {
             case "mfa_code_entry":
             case "mfa_setup":
                 if (!$session->get('isValidUser')) { // User provided correct username and password.
-                    return redirect()->to('/login');
+                    $message = "Invalid Access!";
+
+                    if($session->get('accessType') === ACCESS_TYPE_ADMIN) {
+                        return redirect()->to('/login/admin')->withCookies()->with("warning-message", $message);
+                    }
+                    return redirect()->to('/login')->withCookies()->with("warning-message", $message);
                 }
                 break;
             default:
+                if($session->get('accessType') === ACCESS_TYPE_ADMIN) {
+                    return redirect()->to('/login/admin');
+                }
                 return redirect()->to('/login');
         }
     }

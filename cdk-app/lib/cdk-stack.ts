@@ -1,6 +1,7 @@
 import * as cdk from 'aws-cdk-lib';
 import * as appsync from 'aws-cdk-lib/aws-appsync';
 import * as cognito from 'aws-cdk-lib/aws-cognito';
+// import * as iam from 'aws-cdk-lib/aws-iam';
 import { CognitoIdentityProviderClient, UpdateUserPoolClientCommand } from "@aws-sdk/client-cognito-identity-provider";
 import { Construct } from 'constructs';
 
@@ -47,8 +48,8 @@ export class CdkStack extends cdk.Stack {
     // Reference the existing Cognito User Pools
     const adminUserPoolId = process.env.COGNITO_ADMIN_USER_POOL_ID as string;
     const userUserPoolId = process.env.COGNITO_USER_POOL_ID as string;
-    const userPoolAdmin = cognito.UserPool.fromUserPoolId(this, 'ExistingUserPool1', adminUserPoolId);
-    const userPoolUser = cognito.UserPool.fromUserPoolId(this, 'ExistingUserPool2', userUserPoolId);
+    const userPoolAdmin = cognito.UserPool.fromUserPoolId(this, 'AdminUserPool', adminUserPoolId);
+    const userPoolUser = cognito.UserPool.fromUserPoolId(this, 'NormalUserPool', userUserPoolId);
 
     this.api = new appsync.GraphqlApi(this, this.apiName, {
       name: this.apiName,
@@ -111,6 +112,8 @@ export class CdkStack extends cdk.Stack {
 
 /*=======================Create the Functions (Operations)===================*/
 
+/* Congregations */
+
     // Creates a function for getting a Congregation
     const param: IResolverFunction = {
       name: constants.FUNCTION_NAME_GET_CONGREGATIONS,
@@ -133,6 +136,8 @@ export class CdkStack extends cdk.Stack {
     param.code = functionCodes.funcGetCongregationsByIdCode;
     const funcGetCongregationsById = this.createFunction(param);
 
+/* Branches */
+
     // Creates a function for adding a Branch under a Congregation
     param.name = constants.FUNCTION_NAME_ADD_BRANCH;
     param.dataSource = this.branchDataSource;
@@ -144,6 +149,8 @@ export class CdkStack extends cdk.Stack {
     param.dataSource = this.branchDataSource;
     param.code = functionCodes.funcGetAllBranchesByCongregationIdCode;
     const funcGetAllBranchesByCongregationId = this.createFunction(param);
+
+/* Settings */
 
     // Creates a function for getting all Branches under a Congregation
     param.name = constants.FUNCTION_NAME_GET_ALL_SETTINGS;
@@ -157,6 +164,11 @@ export class CdkStack extends cdk.Stack {
     param.code = functionCodes.funcUpdateSettingsByIdCode;
     const funcUpdateSettingsById = this.createFunction(param);
 
+    // Creates a function for updating settings (all or selected depending on the passed object)
+    param.name = constants.FUNCTION_NAME_UPDATE_SETTINGS;
+    param.dataSource = this.settingDataSource;
+    param.code = functionCodes.funcUpdateSettingsCode;
+    const funcUpdateSettings = this.createFunction(param);
 
 /*============================End of Functions Section=======================*/
 
@@ -164,6 +176,7 @@ export class CdkStack extends cdk.Stack {
 
     this.createBasicPipelineResolver('getAllSettings', ResolverType.Query, [funcGetAllSettings]);
     this.createBasicPipelineResolver('updateSettingsById', ResolverType.Mutation, [funcUpdateSettingsById]);
+    this.createBasicPipelineResolver('updateSettings', ResolverType.Mutation, [funcUpdateSettings]);
 
     this.createBasicPipelineResolver('getAllCongregations', ResolverType.Query, [funcGetCongregations]);
     this.createBasicPipelineResolver('getCongregationsById', ResolverType.Query, [funcGetCongregationsById]);

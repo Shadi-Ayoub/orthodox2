@@ -129,7 +129,9 @@ class GraphQL {
         // if (!is_array($variables)) {
         //     $variables = new stdClass();
         // }
-        $variables = (object)[];
+        if (empty($variables)) {
+            $variables = (object)[];
+        }
         
         $query =    <<<GRAPHQL
                     $q

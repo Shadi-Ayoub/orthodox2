@@ -43,6 +43,7 @@
 
         <?php
             require("header.php");
+            $this->renderSection('breadcrumbsBar');
         ?>
 
         <div id="content" >
@@ -70,6 +71,16 @@
             $('#logoutLink a').click(function() {
                 $('#overlay').fadeIn();
                 location.href='<?= site_url('logout') ?>';
+            });
+
+            $('#settings-menu-item-link a').click(function() {
+                $('#overlay').fadeIn();
+                location.href='<?= site_url('settings') ?>';
+            });
+
+            $('#dashboard-menu-item-link a').click(function() {
+                $('#overlay').fadeIn();
+                location.href='<?= site_url('admin') ?>';
             });
         });
     </script>

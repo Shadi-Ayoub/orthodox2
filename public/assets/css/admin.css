@@ -120,7 +120,7 @@
   margin-right: 0.25rem ;
 }
 #content {
-  margin-top: 110px;
+  margin-top: 2rem;
   padding-left: 0.5rem;
   padding-right: 0.5rem;
 }
@@ -191,4 +191,26 @@
   height: 0.3rem;
   border-radius: 50%;
   background-color: #000000;
+}
+#breadcrumbs-bar {
+  padding-top: 105px;
+  padding-left: 0.5rem ;
+  padding-right: 0 ;
+  font-size: calc(1 * 16px);
+}
+.breadcrumb-item + .breadcrumb-item {
+  padding-left:  ;
+  padding-right:  ;
+}
+.breadcrumb > .breadcrumb-item a {
+  text-decoration: none;
+}
+.breadcrumb-item + .breadcrumb-item::before {
+  padding-right:  ;
+  padding-left:  ;
+}
+.breadcrumb-item .active-item-text {
+  font-weight: bold;
+  color: #8b0000;
+  background-color: #fff3bf;
 }
