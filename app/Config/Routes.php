@@ -7,21 +7,32 @@ use CodeIgniter\Router\RouteCollection;
  */
 $routes->get('/', 'HomeController::index');
 
-$routes->get('/error/graphql', 'ErrorController::graphql', ['filter' => 'auth:graphql']);
+$routes->get('/admin/error/graphql', 'ErrorController::graphql', ['filter' => 'auth:admin, error']);
 
-$routes->match(['get', 'post'], '/login/admin', 'AuthController::login');
+$routes->match(['get', 'post'], '/admin/login', 'AuthController::login');
 $routes->match(['get', 'post'], '/login', 'AuthController::login');
 
-$routes->get('/admin', 'AdminController::index', ['filter' => 'auth:admin']);
+$routes->get('/admin/logout', 'AuthController::logout');
+$routes->get('/logout', 'AuthController::logout');
 
-$routes->get('/settings', 'AdminController::settings', ['filter' => 'auth:settings']);
-$routes->post('/settings/reset', 'AdminController::settings_reset', ['filter' => 'auth:settings']);
-$routes->post('/settings/save', 'AdminController::settings_save', ['filter' => 'auth:settings']);
+$routes->get('/admin/dashboard', 'AdminController::index', ['filter' => 'auth:admin, dashboard']);
+$routes->get('/dashboard', 'AdminController::index', ['filter' => 'auth:admin, dashboard']);
 
-$routes->match(['get', 'post'], '/change-password', 'AuthController::change_password', ['filter' => 'auth:change_password']);
+$routes->get('/admin/congregations', 'CongregationsController::index', ['filter' => 'auth:admin, congregations']);
 
-$routes->match(['get', 'post'], '/mfa-setup', 'AuthController::mfa_setup', ['filter' => 'auth:mfa_setup']);
+$routes->get('/admin/settings', 'SettingsController::index', ['filter' => 'auth:admin, settings']);
+$routes->post('/admin/settings/reset', 'SettingsController::reset', ['filter' => 'auth:admin, settings']);
+$routes->post('/admin/settings/save', 'SettingsController::save', ['filter' => 'auth:admin, settings']);
 
-$routes->match(['get', 'post'], '/mfa-code-entry', 'AuthController::mfa_code_entry', ['filter' => 'auth:mfa_code_entry']);
+$routes->get('/settings', 'SettingsController::index', ['filter' => 'auth:admin, settings']);
+$routes->post('/settings/reset', 'SettingsController::reset', ['filter' => 'auth:admin, settings']);
+$routes->post('/settings/save', 'SettingsController::save', ['filter' => 'auth:admin, settings']);
 
-$routes->get('/logout', 'AuthController::logout', ['filter' => 'auth:logout']);
+$routes->match(['get', 'post'], '/admin/change-password', 'AuthController::change_password', ['filter' => 'auth:admin, change_password']);
+$routes->match(['get', 'post'], '/change-password', 'AuthController::change_password', ['filter' => 'auth:admin, change_password']);
+
+$routes->match(['get', 'post'], '/admin/mfa-setup', 'AuthController::mfa_setup', ['filter' => 'auth:admin, mfa_setup']);
+$routes->match(['get', 'post'], '/mfa-setup', 'AuthController::mfa_setup', ['filter' => 'auth:admin, mfa_setup']);
+
+$routes->match(['get', 'post'], '/admin/mfa-code-entry', 'AuthController::mfa_code_entry', ['filter' => 'auth:admin, mfa_code_entry']);
+$routes->match(['get', 'post'], '/mfa-code-entry', 'AuthController::mfa_code_entry', ['filter' => 'auth:admin, mfa_code_entry']);

@@ -62,7 +62,7 @@ class Cognito {
      * @param $password
      * @param $user_pool_id
      */
-    private function _authenticate($username, $password, $user_pool_id) {
+    public function authenticate($username, $password, $user_pool_id) {
         $result = [
             "successful"    => false,
             "message"       => "",
@@ -122,55 +122,55 @@ class Cognito {
      * @param $password
      * @return array
      */
-    public function login($username, $password, $user_pool_id) {
-        $result = [
-                    "status"    => self::USER_ACCOUNT_STATUS_UNKNOWN,
-                    "user"      => [],
-                    "result"    => "",
-                    "error"     => [ "message" => "", "code" => "",],
-        ];
+    // public function login($username, $password, $user_pool_id) {
+    //     $result = [
+    //                 "status"    => self::USER_ACCOUNT_STATUS_UNKNOWN,
+    //                 "user"      => [],
+    //                 "result"    => "",
+    //                 "error"     => [ "message" => "", "code" => "",],
+    //     ];
 
-        $auth = $this->_authenticate($username, $password, $user_pool_id);
+    //     $auth = $this->authenticate($username, $password, $user_pool_id);
 
-        if($auth["successful"] === false) {
+    //     if($auth["successful"] === false) {
 
-            // No "result" object since an exception happened
-            $result["status"] = self::USER_LOGIN_FAIL;
-            $result["error"]["message"] = $auth["message"];
-            $result["error"]["code"] = $auth["error_code"];
+    //         // No "result" object since an exception happened
+    //         $result["status"] = self::USER_LOGIN_FAIL;
+    //         $result["error"]["message"] = $auth["message"];
+    //         $result["error"]["code"] = $auth["error_code"];
 
-            return $result;
+    //         return $result;
 
-        }
-        else if($auth["result"]->get("ChallengeName")) {
-            $result["status"] = $auth["result"]->get("ChallengeName");
-            $result["user"] = $this->get_user_info($user_pool_id, $username);
-            $result["result"] = $auth["result"];
-        }
-        else if ($auth["result"]->get('AuthenticationResult')) {
+    //     }
+    //     else if($auth["result"]->get("ChallengeName")) {
+    //         $result["status"] = $auth["result"]->get("ChallengeName");
+    //         $result["user"] = $this->get_user_info($user_pool_id, $username);
+    //         $result["result"] = $auth["result"];
+    //     }
+    //     else if ($auth["result"]->get('AuthenticationResult')) {
 
-            $r = $auth["result"]->get('AuthenticationResult');
+    //         $r = $auth["result"]->get('AuthenticationResult');
 
-            if (is_array($r)) {
-                $result["access_token"] = $r["AccessToken"]; // Will be NULL if something went weong (e.g. wrong password, etc.)
-            }
+    //         if (is_array($r)) {
+    //             $result["access_token"] = $r["AccessToken"]; // Will be NULL if something went weong (e.g. wrong password, etc.)
+    //         }
 
-            $result["status"] = self::USER_ACCOUNT_STATUS_CONFIRMED;
-            $result["user"] = $this->get_user_info($user_pool_id, $username);
-            $result["result"] = $auth["result"];
-        }
+    //         $result["status"] = self::USER_ACCOUNT_STATUS_CONFIRMED;
+    //         $result["user"] = $this->get_user_info($user_pool_id, $username);
+    //         $result["result"] = $auth["result"];
+    //     }
 
-        return $result;
-    }
+    //     return $result;
+    // }
 
     /**
      * Function that logout an Admin.
      *
      * @param $username
      */
-    public function logout() {
-        return $this->_revokeTokens();
-    }
+    // public function logout() {
+    //     return $this->_revokeTokens();
+    // }
 
     public function change_password($para, $forced=false){
         try {
@@ -588,55 +588,45 @@ class Cognito {
     }
 
     // Function to revoke all tokens
-    private function _revokeTokens() {
-        $result = [
-            "successful"    => false,
-            "message"       => "",
-            "error_code"    => "",
-            "error_message" => "",
+    public function revokeTokens($access_token) {
+        $error = [
+            "message" => "",
+            "code"    => "",
         ];
 
+        // $result = [
+        //     "successful"    => false,
+        //     "message"       => "",
+        //     "error_code"    => "",
+        //     "error_message" => "",
+        // ];
+
         try {
-            $session = service('session');
-            $access_token = $session->get(ACCESS_TOKEN_NAME);
-            if (!$access_token) {
-                // Token not found in session
-                $result["successful"] = false;
-                $result["message"] = "No Access Token Stored in the Session!";
-                $result["error_message"] = "No Access Token Stored in the Session!";
+            // $session = service('session');
+            // $access_token = $session->get(ACCESS_TOKEN_NAME);
+            // if (!$access_token) {
+            //     // Token not found in session
+            //     $result["successful"] = false;
+            //     $result["message"] = "No Access Token Stored in the Session!";
+            //     $result["error_message"] = "No Access Token Stored in the Session!";
                 
-                return $result;
-            }
+            //     return $result;
+            // }
             $this->_cognito->globalSignOut([
                 'AccessToken' => $access_token,
             ]);
 
             // Tokens are revoked, force the user to re-authenticate
-            $result["successful"] = true;
-            $result["message"] = "User is logged-out successfully!";
+            // $result["successful"] = true;
+            // $result["message"] = "User is logged-out successfully!";
 
-            return $result;
+            // return $result;
         } catch (CognitoIdentityProviderException $exception) {
-            $result["successful"] = false;
-            $result["message"] = "Something went wrong!";
-            $result["error_message"] = $exception->getAwsErrorMessage();
-            $result["error_code"] = $exception->getAwsErrorCode();
-
-            return $result;
+            throw new \RuntimeException($exception->getAwsErrorMessage(), $exception->getAwsErrorCode(), $exception);
         } catch (AwsException $exception) {
-            $result["successful"] = false;
-            $result["message"] = "Something went wrong!";
-            $result["error_message"] = $exception->getAwsErrorMessage();
-            $result["error_code"] = $exception->getAwsErrorCode();
-
-            return $result;
+            throw new \RuntimeException($exception->getAwsErrorMessage(), (int)$exception->getAwsErrorCode(), $exception);
         } catch (Exception $exception) {
-            $result["successful"] = false;
-            $result["message"] = "Something went wrong!";
-            $result["error_message"] = $exception->getMessage();
-            $result["error_code"] = "400"; // Bad request
-            
-            return $result;
+            throw new \RuntimeException($exception->getMessage(), "400", $exception);
         }
     }
 

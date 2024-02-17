@@ -28,21 +28,21 @@
     <div id="admin-settings-container" class="container border p-3 w-75">
         <ul class="nav nav-pills mb-3 justify-content-center border" id="pills-tab" role="tablist">
             <li class="nav-item" role="presentation">
-                <button class="nav-link active" id="pills-home-tab" data-bs-toggle="pill" data-bs-target="#pills-general" type="button" role="tab" aria-controls="pills-general" aria-selected="true">General</button>
+                <button class="nav-link <?= $active_tab =="general" ? "active" : ""; ?>" id="pills-home-tab" data-value="general" data-bs-toggle="pill" data-bs-target="#pills-general" type="button" role="tab" aria-controls="pills-general" aria-selected="true">General</button>
             </li>
             <li class="nav-item" role="presentation">
-                <button class="nav-link" id="pills-profile-tab" data-bs-toggle="pill" data-bs-target="#pills-login" type="button" role="tab" aria-controls="pills-login" aria-selected="false">Login</button>
+                <button class="nav-link <?= $active_tab =="login" ? "active" : ""; ?>" id="pills-profile-tab" data-value="login" data-bs-toggle="pill" data-bs-target="#pills-login" type="button" role="tab" aria-controls="pills-login" aria-selected="false">Login</button>
             </li>
             <li class="nav-item" role="presentation">
-                <button class="nav-link" id="pills-other-tab" data-bs-toggle="pill" data-bs-target="#pills-other" type="button" role="tab" aria-controls="pills-other" aria-selected="false">Other</button>
+                <button class="nav-link <?= $active_tab =="other" ? "active" : ""; ?>" id="pills-other-tab" data-value="other" data-bs-toggle="pill" data-bs-target="#pills-other" type="button" role="tab" aria-controls="pills-other" aria-selected="false">Other</button>
             </li>
             <li class="nav-item" role="presentation">
-                <button class="nav-link" id="pills-json-tab" data-bs-toggle="pill" data-bs-target="#pills-json" type="button" role="tab" aria-controls="pills-json" aria-selected="false">JSON</button>
+                <button class="nav-link <?= $active_tab =="json" ? "active" : ""; ?>" id="pills-json-tab" data-value="json" data-bs-toggle="pill" data-bs-target="#pills-json" type="button" role="tab" aria-controls="pills-json" aria-selected="false">JSON</button>
             </li>
         </ul>
         <div class="tab-content d-flex align-items-center justify-content-center border" id="settings-pills-tabContent">
-            <div class="tab-pane fade show active border w-100" style="height: 300px" id="pills-general" role="tabpanel" aria-labelledby="pills-general-tab">General Settings...</div>
-            <div class="tab-pane fade border p-5 w-100" style="height: 300px" id="pills-login" role="tabpanel" aria-labelledby="pills-login-tab">
+            <div class="tab-pane fade <?= $active_tab =="general" ? "show active" : ""; ?> border w-100" style="height: 300px" id="pills-general" role="tabpanel" aria-labelledby="pills-general-tab">General Settings...</div>
+            <div class="tab-pane fade <?= $active_tab =="login" ? "show active" : ""; ?> border p-5 w-100" style="height: 300px" id="pills-login" role="tabpanel" aria-labelledby="pills-login-tab">
                 <div class="form-check form-switch">
                     <input class="form-check-input" type="checkbox" id="loginForcePasswordChangeSwitch" data-settings-key1="login" data-settings-key2="force_password_change" <?= $settings_array["login"]["force_password_change"] === "yes" ? "checked" : "";  ?>>
                     <label class="form-check-label" for="loginForcePasswordChangeSwitch">Force password change for new users on their first login.</label>
@@ -56,8 +56,8 @@
                     <label class="form-check-label" for="loginForceMfaUserSwitch">Force Multi-factor Authentication to all users.</label>
                 </div>
             </div>
-            <div class="tab-pane fade border w-100" style="height: 300px" id="pills-other" role="tabpanel" aria-labelledby="pills-other-tab">Other Settings...</div>
-            <div class="tab-pane fade border w-100" style="height: 300px" id="pills-json" role="tabpanel" aria-labelledby="pills-json-tab">
+            <div class="tab-pane fade <?= $active_tab =="other" ? "show active" : ""; ?> border w-100" style="height: 300px" id="pills-other" role="tabpanel" aria-labelledby="pills-other-tab">Other Settings...</div>
+            <div class="tab-pane fade <?= $active_tab =="json" ? "show active" : ""; ?> border w-100" style="height: 300px" id="pills-json" role="tabpanel" aria-labelledby="pills-json-tab">
                 <div class="container">
                     <!-- Row for headers -->
                     <div class="row mb-2 mt-2"> <!-- mb-2 for some spacing between headers and content rows -->
@@ -113,10 +113,10 @@
         </div>
     </div>
     <input type="hidden" id="hidden-settings-change-status" value="0" />
-    <form id="form-reset-settings" action="<?=  site_url("settings/reset"); ?>" method="post">
+    <form id="form-reset-settings" action="<?=  site_url("admin/settings/reset"); ?>" method="post">
         <input type="hidden" name="reset-settings-confirmed" value="">
     </form>
-    <form id="form-save-settings" action="<?=  site_url("settings/save"); ?>" method="post">
+    <form id="form-save-settings" action="<?=  site_url("admin/settings/save"); ?>" method="post">
         <input type="hidden" name="save-settings-json-string" id="save-settings-json-string" value="">
     </form>
 
@@ -177,7 +177,7 @@
 
             $('#btn-back').click(function() {
                 $('#overlay').fadeIn();
-                window.history.back();
+                window.location.href = '<?=   session()->get("backToUrl"); ?>';
             });
 
             // Set up a MutationObserver to listen for changes to the hidden status input value
@@ -261,6 +261,31 @@
                 // console.log("Settings Key 1:", settingsKey1);
                 // console.log("Settings Key 2:", settingsKey2);
             });
+
+            // Function to handle tabs click event
+            $('.nav-link').on('click', function() {
+                let cookieJsonObj = JSON.parse(getCookie('<?= $cookie_ux_name; ?>'));
+                
+                cookieJsonObj.settings.active_tab = $(this).data('value');
+                // alert($(this).data('value'));
+                // return;
+                cookieJsonString = JSON.stringify(cookieJsonObj);
+                // alert(JSON.stringify(cookieJsonObj));
+                // alert(cookieJsonString);
+                document.cookie = "<?= $cookie_ux_name; ?>=" + cookieJsonString;
+            });
+
+            // Function to read a cookie's value
+            function getCookie(name) {
+                let cookieArray = document.cookie.split('; ');
+                for(let i = 0; i < cookieArray.length; i++) {
+                    let cookiePair = cookieArray[i].split('=');
+                    if (name === cookiePair[0]) {
+                        return decodeURIComponent(cookiePair[1]);
+                    }
+                }
+                return null;
+            }
 
             function deepEqual(obj1, obj2) {
                 if (obj1 === obj2) {

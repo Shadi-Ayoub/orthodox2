@@ -22,7 +22,7 @@
                 $component->alert($message_type, $message);
             }
         ?>
-        <form id="form-mfa-code" action="/mfa-code-entry" method="post">
+        <form id="form-mfa-code" action="/admin/mfa-code-entry" method="post">
             <h3 class="text-center">Multi-factor Authentication</h3>
             
             <p class="text-center">Open the authenticator application on your mobile device and enter the provided 6-digit code. </p>

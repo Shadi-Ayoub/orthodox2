@@ -35,6 +35,7 @@ return [
     'close'                             => 'إغلاق',
     'comma'                             => '،',
     'company_name'                      => 'اسم الشركة',
+    'congregations_management'          => 'إدارة المجامع',
     'copyright'                         => 'حقوق النشر',
     'country'                           => 'الدولة',
     'country_of_origin'                 => 'بلد الأصل',

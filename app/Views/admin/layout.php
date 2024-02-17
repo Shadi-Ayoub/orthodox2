@@ -1,5 +1,6 @@
 <?php
     $lang = service('request')->getLocale();
+    $current_path = uri_string();
 ?>
 
 <?php
@@ -28,6 +29,7 @@
     <link rel="stylesheet" href=<?= base_url("assets/plugins/fontawesome-free-6.4.2-web/css/all.min.css"); ?>>
     <link rel="stylesheet" href=<?= base_url("assets/plugins/flag-icon-css/css/flag-icon.min.css"); ?>>
     <link rel="stylesheet" href=<?= base_url("assets/css/admin.css?v=" . filemtime(FCPATH . 'assets/css/admin.css')); ?>>
+    <link rel="stylesheet" href=<?= base_url("assets/css/dropdown-main-menu.css?v=" . filemtime(FCPATH . 'assets/css/dropdown-main-menu.css')); ?>>
     <link rel="stylesheet" href=<?= base_url("assets/css/overlay-spinner.css"); ?>>
 
     <?= $this->renderSection('pageStyles') ?>
@@ -73,14 +75,19 @@
                 location.href='<?= site_url('logout') ?>';
             });
 
-            $('#settings-menu-item-link a').click(function() {
-                $('#overlay').fadeIn();
-                location.href='<?= site_url('settings') ?>';
-            });
+            $('a.dropdown-item').click(function(event) {
+                event.preventDefault(); // Prevent the default anchor click behavior
 
-            $('#dashboard-menu-item-link a').click(function() {
+                if ($(this).hasClass('active')) { // no need to call the same current page!
+                    return;
+                }
+
                 $('#overlay').fadeIn();
-                location.href='<?= site_url('admin') ?>';
+
+                // Read the data value of the clicked anchor
+                const dataValue = $(this).data('urlstring');
+
+                location.href='<?= base_url() ?>' + dataValue;
             });
         });
     </script>

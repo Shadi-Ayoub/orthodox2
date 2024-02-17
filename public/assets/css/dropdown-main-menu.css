@@ -1,0 +1,24 @@
+/* Add relative positioning to the parent dropdown item */
+.dropend .dropdown-toggle {
+  position: relative;
+  padding-right: 1.5em;
+  /* Adjust as needed for space on the right */
+}
+/* Position the caret to the right, within the dropdown item */
+.dropend .dropdown-toggle::after {
+  display: block;
+  position: absolute;
+  top: 50%;
+  /* Center vertically */
+  right: 0;
+  /* Align to the far right */
+  transform: translateY(-50%);
+  /* Center the caret vertically */
+  content: "";
+  border-top: 0.3em solid transparent;
+  border-right: 0;
+  border-bottom: 0.3em solid transparent;
+  border-left: 0.3em solid;
+  /* The caret arrow */
+  padding-right: 0.5em;
+}

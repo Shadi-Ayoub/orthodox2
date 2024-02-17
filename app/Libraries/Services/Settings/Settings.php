@@ -71,7 +71,7 @@ class Settings {
             $response = service("response");
 
             $session->setFlashdata("fail-message", "The query was not successful for some reason!");
-            $response->redirect(site_url('/error/graphql'))->send();
+            $response->redirect(site_url('admin/error/graphql'))->send();
             exit;
         } else {
             $json = json_encode($query_result["response"]->data->getAllSettings);
@@ -116,7 +116,7 @@ class Settings {
             $response = service("response");
 
             $session->setFlashdata("fail-message", "The \"Update Settings\" query was not successful for some reason!");
-            $response->redirect(site_url('/error/graphql'))->send();
+            $response->redirect(site_url('admin/error/graphql'))->send();
             exit;
         } else {
             $json = json_encode($query_result["response"]->data->updateSettings);

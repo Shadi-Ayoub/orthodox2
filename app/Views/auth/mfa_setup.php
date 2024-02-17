@@ -2,6 +2,12 @@
 
 <?php
     $component = service('component');
+    $session = service("session");
+    $login_url_string = "/login";
+
+    if($session->get('accessType') === ACCESS_TYPE_ADMIN) {
+        $login_url_string = "admin/login";
+    }
 ?>
 
 <?= $this->section('pageTitle') ?>
@@ -116,7 +122,7 @@
             });
 
             $("#btn-mfa-setup-cancel").on( "click", function(e) {
-                location.href = '<?= site_url("/login"); ?>' //returns to login
+                location.href = '<?= site_url($login_url_string); ?>' //returns to login
             });
         });
     </script>

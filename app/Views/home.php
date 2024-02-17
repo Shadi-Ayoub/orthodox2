@@ -13,14 +13,18 @@ scratch. This page gets rid of all links and provides the needed markup only.
     <body>
         <div id="corner-login-button">
             <?php
+                $dashboard_url_string = ($access_type === ACCESS_TYPE_ADMIN ? "admin/dashboard" : "dashboard");
+                $logout_url_string = ($access_type === ACCESS_TYPE_ADMIN ? "admin/logout" : "logout");
+                
                 if ($logged_in) {
             ?>
-                    <button type="button" onclick="location.href='<?= base_url('admin','https') ?>';" class="btn btn-block btn-info">Dashboard</button>
+                    <button type="button" onclick="location.href='<?= base_url($dashboard_url_string,'https') ?>';" class="btn btn-block btn-info">Dashboard</button>
+                    <button type="button" onclick="location.href='<?= base_url($logout_url_string,'https') ?>';" class="btn btn-block btn-warning">Logout</button>
             <?php
                 }
                 else {
             ?>
-                    <button type="button" onclick="location.href='<?= base_url('login','https') ?>';" class="btn btn-info">Login</button>
+                    <button type="button" onclick="location.href='<?= base_url('admin/login','https') ?>';" class="btn btn-info">Login</button>
             <?php
                 }
             ?>

@@ -20,7 +20,7 @@
 
 <?= $this->section('pageContent') ?>
     <div class="login-form">
-        <form id="form-login" action="/<?= $access_type == ACCESS_TYPE_ADMIN ? "login/" : ""; ?>admin" method="post">
+        <form id="form-login" action="<?= $access_type == ACCESS_TYPE_ADMIN ? site_url("admin/login") : site_url("login"); ?>" method="post">
             <h2 class="text-center"><?= $access_type == ACCESS_TYPE_ADMIN ? "Admin " : ""; ?>Sign in</h2>
 
             <?php

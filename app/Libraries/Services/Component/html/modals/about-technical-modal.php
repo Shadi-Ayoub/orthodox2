@@ -171,6 +171,9 @@
                           <strong><code>isLoggedIn</code></strong>: <span class="text-secondary"><?= session()->get("isLoggedIn") ? "True" : "False"; ?></span>
                         </li>
                         <li>
+                          <strong><code>backToUrl</code></strong>: <span class="text-secondary"><?= session()->get("backToUrl") ? "True" : "False"; ?></span>
+                        </li>
+                        <li>
                           <strong><code><?= ACCESS_TOKEN_NAME; ?></code></strong>: <div class="text-wrap text-secondary text-break"  style="width: 60rem; font-size: 12px"><?= $utility->stringToSecret(session()->get("accessToken"), true); ?></div>
                         </li>
                         <li>

@@ -67,13 +67,13 @@ class GraphQL {
             if (isset($result->errors[0]->errorType)) {
                 if($result->errors[0]->errorType == "UnauthorizedException") {
                     $session->setFlashdata("fail-message", $result->errors[0]->message);
-                    $response->redirect(site_url('/login'))->send();
+                    $response->redirect(site_url('admin/login'))->send();
                     exit;
                 }
             }
             
             $session->setFlashdata("fail-message", $html);
-            $response->redirect(site_url('/error/graphql'))->send();
+            $response->redirect(site_url('admin/error/graphql'))->send();
             exit;
         } else {
             $query_result["successful"] = true;
@@ -151,7 +151,7 @@ class GraphQL {
             $response = service("response");
 
             $session->setFlashdata("fail-message", curl_error($this->_ch));
-            $response->redirect(site_url('/error/graphql'))->send();
+            $response->redirect(site_url('admin/error/graphql'))->send();
             exit;
         }
 

@@ -35,6 +35,7 @@ return [
     'close'                             => 'Close',
     'comma'                             => ',',
     'company_name'                      => 'Company Name',
+    'congregations_management'          => 'Congregations Management',
     'copyright'                         => 'Copyright',
     'country'                           => 'Country',
     'country_of_origin'                 => 'Country of Origin',

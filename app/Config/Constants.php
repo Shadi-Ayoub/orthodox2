@@ -105,6 +105,14 @@ define('ACCESS_TYPE_ADMIN', 'Admin'); // System Administrator
 
 define('DYNAMODB_TABLE_NAME_SETTINGS', 'FaithHubSpotSettingTable');
 
+define('COOKIE_UX_NAME', 'ux');
+define('COOKIE_UX_EXPIRE', 365); // in days
+define('COOKIE_UX_PATH', "/admin");
+define('COOKIE_UX_DOMAIN', "");
+define('COOKIE_UX_SECURE', true);
+define('COOKIE_UX_HTTPONLY', true);
+define('COOKIE_UX_SAMESITE', true);
+
 define('GRAPGQL_QUERIES_PATH', APPPATH . 'Libraries/Services/GraphQL/Queries/');
 define('GRAPHQL_QUERY_ERROR_TYPE_INVALID_QUERY', 'InvalidQuery');
 define('GRAPHQL_QUERY_ERROR_TYPE_UNAUTHORIZED', 'UnauthorizedException');

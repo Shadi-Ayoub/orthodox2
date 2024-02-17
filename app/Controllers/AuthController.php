@@ -4,16 +4,24 @@ namespace App\Controllers;
 
 // use Config\Services;
 
-class AuthController extends BaseController
-{
+class AuthController extends BaseController {
     // const ACCESS_TYPE_USER = "USER"; // Normal User
     // const ACCESS_TYPE_ADMIN = "ADMIN"; // An Administrator
 
     private $_cognito;
+    private $_user;
+    private $_access_type;
+    private $_user_pool_id;
    
     public function __construct() {
+        $this->_user = service("user");
         $this->_cognito = service("cognito");
         $this->_cookie = service("cookie");
+
+        $access = $this->_user->access_role();
+
+        $this->_access_type = $access["type"];
+        $this->_user_pool_id = $access["pool_id"];
     }
 
     public function index() {
@@ -24,41 +32,43 @@ class AuthController extends BaseController
         $message_type = "";
 
         // ADMIN | USER
-        // $access_type = $this->_get_user_access_type();
+        // $this->_access_type = $this->_get_user_access_type_from_session();
 
         // Does the user belong to the Administers Pool or Users Pool
         // $user_pool_id = $this->_get_user_pool_id();
 
         // check if it is a system Admin or a normal user login.
         // segment1 is "login" as per the route configuration
-        $uri = $this->request->getUri();
-        $segment2 = $uri->getSegment(2);
+        // $uri = $this->request->getUri();
+        // $segment1 = $uri->getSegment(1);
         
-        $access_type = ACCESS_TYPE_USER;
-        $user_pool_id = $_ENV['COGNITO_USER_POOL_ID'];
+        // $this->_access_type = ACCESS_TYPE_USER;
+        // $user_pool_id = $_ENV['COGNITO_USER_POOL_ID'];
 
-        if($segment2 == "admin") {
-            $access_type = ACCESS_TYPE_ADMIN;
-            $user_pool_id = $_ENV['COGNITO_ADMIN_USER_POOL_ID'];
-        }
+        // if($segment1 == "admin") {
+        //     $this->_access_type = ACCESS_TYPE_ADMIN;
+        //     $user_pool_id = $_ENV['COGNITO_ADMIN_USER_POOL_ID'];
+        // }
 
         if ($_SERVER["REQUEST_METHOD"] === "POST") {
             try {
-                $auth_result = $this->_cognito->login($_POST["username"],$_POST["password"], $user_pool_id);
+                // $auth_result = $this->_cognito->login($_POST["username"],$_POST["password"], $user_pool_id);
+
+                $auth_result = $this->_user->login($_POST["username"],$_POST["password"], $this->_user_pool_id);
                 //    var_dump($user_pool_id);
                 //    return;
                 // New accounts may require users to change password upon login for the first time!
                 // In such cases, the AWS Cognito "confirmation status" will be "Force change password"
                 if($auth_result["status"] == $this->_cognito::USER_ACCOUNT_STATUS_CONFIRMED && $auth_result["access_token"] !== null) {
                    // Prepare the session TBD
-                    return redirect()->to("/admin");
+                    return redirect()->to("/admin/dashboard");
                 }
                 else if($auth_result["status"] == $this->_cognito::USER_LOGIN_FAIL) {
                     $message = "Wrong Username or Password!";
                     $data = [
                         "message"   => $message,
                         "message_type"  => "danger",
-                        "access_type"       => $access_type,
+                        "access_type"       => $this->_access_type,
                     ];
 
                     $this->session->destroy();
@@ -72,8 +82,8 @@ class AuthController extends BaseController
                         "isValidUser"   => true,
                         "session"       => $auth_result["result"]["Session"],
                         "username"      => $auth_result["user"]["Username"],
-                        "accessType"    => $access_type,
-                        "userPoolId"    => $user_pool_id,
+                        "accessType"    => $this->_access_type,
+                        "userPoolId"    => $this->_user_pool_id,
                         "forced"        => "yes",
                     ]);
 
@@ -97,8 +107,8 @@ class AuthController extends BaseController
                             "isValidUser"       => true,
                             "session"           => $auth_result["result"]["Session"],
                             "username"          => $auth_result["user"]["Username"],
-                            "userPoolId"        => $user_pool_id,
-                            "accessType"        => $access_type,
+                            "userPoolId"        => $this->_user_pool_id,
+                            "accessType"        => $this->_access_type,
                             "mfa-setup-secret"  => $secret,
                         ]);
                         // $this->session->set([
@@ -110,8 +120,8 @@ class AuthController extends BaseController
                     } else {
                         $message = $secret_result["error_message"];
 
-                        if($access_type == ACCESS_TYPE_ADMIN) {
-                            return redirect()->to("/login/admin")->withCookies()->with("fail-message", $message);
+                        if($this->_access_type == ACCESS_TYPE_ADMIN) {
+                            return redirect()->to("admin/login")->withCookies()->with("fail-message", $message);
                         }
 
                         return redirect()->to("/login")->withCookies()->with("fail-message", $message);
@@ -126,9 +136,12 @@ class AuthController extends BaseController
                         "isValidUser"       => true,
                         "session"           => $auth_result["result"]["Session"],
                         "username"          => $auth_result["user"]["Username"],
-                        "userPoolId"        => $user_pool_id,
-                        "accessType"        => $access_type,
+                        "userPoolId"        => $this->_user_pool_id,
+                        "accessType"        => $this->_access_type,
                     ]);
+                    if($this->_access_type == ACCESS_TYPE_ADMIN) {
+                        return redirect()->to("/admin/mfa-code-entry")->withCookies();
+                    }
 
                     return redirect()->to("/mfa-code-entry")->withCookies();
                 }
@@ -138,7 +151,7 @@ class AuthController extends BaseController
                     $data = [
                         "message"   => $message,
                         "message_type"  => "danger",
-                        "access_type"       => $access_type,
+                        "access_type"       => $this->_access_type,
                     ];
 
                     $this->session->destroy();
@@ -150,7 +163,7 @@ class AuthController extends BaseController
                     "message"   => $e->getMessage(),
                     "message_type" => "danger",
                     "forced"    => "no",
-                    "access_type"       => $access_type,
+                    "access_type"       => $this->_access_type,
                 ];
 
                 $this->session->destroy();
@@ -174,7 +187,7 @@ class AuthController extends BaseController
         $data = [
             "message"           => $message,
             "message_type"      => $message_type,
-            "access_type"       => $access_type,
+            "access_type"       => $this->_access_type,
         ];
 
         $this->session->destroy();
@@ -185,9 +198,9 @@ class AuthController extends BaseController
         // $user_pool_id = $this->_get_user_pool_id();
 
         // ADMIN | USER
-        $access_type = $this->_get_user_access_type();
+        // $this->_access_type = $this->_get_user_access_type_from_session();
 
-        $auth_result = $this->_cognito->logout();
+        $auth_result = $this->_user->logout();
 
         $msg = "";
         $msg_type = "";
@@ -200,11 +213,13 @@ class AuthController extends BaseController
             $msg_type = "fail-message";
         }
 
-        if($access_type == ACCESS_TYPE_ADMIN) {
-            return redirect()->to("/login/admin")->with($msg_type, $msg);
-        }
+        return redirect()->to("/");
 
-        return redirect()->to("/login")->with($msg_type, $msg);
+        // if($this->_access_type == ACCESS_TYPE_ADMIN) {
+        //     return redirect()->to("admin/login")->with($msg_type, $msg);
+        // }
+
+        // return redirect()->to("/login")->with($msg_type, $msg);
     }
 
     public function change_password() {
@@ -232,8 +247,8 @@ class AuthController extends BaseController
             if(!$this->session->get("forced") || !$this->session->get("session")) {
                 $message = "A Bad Request!";
 
-                if($access_type == ACCESS_TYPE_ADMIN) {
-                    return redirect()->to("/login/admin")->with("fail-message", $message);
+                if($this->_access_type == ACCESS_TYPE_ADMIN) {
+                    return redirect()->to("admin/login")->with("fail-message", $message);
                 }
 
                 return redirect()->to("/login")->with("fail-message", $message);
@@ -264,8 +279,8 @@ class AuthController extends BaseController
                 $message = "You entered a wrong current password! Please login again and retry.";
                 $message_type = "fail-message";
 
-                if($access_type == ACCESS_TYPE_ADMIN) {
-                    return redirect()->to("/login/admin")->with("fail-message", $message);
+                if($this->_access_type == ACCESS_TYPE_ADMIN) {
+                    return redirect()->to("admin/login")->with("fail-message", $message);
                 }
 
                 return redirect()->to("/login")->with("fail-message", $message);
@@ -300,7 +315,7 @@ class AuthController extends BaseController
                 $data = [
                     "message"       => $message,
                     "message_type"  => $message_type,
-                    "access_type"       => $access_type,
+                    "access_type"       => $this->_access_type,
                 ];
 
                 $this->session->destroy();
@@ -345,7 +360,7 @@ class AuthController extends BaseController
             $session = $this->session->get("session");
             $totp = $_POST["totp"];
             $secret = $this->session->get("mfa-setup-secret");
-            $user_pool_id = $this->session->get("userPoolId");
+            // $user_pool_id = $this->session->get("userPoolId");
             $mfa_verification_result = $this->_cognito->verify_maf_setup_secret($session, $totp);
 
             if($mfa_verification_result["successful"]) {
@@ -355,7 +370,7 @@ class AuthController extends BaseController
                                     ]
                                 ];
 
-                $attribute_update_result = $this->_cognito->set_user_attributes($user_pool_id, $username, $attributes);
+                $attribute_update_result = $this->_cognito->set_user_attributes($this->_user_pool_id, $username, $attributes);
                 
                 $message = "You successfully configured your Authenticator App. Please login again!";
                 $message_status = "success-message";
@@ -412,7 +427,7 @@ class AuthController extends BaseController
 
             $mfa_code_verification_result = $this->_cognito->verify_mfa_code($totp, $username, $session);
             // var_dump($mfa_code_verification_result);
-            // return;
+            // die();
 
             if($mfa_code_verification_result["successful"]) {
                 $accessToken = $mfa_code_verification_result["result"]["AuthenticationResult"]["AccessToken"];
@@ -436,17 +451,21 @@ class AuthController extends BaseController
                     "user"              => $user,
                 ]);
 
-                return redirect()->to("/admin");
+                return redirect()->to("/admin/dashboard");
             } else {
                 $message = $mfa_code_verification_result["error_message"];
 
                 if($mfa_code_verification_result["error_code"] === "NotAuthorizedException") {
                     if($this->session->get("accessType") === ACCESS_TYPE_ADMIN) {
-                        return redirect()->to("/login/admin")->with("fail-message", $message);
+                        return redirect()->to("admin/login")->with("fail-message", $message);
                     }
                     return redirect()->to("/login")->with("fail-message", $message);
                 }
         
+                if($this->session->get("accessType") === ACCESS_TYPE_ADMIN) {
+                    return redirect()->to("/admin/mfa-code-entry")->withCookies()->with("fail-message", $message);
+                }
+
                 return redirect()->to("/mfa-code-entry")->withCookies()->with("fail-message", $message);
             }
         }
@@ -492,7 +511,7 @@ class AuthController extends BaseController
     //     return $_ENV['COGNITO_USER_POOL_ID'];
     // }
 
-    private function _get_user_access_type () {
+    private function _get_user_access_type_from_session () {
         // First check the session data.
         if($this->session->get("accessType") && $this->session->get("accessType") == ACCESS_TYPE_ADMIN) {
             return ACCESS_TYPE_ADMIN;
