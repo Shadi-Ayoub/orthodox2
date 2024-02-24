@@ -229,7 +229,7 @@ class Cognito {
             'UserPoolId' => $user_pool_id,
             'Username' => $username,
         ]);
-
+        
         return $result;
     }
 
@@ -270,7 +270,7 @@ class Cognito {
                 "UserPoolId" => $user_pool_id,
                 "Username" => $username,
             ]);
-
+            
             $result["successful"] = true;
             $result["message"] = "User attribute is updated successfully!";
 

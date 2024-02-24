@@ -81,6 +81,9 @@
                     <?= $component->mfa_code("totp");?>
                 </li>
             </ol>
+
+            <?= csrf_field(); ?>
+            
             <div class="text-center mb-5">
                 <button type="button" id="btn-mfa-setup-cancel" class="btn btn-secondary cancel-btn btn-block">Cancel</button>
                 <button type="button" id="btn-mfa-setup-submit" class="btn btn-primary login-btn btn-block">Apply</button>

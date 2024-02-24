@@ -30,13 +30,52 @@
   margin-left: 0.25rem ;
   margin-right: 0.5rem ;
 }
-#navbar-logo .orthodoxy-brand-image {
+/* Position the caret to the right, within the dropdown item */
+#dashboard-header #main-menu-dropdown .dropend .dropdown-toggle::after {
+  display: block;
+  position: absolute;
+  top: 50%;
+  /* Center vertically */
+  right: 0;
+  /* Align to the far right */
+  transform: translateY(-50%);
+  /* Center the caret vertically */
+  content: "";
+  border-top: 0.3em solid transparent;
+  border-right: 0;
+  border-bottom: 0.3em solid transparent;
+  border-left: 0.3em solid;
+  /* The caret arrow */
+  padding-right: 0.5em;
+}
+#dashboard-header-logo a {
+  text-decoration: none;
+  color: inherit;
+  display: flex;
+  align-items: center;
+  /* This will vertically center the items (text and image) */
+}
+#dashboard-header-logo .brand-logo-image {
   width: 80px;
 }
-#navbar-logo .brand-text {
+#dashboard-header-logo .brand-text {
   font-size: calc(1.8 * 16px);
   color: #C5B358;
   font-weight: bold;
+  margin-right: 0.5rem ;
+  margin-left: 0.5rem ;
+}
+#navbar-right .navbar-nav {
+  padding-top:  ;
+  padding-bottom:  ;
+  padding-right:  ;
+  padding-left:  ;
+  margin-top: 1rem ;
+}
+#navbar-right {
+  height: 50px;
+  padding-left: 0 ;
+  padding-right: 0.25rem ;
 }
 #dashboard-header #notifications-menu-dropdown {
   margin-right: 0.25rem ;
@@ -119,23 +158,32 @@
   width: calc(0.5 * 16px);
   margin-right: 0.25rem ;
 }
+#breadcrumbs-bar {
+  padding-top: 105px;
+  padding-left: 0.5rem ;
+  padding-right: 0 ;
+  font-size: calc(1 * 16px);
+}
+.breadcrumb-item + .breadcrumb-item {
+  padding-left:  ;
+  padding-right:  ;
+}
+.breadcrumb > .breadcrumb-item a {
+  text-decoration: none;
+}
+.breadcrumb-item + .breadcrumb-item::before {
+  padding-right:  ;
+  padding-left:  ;
+}
+.breadcrumb-item .active-item-text {
+  font-weight: bold;
+  color: #8b0000;
+  background-color: #fff3bf;
+}
 #content {
   margin-top: 2rem;
   padding-left: 0.5rem;
   padding-right: 0.5rem;
-}
-#navbar-right .navbar-nav {
-  padding: 0 !important;
-  margin-top: 10px;
-}
-#navbar-right {
-  height: 50px;
-  padding-left: 0px;
-  padding-right: 15px;
-}
-#navbar-right svg {
-  display: inline-block;
-  width: 1.5em;
 }
 #dashboard-footer {
   background-color: #e7f5ff;
@@ -191,26 +239,4 @@
   height: 0.3rem;
   border-radius: 50%;
   background-color: #000000;
-}
-#breadcrumbs-bar {
-  padding-top: 105px;
-  padding-left: 0.5rem ;
-  padding-right: 0 ;
-  font-size: calc(1 * 16px);
-}
-.breadcrumb-item + .breadcrumb-item {
-  padding-left:  ;
-  padding-right:  ;
-}
-.breadcrumb > .breadcrumb-item a {
-  text-decoration: none;
-}
-.breadcrumb-item + .breadcrumb-item::before {
-  padding-right:  ;
-  padding-left:  ;
-}
-.breadcrumb-item .active-item-text {
-  font-weight: bold;
-  color: #8b0000;
-  background-color: #fff3bf;
 }

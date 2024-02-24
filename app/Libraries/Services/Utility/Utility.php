@@ -9,7 +9,7 @@ class Utility {
     public function __construct() {
     }
 
-    public function stringToSecret(string $string = NULL, bool $mask_all = false) {
+    public function stringToSecret(string $string = NULL, bool $mask_all = false, bool $truncate = false) {
         if (!$string) {
             return NULL;
         }
@@ -17,7 +17,13 @@ class Utility {
         $length = strlen($string);
         $visibleCount = $mask_all ? 0 : (int) round($length / 6);
         $hiddenCount = $length - ($visibleCount * 2);
-        return substr($string, 0, $visibleCount) . str_repeat('•', $hiddenCount) . substr($string, ($visibleCount * -1), $visibleCount);
+        $secret_string = substr($string, 0, $visibleCount) . str_repeat('•', $hiddenCount) . substr($string, ($visibleCount * -1), $visibleCount);
+
+        If($truncate) {
+            $secret_string = substr($secret_string, 0, 12);
+        }
+
+        return $secret_string;
     }
 
     // public function prepare_breadcrumb($breadcrumb, $lang){

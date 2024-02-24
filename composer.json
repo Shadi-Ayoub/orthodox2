@@ -41,8 +41,8 @@
         "test": "phpunit",
         "build": [
             "php app/Tools/compile-scss.php Views/scss/auth.scss public/assets/css/auth.css expanded",
-            "php app/Tools/compile-scss.php Views/scss/admin.scss public/assets/css/admin.css expanded",
-            "php app/Tools/compile-scss.php Views/scss/dropdown-main-menu.scss public/assets/css/dropdown-main-menu.css expanded"
+            "php app/Tools/compile-scss.php Views/scss/dashboard.scss public/assets/css/dashboard.css expanded",
+            "php app/Tools/compile-scss.php Views/scss/dashboard-rtl.scss public/assets/css/dashboard-rtl.css expanded"
         ],
         "clear": "php spark cache:clear"
     }

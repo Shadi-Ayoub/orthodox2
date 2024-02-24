@@ -9,6 +9,8 @@ use CodeIgniter\HTTP\RequestInterface;
 use CodeIgniter\HTTP\ResponseInterface;
 use Psr\Log\LoggerInterface;
 
+require_once APPPATH . 'Config/ShieldConstants.php';
+
 /**
  * Class BaseController
  *
@@ -43,8 +45,6 @@ abstract class BaseController extends Controller
      */
     protected $session;
 
-    protected $graphql;
-
     /**
      * @return void
      */
@@ -54,5 +54,21 @@ abstract class BaseController extends Controller
         parent::initController($request, $response, $logger);
 
         $this->session = \Config\Services::session();
+
+        $this->set_language();
+    }
+
+    private function set_language() {
+        $lang = 'en';
+
+        if($this->session->has('user')) {
+            $user = $this->session->get("user");
+            $profile = $user["UserAttributes"]["custom:profile"];
+            $lang = $profile['language'];
+        }
+
+        // later, handle logged out users language using a language cookie
+
+        service('request')->setLocale($lang);
     }
 }

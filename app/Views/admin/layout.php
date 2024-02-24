@@ -25,12 +25,17 @@
 <?= $this->endSection() ?>
 
 <?= $this->section('pageStyles') ?>
-    <link rel="stylesheet" href=<?= base_url("assets/plugins/bootstrap-5.1.3-dist/css/bootstrap.min.css"); ?>>
-    <link rel="stylesheet" href=<?= base_url("assets/plugins/fontawesome-free-6.4.2-web/css/all.min.css"); ?>>
     <link rel="stylesheet" href=<?= base_url("assets/plugins/flag-icon-css/css/flag-icon.min.css"); ?>>
-    <link rel="stylesheet" href=<?= base_url("assets/css/admin.css?v=" . filemtime(FCPATH . 'assets/css/admin.css')); ?>>
-    <link rel="stylesheet" href=<?= base_url("assets/css/dropdown-main-menu.css?v=" . filemtime(FCPATH . 'assets/css/dropdown-main-menu.css')); ?>>
+    <link rel="stylesheet" href=<?= base_url("assets/css/dashboard.css?v=" . filemtime(FCPATH . 'assets/css/dashboard.css')); ?>>
     <link rel="stylesheet" href=<?= base_url("assets/css/overlay-spinner.css"); ?>>
+
+    <?php
+        if($lang == 'ar') {
+    ?>
+            <link rel="stylesheet" href=<?= base_url("assets/css/dashboard-rtl.css?v=" . filemtime(FCPATH . 'assets/css/dashboard-rtl.css')); ?>>
+    <?php
+        }
+    ?>
 
     <?= $this->renderSection('pageStyles') ?>
 <?= $this->endSection() ?>
@@ -67,18 +72,38 @@
 <?= $this->section('pageScripts') ?>
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
     <script src=<?= base_url("assets/plugins/bootstrap-5.1.3-dist/js/bootstrap.min.js"); ?>></script>
+    <script src=<?= base_url("assets/plugins/sweetalert2/js/sweetalert2.all.min.js"); ?>></script>
 
     <script>
         $( document ).ready(function() {
+            // https://sweetalert2.github.io/
+            // https://github.com/sweetalert2/sweetalert2/releases
+            var Toast = Swal.mixin({
+                toast: true,
+                position: 'top-end',
+                showConfirmButton: false,
+                timer: 3000
+            });
+
             $('#logoutLink a').click(function() {
                 $('#overlay').fadeIn();
                 location.href='<?= site_url('logout') ?>';
             });
 
-            $('a.dropdown-item').click(function(event) {
+            $("#lang-menu-dropdown .dropdown-item").click(function() {
+                $('#input-lang').val($(this).data('lang'));
+                $('#form-change-language').submit();
+                $('#overlay').fadeIn();
+            });
+
+            $('#main-menu-dropdown a.dropdown-item').click(function(event) {
                 event.preventDefault(); // Prevent the default anchor click behavior
 
                 if ($(this).hasClass('active')) { // no need to call the same current page!
+                    return;
+                }
+
+                if ($(this).hasClass('dropdown-toggle')) {
                     return;
                 }
 

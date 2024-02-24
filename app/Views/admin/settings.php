@@ -115,9 +115,11 @@
     <input type="hidden" id="hidden-settings-change-status" value="0" />
     <form id="form-reset-settings" action="<?=  site_url("admin/settings/reset"); ?>" method="post">
         <input type="hidden" name="reset-settings-confirmed" value="">
+        <?= csrf_field(); ?>
     </form>
     <form id="form-save-settings" action="<?=  site_url("admin/settings/save"); ?>" method="post">
         <input type="hidden" name="save-settings-json-string" id="save-settings-json-string" value="">
+        <?= csrf_field(); ?>
     </form>
 
     <?php

@@ -1,14 +1,19 @@
 <!-- Language Dropdown Menu -->
 <?php
-    // $user = auth()->user();
-    // if($user->lang == 'en'){
-    //     $idiom = 'gb';
-    // }
-    // else {
-    //     $idiom = 'ae';
-    // }
+    $lang = service('request')->getLocale();
 
     $idiom = 'gb';
+
+    switch($lang) {
+        case "en":
+            $idiom = 'gb';
+            break;
+        case "ar":
+            $idiom = 'ae';
+            break;
+        default:
+            $idiom = 'gb';
+    }
 ?>
 
 <div id="lang-menu-dropdown" class="btn-group d-flex align-items-center">
@@ -29,3 +34,8 @@
         </li>
     </ul>
 </div>
+
+<form id="form-change-language" action="<?=  site_url("change_language"); ?>" method="post">
+    <input type="hidden" name="lang" id="input-lang" value="en">
+    <?= csrf_field(); ?>
+</form>

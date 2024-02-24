@@ -40,6 +40,8 @@
                 $component->alert("info",$note, false, false);
             ?>
 
+            <?= csrf_field(); ?>
+
             <div class="d-grid mb-3">
                 <button type="submit" id="btn-change-password" class="btn btn-primary login-btn btn-block">Change Password</button>
             </div>

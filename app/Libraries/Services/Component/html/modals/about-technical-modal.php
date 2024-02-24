@@ -112,39 +112,56 @@
           <div class="tab-pane fade" id="session-tab" role="tabpanel" aria-labelledby="session-tab">
             <div class="accordion" id="accordionSessionAboutTechnical">
               <div class="accordion-item">
-                  <h2 class="accordion-header" id="sessionTabAccordionHeadingOne">
-                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#sessionTabAccordionCollapseOne" aria-expanded="false" aria-controls="sessionTabAccordionCollapseOne">
-                      <h5>Logged-in User Info</h5>
-                    </button>
-                  </h2>
-                  <div id="sessionTabAccordionCollapseOne" class="accordion-collapse collapse" aria-labelledby="sessionTabAccordionHeadingOne" data-bs-parent="#accordionSessionAboutTechnical">
-                    <div class="accordion-body">
-                      <ul>
-                          <li>
-                            <strong>Username:</strong> <span class="text-secondary"><?= session()->get("user")["Username"]; ?></span>
+                <h2 class="accordion-header" id="sessionTabAccordionHeadingOne">
+                  <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#sessionTabAccordionCollapseOne" aria-expanded="false" aria-controls="sessionTabAccordionCollapseOne">
+                    <h5>Logged-in User Info</h5>
+                  </button>
+                </h2>
+                <div id="sessionTabAccordionCollapseOne" class="accordion-collapse collapse" aria-labelledby="sessionTabAccordionHeadingOne" data-bs-parent="#accordionSessionAboutTechnical">
+                  <div class="accordion-body">
+                    <ul>
+                      <li>
+                        <strong>Username:</strong> <span class="text-secondary"><?= session()->get("user")["Username"]; ?></span>
+                      </li>
+                      <li>
+                        <strong>Enabled:</strong> <span class="text-secondary"><?= session()->get("user")["Enabled"] ? "True" : "False"; ?></span>
+                      </li>
+                      <li>
+                        <strong>User Status:</strong> <span class="text-secondary"><?= session()->get("user")["UserStatus"]; ?></span>
+                      </li>
+                      <li>
+                        <strong>User Attributes:</strong>
+                        <ol>
+                          <?php
+                            $user_attributes = session()->get("user")["UserAttributes"];
+                            // var_dump($user_attributes);
+                            // die();
+                            foreach($user_attributes as $key => $item) {
+                              if($key === "custom:profile") {
+                                // $item = json_decode($item, true); //String to Array
+                          ?>
+                          <li><?= $key . " (from session): "; ?>
+                            <code>
+                              <pre>
+<?php
+  print_r(json_encode($item, JSON_PRETTY_PRINT));
+?>
+                              </pre>
+                            </code>
                           </li>
-                          <li>
-                            <strong>User Attributes:</strong>
-                            <ol>
-                              <?php
-                                $user_attributes = session()->get("user")["UserAttributes"];
-                                foreach($user_attributes as $item) {
-                              ?>
-                                  <li><?= $item["Name"] . ": "; ?><code><?= $item["Value"]; ?></code></li>
-                              <?php
-                                }
-                              ?>
-                            </ol>
-                          </li>
-                          <li>
-                            <strong>Enabled:</strong> <span class="text-secondary"><?= session()->get("user")["Enabled"] ? "True" : "False"; ?></span>
-                          </li>
-                          <li>
-                            <strong>User Status:</strong> <span class="text-secondary"><?= session()->get("user")["UserStatus"]; ?></span>
-                          </li>
-                        </ul>
-                    </div>
+                          <?php
+                                continue;
+                              }
+                          ?>
+                              <li><?= $key . ": "; ?><code><?= $item; ?></code></li>
+                          <?php
+                            }
+                          ?>
+                        </ol>
+                      </li>
+                    </ul>
                   </div>
+                </div>
               </div>
               <div class="accordion-item">
                 <h2 class="accordion-header" id="sessionTabAccordionHeadingTwo">
@@ -155,34 +172,57 @@
                 <div id="sessionTabAccordionCollapseTwo" class="accordion-collapse collapse" aria-labelledby="sessionTabAccordionHeadingTwo" data-bs-parent="#accordionSessionAboutTechnical">
                   <div class="accordion-body">
                     <ul>
-                        <li>
-                          <strong><code>username</code></strong>: <span class="text-secondary"><?= session()->get("username"); ?></span>
-                        </li>
-                        <li>
-                          <strong><code>userPoolId</code></strong>: <span class="text-secondary"><?= session()->get("userPoolId"); ?></span>
-                        </li>
-                        <li>
-                          <strong><code>accessType</code></strong>: <span class="text-secondary"><?= session()->get("accessType"); ?></span>
-                        </li>
-                        <li>
-                          <strong><code>_ci_previous_url</code></strong>: <span class="text-secondary"><?= session()->get("_ci_previous_url"); ?></span>
-                        </li>
-                        <li>
-                          <strong><code>isLoggedIn</code></strong>: <span class="text-secondary"><?= session()->get("isLoggedIn") ? "True" : "False"; ?></span>
-                        </li>
-                        <li>
-                          <strong><code>backToUrl</code></strong>: <span class="text-secondary"><?= session()->get("backToUrl") ? "True" : "False"; ?></span>
-                        </li>
-                        <li>
-                          <strong><code><?= ACCESS_TOKEN_NAME; ?></code></strong>: <div class="text-wrap text-secondary text-break"  style="width: 60rem; font-size: 12px"><?= $utility->stringToSecret(session()->get("accessToken"), true); ?></div>
-                        </li>
-                        <li>
-                          <strong><code><?= ID_TOKEN_NAME; ?></code></strong>: <div class="text-wrap text-secondary text-break"  style="width: 60rem; font-size: 12px"><?= $utility->stringToSecret(session()->get("idToken"), true); ?></div>
-                        </li>
-                        <li>
-                          <strong><code><?= REFRESH_TOKEN_NAME; ?></code></strong>: <div class="text-wrap text-secondary text-break"  style="width: 60rem; font-size: 12px"><?= $utility->stringToSecret(session()->get("refreshToken"), true); ?></div>
-                        </li>
-                      </ul>
+                      <li>
+                        <strong><code>username</code></strong>: <span class="text-secondary"><?= session()->get("username"); ?></span>
+                      </li>
+                      <li>
+                        <strong><code>userPoolId</code></strong>: <span class="text-secondary"><?= $utility->stringToSecret(session()->get("userPoolId"), true, true); ?></span>
+                      </li>
+                      <li>
+                        <strong><code>accessType</code></strong>: <span class="text-secondary"><?= session()->get("accessType"); ?></span>
+                      </li>
+                      <li>
+                        <strong><code>_ci_previous_url</code></strong>: <span class="text-secondary"><?= session()->get("_ci_previous_url"); ?></span>
+                      </li>
+                      <li>
+                        <strong><code>isLoggedIn</code></strong>: <span class="text-secondary"><?= session()->get("isLoggedIn") ? "True" : "False"; ?></span>
+                      </li>
+                      <li>
+                        <strong><code>backToUrl</code></strong>: <span class="text-secondary"><?= session()->get("backToUrl"); ?></span>
+                      </li>
+                      <li>
+                        <strong><code><?= ACCESS_TOKEN_NAME; ?></code></strong>: <span class="text-wrap text-secondary text-break"  style="width: 60rem; font-size: 12px"><?= $utility->stringToSecret(session()->get("accessToken"), true, true); ?></span>
+                      </li>
+                      <li>
+                        <strong><code><?= ID_TOKEN_NAME; ?></code></strong>: <span class="text-wrap text-secondary text-break"  style="width: 60rem; font-size: 12px"><?= $utility->stringToSecret(session()->get("idToken"), true, true); ?></span>
+                      </li>
+                      <li>
+                        <strong><code><?= REFRESH_TOKEN_NAME; ?></code></strong>: <span class="text-wrap text-secondary text-break"  style="width: 60rem; font-size: 12px"><?= $utility->stringToSecret(session()->get("refreshToken"), true, true); ?></span>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+              <div class="accordion-item">
+                <h2 class="accordion-header" id="sessionTabAccordionHeadingThree">
+                  <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#sessionTabAccordionCollapseThree" aria-expanded="false" aria-controls="sessionTabAccordionCollapseThree">
+                    <h5>Session JSON</h5>
+                  </button>
+                </h2>
+                <div id="sessionTabAccordionCollapseThree" class="accordion-collapse collapse" aria-labelledby="sessionTabAccordionHeadingThree" data-bs-parent="#accordionSessionAboutTechnical">
+                  <div class="accordion-body" style="max-height: 500px; overflow-y: auto;">
+                    <pre>
+<?php 
+$print = session()->get();
+$print["session"] = "---";
+$print["userPoolId"] = "---";
+$print["accessToken"] = "---";
+$print["idToken"] = "---";
+$print["refreshToken"] = "---";
+
+print_r($print);
+?>
+                    </pre>
                   </div>
                 </div>
               </div>

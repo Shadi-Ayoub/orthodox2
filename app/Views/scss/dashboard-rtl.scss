@@ -1,0 +1,153 @@
+@import "app/Views/scss/_root.scss";
+
+body {
+    direction: rtl;
+}
+
+.dropdown-item {
+    @include pl(0);
+    @include pr(1);
+}
+
+///////////////////////////////////////////////////////
+/// Main Dropdown Menu                               //
+///////////////////////////////////////////////////////
+#dashboard-header #main-menu-dropdown .dropdown-item svg {
+    @include ml(2);
+    @include mr(1);
+}
+
+// Arrow Caret
+#dashboard-header #main-menu-dropdown .dropend .dropdown-toggle::after {
+    right: auto;
+    left: 0; /* Align to the far left */
+    border-right: 0.3em solid; /* The caret arrow pointing to the left*/
+    border-left: 0;
+    padding-left: .5em;
+    padding-right: 0;
+}
+///////////////////////////////////////////////////////
+
+///////////////////////////////////////////////////////
+/// Right Navigation Bar                             //
+///////////////////////////////////////////////////////
+#navbar-right {
+    @include pl(1);
+    @include pr(0);
+}
+///////////////////////////////////////////////////////
+
+///////////////////////////////////////////////////////
+/// Notifications Dropdown Menu                      //
+///////////////////////////////////////////////////////
+#dashboard-header #notifications-menu-dropdown {
+    @include mr(0);
+    @include ml(1);
+}
+
+#dashboard-header #notifications-menu-dropdown i {
+    @include mr(0);
+    @include ml(3);
+}
+
+#dashboard-header #notifications-menu-dropdown .dropdown-item svg {
+    @include ml(2);
+    @include mr(1);
+}
+///////////////////////////////////////////////////////
+
+///////////////////////////////////////////////////////
+/// Language Dropdown Menu                           //
+///////////////////////////////////////////////////////
+#dashboard-header #lang-menu-dropdown {
+    @include mr(0);
+    @include ml(1);
+}
+
+#dashboard-header #lang-menu-dropdown i {
+    @include mr(0);
+    @include ml(3);
+}
+
+#dashboard-header #lang-menu-dropdown .dropdown-item i {
+    @include mt(1);
+    @include ml(2);
+}
+///////////////////////////////////////////////////////
+
+///////////////////////////////////////////////////////
+/// Profile Dropdown Menu                            //
+///////////////////////////////////////////////////////
+#dashboard-header #profile-menu-dropdown {
+    @include mr(0);
+    @include ml(1);
+}
+
+#dashboard-header #profile-menu-dropdown svg {
+    @include mr(0);
+    @include ml(3);
+}
+
+#dashboard-header #profile-menu-dropdown .dropdown-item svg {
+    @include ml(2);
+    @include mr(1);
+}
+///////////////////////////////////////////////////////
+
+///////////////////////////////////////////////////////
+/// Congregation Dropdown Menu                       //
+///////////////////////////////////////////////////////
+#dashboard-header #congregation-menu-dropdown {
+    @include mr(0);
+    @include ml(3);
+}
+
+#dashboard-header #congregation-menu-dropdown svg {
+    @include mr(0);
+    @include ml(1);
+}
+
+#dashboard-header #congregation-menu-dropdown .dropdown-item svg {
+    @include ml(2);
+    @include mr(1);
+}
+///////////////////////////////////////////////////////
+
+///////////////////////////////////////////////////////
+/// About Menu Button                                //
+///////////////////////////////////////////////////////
+#dashboard-header #about-menu-button {
+    @include mr(0);
+    @include ml(3);
+}
+
+#dashboard-header #about-menu-button svg {
+    @include mr(0);
+    @include ml(1);
+}
+///////////////////////////////////////////////////////
+
+///////////////////////////////////////////////////////
+/// Breadcrumbs Bar                                  //
+///////////////////////////////////////////////////////
+#breadcrumbs-bar {
+    @include pl(0);
+    @include pr(2);
+}
+///////////////////////////////////////////////////////
+
+///////////////////////////////////////////////////////
+/// Footer                                           //
+///////////////////////////////////////////////////////
+#dashboard-footer #copyright {
+    @include pl(0);
+    @include pr(3);
+    float: right;
+}
+
+#dashboard-footer #version {
+    @include pr(0);
+    @include pl(3);
+    float: left;
+}
+///////////////////////////////////////////////////////

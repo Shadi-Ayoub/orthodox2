@@ -18,6 +18,9 @@ $routes->get('/logout', 'AuthController::logout');
 $routes->get('/admin/dashboard', 'AdminController::index', ['filter' => 'auth:admin, dashboard']);
 $routes->get('/dashboard', 'AdminController::index', ['filter' => 'auth:admin, dashboard']);
 
+// $routes->post('change_language/(:any)', 'BaseController::changeLanguage/$1'); // Change user language
+$routes->post('change_language', 'LanguageController::index'); // Change user language
+
 $routes->get('/admin/congregations', 'CongregationsController::index', ['filter' => 'auth:admin, congregations']);
 
 $routes->get('/admin/settings', 'SettingsController::index', ['filter' => 'auth:admin, settings']);

@@ -2,12 +2,8 @@
 
 $dashboard-main-header-height: 100px;
 $dashboard-header-logo-width: 80px;
+$dashboard-header-navbar-right-height: 50px;
 $dashboard-secondary-header-height: 15px;
-
-// .fa-certificate, .fa-users-gear, .fa-book-bible, .fa-dove, .fa-scroll,
-// .fa-user-gear, .fa-people-group, .fa-people-roof, .fa-star {
-//     color: $oc-gold-5;
-// }
 
 .dropdown-item {
     @include pl(1);
@@ -47,21 +43,61 @@ $dashboard-secondary-header-height: 15px;
     @include ml(1);
     @include mr(2);
 }
+
+/// Arrow caret
+/* Position the caret to the right, within the dropdown item */
+#dashboard-header #main-menu-dropdown .dropend .dropdown-toggle::after {
+    display: block;
+    position: absolute;
+    top: 50%; /* Center vertically */
+    right: 0; /* Align to the far right */
+    transform: translateY(-50%); /* Center the caret vertically */
+    content: "";
+    border-top: 0.3em solid transparent;
+    border-right: 0;
+    border-bottom: 0.3em solid transparent;
+    border-left: 0.3em solid; /* The caret arrow */
+    padding-right: .5em;
+}
 ///////////////////////////////////////////////////////
 
 ///////////////////////////////////////////////////////
 /// Header Logo                                      //
 ///////////////////////////////////////////////////////
-#navbar-logo .orthodoxy-brand-image {
+#dashboard-header-logo a {
+    text-decoration: none;
+    color: inherit;
+    display: flex;
+    align-items: center; /* This will vertically center the items (text and image) */
+}
+
+#dashboard-header-logo .brand-logo-image {
     width: $dashboard-header-logo-width;
 }
 
-#navbar-logo .brand-text {
+#dashboard-header-logo .brand-text {
     font-size: calc(1.8 * #{$font-size-base});
     color: $oc-gold-5;
     font-weight: bold;
+    @include mx(2);
 }
 ///////////////////////////////////////////////////////
+
+///////////////////////////////////////////////////////
+/// Right Navigation Bar                             //
+///////////////////////////////////////////////////////
+#navbar-right .navbar-nav {
+    @include p(0 !important);
+    @include mt(3);
+}
+
+#navbar-right {
+    height: $dashboard-header-navbar-right-height;
+    @include pl(0);
+    @include pr(1);
+}
+///////////////////////////////////////////////////////
+
 
 ///////////////////////////////////////////////////////
 /// Notifications Dropdown Menu                      //
@@ -183,35 +219,47 @@ $dashboard-secondary-header-height: 15px;
 
 ///////////////////////////////////////////////////////
 
+///////////////////////////////////////////////////////
+/// Breadcrumbs Bar                                  //
+///////////////////////////////////////////////////////
+#breadcrumbs-bar {
+    padding-top: $dashboard-main-header-height + 5;
+    @include pl(2);
+    @include pr(0);
+    font-size: calc(1 * #{$font-size-base});
+}
+
+.breadcrumb-item+.breadcrumb-item {
+    @include pl(0 !important);
+    @include pr(0 !important);
+}
+
+.breadcrumb > .breadcrumb-item a {
+    text-decoration: none;
+}
+
+.breadcrumb-item+.breadcrumb-item::before {
+    @include pr(1 !important);
+    @include pl(1 !important);
+}
+
+.breadcrumb-item .active-item-text {
+    font-weight: bold;
+    color: $oc-maroon-9;
+    background-color: $oc-yellow-1;
+}
+
+///////////////////////////////////////////////////////
+
 #content {
     margin-top: 4 * spacing(2);
     padding-left: spacing(2);
     padding-right: spacing(2);
 }
 
-// #navbar-right .lang-dropdown i, #navbar-right .notifications-dropdown i {
-//     margin-top: 3px;
-//     font-size: 1.5em;
-//     margin-right: 15px;
-//     margin-left: 0px;
-// }
-
-#navbar-right .navbar-nav {
-    padding: 0 !important;
-    margin-top: 10px;
-}
-
-#navbar-right {
-    height: 50px;
-    padding-left: 0px;
-    padding-right: 15px;
-}
-
-#navbar-right svg {
-    display: inline-block;
-    width: 1.5em;
-}
-
+///////////////////////////////////////////////////////
+/// Footer                                           //
+///////////////////////////////////////////////////////
 #dashboard-footer {
     background-color: $oc-blue-0;
 }
@@ -231,7 +279,11 @@ $dashboard-secondary-header-height: 15px;
     @include pl(0);
     float: right;
 }
+///////////////////////////////////////////////////////
 
+///////////////////////////////////////////////////////
+/// Version                                          //
+///////////////////////////////////////////////////////
 #dashboard-version .version-container {
     direction: ltr;
     display: inline-block;
@@ -269,36 +321,5 @@ $dashboard-secondary-header-height: 15px;
     border-radius: 50%;
     background-color: $oc-black;
   }
-
-
 ///////////////////////////////////////////////////////
-/// Breadcrumbs Bar                                  //
-///////////////////////////////////////////////////////
-#breadcrumbs-bar {
-    padding-top: $dashboard-main-header-height + 5;
-    @include pl(2);
-    @include pr(0);
-    font-size: calc(1 * #{$font-size-base});
-}
 
-.breadcrumb-item+.breadcrumb-item {
-    @include pl(0 !important);
-    @include pr(0 !important);
-}
-
-.breadcrumb > .breadcrumb-item a {
-    text-decoration: none;
-}
-
-.breadcrumb-item+.breadcrumb-item::before {
-    @include pr(1 !important);
-    @include pl(1 !important);
-}
-
-.breadcrumb-item .active-item-text {
-    font-weight: bold;
-    color: $oc-maroon-9;
-    background-color: $oc-yellow-1;
-}
-
-///////////////////////////////////////////////////////

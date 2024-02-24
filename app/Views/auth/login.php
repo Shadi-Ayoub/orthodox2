@@ -33,7 +33,8 @@
             <?php $component->password("password", "Password"); ?>
             <?php $component->recaptcha(); ?>
             
-
+            <?= csrf_field(); ?>
+            
             <div class="d-grid mb-3">
                 <button id="btn-submit" type="submit" class="btn btn-primary btn-block">Sign in</button>
             </div>

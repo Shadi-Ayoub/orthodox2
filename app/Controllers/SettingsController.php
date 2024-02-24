@@ -57,16 +57,17 @@ class SettingsController extends AdminController {
         $data["message_type"] = $message_type;
         // var_dump($this->_cookie_ux_value["settings"]["active_tab"]);
         // die();
-        $data['active_tab'] = $this->_cookie_ux_value["settings"]["active_tab"];
+        $data['active_tab'] = $this->_cookie_ux_value["settings"]["active_tab"] ?? "general";
         $data['cookie_ux_name'] = $cookie_ux_name;
         $data["settings_array"] = $settings_array;
         $data["default_settings_array"] = $default_settings_array;
-
+        
         // For the Back button/link
         if( $this->session->get("_ci_previous_url") !== current_url() ) {
             $this->session->set([
                 "backToUrl"   => previous_url(),
             ]);
+            // die(previous_url());
         }
 
         return view("admin/settings", $data);

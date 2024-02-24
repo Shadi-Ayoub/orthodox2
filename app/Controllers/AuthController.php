@@ -12,7 +12,7 @@ class AuthController extends BaseController {
     private $_user;
     private $_access_type;
     private $_user_pool_id;
-   
+
     public function __construct() {
         $this->_user = service("user");
         $this->_cognito = service("cognito");
@@ -421,6 +421,7 @@ class AuthController extends BaseController {
 
         $username = $this->session->get("username");
         $session = $this->session->get("session");
+        $user_pool_id = $this->session->get("userPoolId");
 
         if ($_SERVER["REQUEST_METHOD"] === "POST") {
             $totp = $_POST["totp"];
@@ -434,7 +435,8 @@ class AuthController extends BaseController {
                 $idToken = $mfa_code_verification_result["result"]["AuthenticationResult"]["IdToken"];
                 $refreshToken = $mfa_code_verification_result["result"]["AuthenticationResult"]["RefreshToken"];
 
-                $user= $this->_cognito->get_user_info($this->session->get("userPoolId"), $username);
+                // $user= $this->_cognito->get_user_info($this->session->get("userPoolId"), $username);
+                $user= $this->_user->get($user_pool_id, $username);
                 // $arr_user_attributes = $user->get('UserAttributes');
                 // $arr_access_codes = json_decode($this->_cognito->get_user_attribute_value($arr_user_attributes, "custom:ACCESS_CODES"));
                 // var_dump($user->get('UserAttributes'));

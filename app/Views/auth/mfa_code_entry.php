@@ -31,6 +31,8 @@
                 $component->mfa_code("totp");
             ?>
 
+            <?= csrf_field(); ?>
+
             <div class="d-grid mb-3">
                 <button type="submit" id="btn-change-password" class="btn btn-primary login-btn btn-block">Verify</button>
             </div>

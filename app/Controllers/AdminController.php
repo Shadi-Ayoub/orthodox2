@@ -40,30 +40,29 @@ class AdminController extends BaseController {
     }
 
     public function index() {
-        // $uri_string = uri_string();
-        // $utility = service('utility');
-        // $lang = service('request')->getLocale(); 
-
-        // if($uri_string == 'admin') {
-
+        
         $this->_breadcrumbs->add(lang('app.home'), site_url(''));
         $this->_breadcrumbs->add(lang('app.dashboard'));
 
         $data['breadcrumbs'] = $this->_breadcrumbs->render();
         $data['content_title'] = "";
 
+        // var_dump($this->session->get("user")["UserAttributes"]);
+        // $username = $this->session->get("username");
+        // $user_pool_id = $this->session->get("userPoolId");
+        // var_dump($this->_user->get($user_pool_id, $username));
+        // die();
 
-        // }
         return view("admin/dashboard", $data);
     }
 
     // private function get_congregations() {}
 
-    private function _get_login_user_info() {
-        $username = $this->session->get('username');
-        $poolId = $this->session->get('userPoolId');
-        return $this->_cognito->get_user_info($poolId, $username);
-    }
+    // private function _get_login_user_info() {
+    //     $username = $this->session->get('username');
+    //     $poolId = $this->session->get('userPoolId');
+    //     return $this->_cognito->get_user_info($poolId, $username);
+    // }
 
     // public function settings() {
     //     $this->breadcrumbs->add(lang('app.home'), '/');
@@ -130,47 +129,6 @@ class AdminController extends BaseController {
     //     // $data = [];
     //     // return view("admin/settings", $data);
     // }
-
-    public function toggleLanguage($user_id){
-		// $response = [
-		// 	"status" => "success",
-		// 	"messgae" => "User Language Switched Successfully..."
-		// ];
-
-		// return $this->response->setJSON($response);
-
-		$builder = $this->db->table('users');
-		$builder->where('id', $user_id);
-		$builder->select('lang');
-		$query = $builder->get();
-		$row = $query->getRow();
-
-		$lang = $row->lang;
-
-		$builder->where('id', $user_id);
-
-		if($lang == 'ar'){
-			$builder->set('lang', 'en');
-		}
-		else {
-			$builder->set('lang', 'ar');
-		}
-		
-		if($builder->update()) {
-			$response = [
-				"status" => "success",
-				"messgae" => "User Language Switched Successfully..."
-			];
-		}
-		else {
-			$response = [
-				"status" => "fail",
-				"messgae" => $this->db->error()
-			];
-		}
-
-		return $this->response->setJSON($response);
-	}
 
      /**
      * @return void
