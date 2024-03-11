@@ -439,8 +439,8 @@ class AuthController extends BaseController {
                 $user= $this->_user->get($user_pool_id, $username);
                 // $arr_user_attributes = $user->get('UserAttributes');
                 // $arr_access_codes = json_decode($this->_cognito->get_user_attribute_value($arr_user_attributes, "custom:ACCESS_CODES"));
-                // var_dump($user->get('UserAttributes'));
-                // return;
+                // var_dump($user);
+                // die();
 
                 $this->session->remove('isValidUser');
 

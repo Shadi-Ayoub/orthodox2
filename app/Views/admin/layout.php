@@ -62,10 +62,6 @@
         ?>
     </main>
 
-    <?php
-        require("footer.php");
-    ?>
-
     <?php $component->modal("error",""); ?>
 <?= $this->endSection() ?>
 
@@ -91,6 +87,10 @@
             });
 
             $("#lang-menu-dropdown .dropdown-item").click(function() {
+                if ($(this).hasClass('active')) { // no need to call the same current page!
+                    return;
+                }
+
                 $('#input-lang').val($(this).data('lang'));
                 $('#form-change-language').submit();
                 $('#overlay').fadeIn();
@@ -114,6 +114,23 @@
 
                 location.href='<?= base_url() ?>' + dataValue;
             });
+
+            $('#congregations-menu-dropdown a.dropdown-item').click(function(event) {
+                event.preventDefault(); // Prevent the default anchor click behavior
+
+                if ($(this).hasClass('active')) { // no need to call the same current page!
+                    return;
+                }
+
+                alert($(this).data('congregation-id'));
+                return;
+
+                // $('#input-lang').val($(this).data('lang'));
+                // $('#form-change-language').submit();
+                // $('#overlay').fadeIn();
+            });
+
+            <?= $component->idel_timeout_javascript(service("session")->get("system_settings")["session"]["idle_timeout"], site_url('logout')); ?>
         });
     </script>
 

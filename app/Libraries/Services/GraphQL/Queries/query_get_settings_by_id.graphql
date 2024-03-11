@@ -1,0 +1,6 @@
+query getSettingsById($id: String){
+  getSettingsById(id: $id) {
+    id
+    settings
+  }
+}

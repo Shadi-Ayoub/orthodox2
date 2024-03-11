@@ -152,11 +152,17 @@ export class CdkStack extends cdk.Stack {
 
 /* Settings */
 
-    // Creates a function for getting all Branches under a Congregation
-    param.name = constants.FUNCTION_NAME_GET_ALL_SETTINGS;
+    // Creates a function for getting settings for a Congregation
+    param.name = constants.FUNCTION_NAME_GET_SETTINGS_BY_ID;
     param.dataSource = this.settingDataSource;
-    param.code = functionCodes.funcGetAllSettingsCode;
-    const funcGetAllSettings = this.createFunction(param);
+    param.code = functionCodes.funcGetSettingsByIdCode;
+    const funcGetSettingsById = this.createFunction(param);
+
+    // Creates a function for getting system settings
+    param.name = constants.FUNCTION_NAME_GET_SYSTEM_SETTINGS;
+    param.dataSource = this.settingDataSource;
+    param.code = functionCodes.funcGetSystemSettingsCode;
+    const funcGetSystemSettings = this.createFunction(param);
 
     // Creates a function for updating settings by id (updating a settings section)
     param.name = constants.FUNCTION_NAME_UPDATE_SETTINGS_BY_ID;
@@ -165,18 +171,18 @@ export class CdkStack extends cdk.Stack {
     const funcUpdateSettingsById = this.createFunction(param);
 
     // Creates a function for updating settings (all or selected depending on the passed object)
-    param.name = constants.FUNCTION_NAME_UPDATE_SETTINGS;
-    param.dataSource = this.settingDataSource;
-    param.code = functionCodes.funcUpdateSettingsCode;
-    const funcUpdateSettings = this.createFunction(param);
+    // param.name = constants.FUNCTION_NAME_UPDATE_SETTINGS;
+    // param.dataSource = this.settingDataSource;
+    // param.code = functionCodes.funcUpdateSettingsCode;
+    // const funcUpdateSettings = this.createFunction(param);
 
 /*============================End of Functions Section=======================*/
 
 /*=============================Create the Resolvers==========================*/
 
-    this.createBasicPipelineResolver('getAllSettings', ResolverType.Query, [funcGetAllSettings]);
+    this.createBasicPipelineResolver('getSettingsById', ResolverType.Query, [funcGetSystemSettings, funcGetSettingsById]);
     this.createBasicPipelineResolver('updateSettingsById', ResolverType.Mutation, [funcUpdateSettingsById]);
-    this.createBasicPipelineResolver('updateSettings', ResolverType.Mutation, [funcUpdateSettings]);
+    // this.createBasicPipelineResolver('updateSettings', ResolverType.Mutation, [funcUpdateSettings]);
 
     this.createBasicPipelineResolver('getAllCongregations', ResolverType.Query, [funcGetCongregations]);
     this.createBasicPipelineResolver('getCongregationsById', ResolverType.Query, [funcGetCongregationsById]);
@@ -240,7 +246,7 @@ export class CdkStack extends cdk.Stack {
    * @param resolverType 
    * @param functions 
    */
-  createBasicPipelineResolver(fieldName: string, resolverType: ResolverType, functions: [appsync.AppsyncFunction]) {
+  createBasicPipelineResolver(fieldName: string, resolverType: ResolverType, functions: appsync.AppsyncFunction[]) {
     const id = 'pipelineResolver' + fieldName.charAt(0).toUpperCase() + fieldName.slice(1);
     new appsync.Resolver(this, id, {
       api: this.api,

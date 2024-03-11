@@ -1,6 +1,0 @@
-query getAllSettings{
-  getAllSettings {
-    id
-    settings
-  }
-}   

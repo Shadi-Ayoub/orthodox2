@@ -29,24 +29,26 @@ class Settings {
     //     return;
     // }
 
+    public function default_system() {
+
+        $default_system_settings = [
+            'login' => [
+                'force_password_change' => 'no',
+                'force_mfa_admin'       => 'yes',
+                'force_mfa_user'        => 'no',
+            ],
+            'session' => [
+                'idle_timeout' => '3600',
+            ],
+        ];
+
+        return $default_system_settings;
+    }
+
+    /**
+     * {"login": {"force_password_change": "no","force_mfa_admin": "yes","force_mfa_user": "no"},"session":{"idle_timeout":"3600"},"test": {"setting 1": "no","setting 2": "no"}}
+     */
     public function default() {
-        // $default_settings = [
-        //     [
-        //         "id" => "login",
-        //         "settings" => [
-        //             "force_password_change" => "yes",
-        //             "force_mfa"             => "yes",
-        //         ]
-        //     ],
-        //     [
-        //         "id" => "test",
-        //         "settings" => [
-        //             "setting 1" => "yes",
-        //             "setting 2" => "yes",
-        //         ]
-        //     ]
-            
-        // ];
 
         $default_settings = [
             'login' => [
@@ -55,16 +57,19 @@ class Settings {
                 'force_mfa_user'        => 'no',
             ],
             'test' => [
-                'setting 1' => 'no',
-                'setting 2' => 'no',
+                'setting 1' => 'xxxxx',
             ],
         ];
 
         return $default_settings;
     }
 
-    public function get_all() {
-        $query_result = $this->_graphql->query(GRAPHQL_QUERY_NAME_GET_ALL_SETTINGS,[]);
+    /**
+     * Returns an array of two arrays. One represents the entity (Congregation) settings and the second
+     * represents the system settings that may override entity settings. Both arrays are saved in the session.
+     */
+    public function get($id) {
+        $query_result = $this->_graphql->query(GRAPHQL_QUERY_NAME_GET_SETTINGS_BY_ID, "getSettingsById", ["id" => $id]);
 
         if($query_result["successful"] === false) {
             $session = service("session");
@@ -74,42 +79,49 @@ class Settings {
             $response->redirect(site_url('admin/error/graphql'))->send();
             exit;
         } else {
-            $json = json_encode($query_result["response"]->data->getAllSettings);
+            // var_dump($query_result);
+            // die();
+            $json = json_encode($query_result["response"]->data->getSettingsById);
             $settings_array = json_decode($json, true);
 
-            $settings_array_transformed = [];
-            $k = "";
-            foreach ($settings_array as $one_setting) {
-                foreach ($one_setting as $key => $value) {
-                    if($key === "id") {
-                        $k = $value;
-                    }
-                    else if($key === "settings") {
-                        $settings_array_transformed[$k] = json_decode($value, true);
-                    }
-                };
-            }
+            // $settings_array = $query_result["response"]->data->getSettingsById;
+
+            $settings_entity_array[$settings_array[0]["id"]] = json_decode($settings_array[0]["settings"], true);
+            $settings_system_array[$settings_array[1]["id"]] = json_decode($settings_array[1]["settings"], true);
+
+            $settings_array_transformed = [$settings_entity_array, $settings_system_array];
+            // $k = "";
+            // foreach ($settings_array as $one_setting) {
+            //     foreach ($one_setting as $key => $value) {
+            //         if($key === "id") {
+            //             $k = $value;
+            //         }
+            //         else if($key === "settings") {
+            //             $settings_array_transformed[$k] = json_decode($value, true);
+            //         }
+            //     };
+            // }
 
             return $settings_array_transformed;
         }
 
 
-
-
         return $query_result;
     }
 
-    public function update($settings_array) {
+    public function update($entity_id, $settings_array) {
         // First transform the settings array to an array of items of type Setting
-        $transformed = [];
-        foreach ($settings_array as $key => $value) {
-            $arr = ['id' => $key, 'settings' => json_encode($value)];
-            $transformed[] = json_encode($arr);
-        }
+        // var_dump($settings_array);
+        // die();
+        // $transformed = [];
+        // foreach ($settings_array as $key => $value) {
+        //     $arr = ['id' => $key, 'settings' => json_encode($value)];
+        //     $transformed[] = json_encode($arr);
+        // }
 
-        $variables = ['settings' => $transformed];
+        $variables = ['id' => $entity_id, 'settings' => json_encode($settings_array)];
 
-        $query_result = $this->_graphql->query(GRAPHQL_QUERY_NAME_UPDATE_SETTINGS, $variables);
+        $query_result = $this->_graphql->query(GRAPHQL_QUERY_NAME_UPDATE_SETTINGS_BY_ID, "UpdateSettingsById", $variables);
 
         if($query_result["successful"] === false) {
             $session = service("session");
@@ -119,34 +131,39 @@ class Settings {
             $response->redirect(site_url('admin/error/graphql'))->send();
             exit;
         } else {
-            $json = json_encode($query_result["response"]->data->updateSettings);
-            $settings_array = json_decode($json, true);
+            $json = json_encode($query_result["response"]->data->updateSettingsById);
+            $result_settings_array = json_decode($json, true);
             
-            $settings_array_transformed = [];
-            $k = "";
-            foreach ($settings_array as $one_setting) {
-                foreach ($one_setting as $key => $value) {
-                    if($key === "id") {
-                        $k = $value;
-                    }
-                    else if($key === "settings") {
-                        $settings_array_transformed[$k] = json_decode($value, true);
-                    }
-                };
-            }
+            // $settings_array_transformed = [];
+            // $k = "";
+            // foreach ($settings_array as $one_setting) {
+            //     foreach ($one_setting as $key => $value) {
+            //         if($key === "id") {
+            //             $k = $value;
+            //         }
+            //         else if($key === "settings") {
+            //             $settings_array_transformed[$k] = json_decode($value, true);
+            //         }
+            //     };
+            // }
 
-            return $settings_array_transformed;
+            // var_dump($result_settings_array["settings"]);
+            // die();
+
+            // return $result_settings_array["settings"];
+            
+            // Get the updated settings
+            return $this->get($entity_id);
         }
     }
 
-    public function reset() {
+    public function reset($entity_id) {
         $default_settings = $this->default();
 
-        return $this->update($default_settings);
+        return $this->update($entity_id, $default_settings);
     }
 
-    public function save() {
-        $new_settings_string = $_POST["save-settings-json-string"];
+    public function save($entity_id, $new_settings_string) {
         $new_settings_array = json_decode($new_settings_string, true);
         // echo $new_settings . "<br />";
         // var_dump($settingsArray);
@@ -159,7 +176,7 @@ class Settings {
         // echo $settingsArray['login']['force_mfa_admin']; // Outputs: yes
         // die();
 
-        return $this->update($new_settings_array);
+        return $this->update($entity_id, $new_settings_array);
     }
 
     /**

@@ -1,5 +1,5 @@
 type Query {
-    getAllSettings: [Setting]
+    getSettingsById(id: String): [SettingType]
 }
 
 type Mutation {

@@ -10,3 +10,8 @@ type Setting {
 	id: String!
 	settings: String!
 }
+
+type SettingType {
+	id: String
+	settings: String
+}

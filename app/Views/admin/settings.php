@@ -41,18 +41,33 @@
             </li>
         </ul>
         <div class="tab-content d-flex align-items-center justify-content-center border" id="settings-pills-tabContent">
-            <div class="tab-pane fade <?= $active_tab =="general" ? "show active" : ""; ?> border w-100" style="height: 300px" id="pills-general" role="tabpanel" aria-labelledby="pills-general-tab">General Settings...</div>
+            <div class="tab-pane fade <?= $active_tab =="general" ? "show active" : ""; ?> border w-100" style="height: 300px" id="pills-general" role="tabpanel" aria-labelledby="pills-general-tab">
+                <div class="row g-3">
+                    <div class="col-auto">
+                        <?php
+                        // var_dump($system_settings_array);
+                        // die();
+                            $props = [
+                                "placeholder" => "3600",
+                                "data-settings-key1" => "general",
+                                "data-settings-key2" => "idle_timeout",
+                            ];
+                            echo service('component')->number("idle-timeout-seconds", $system_settings_array["session"]["idle_timeout"], "Idle Timeout (in Seconds)", "yes", $props);
+                        ?>
+                    </div>
+                </div>
+            </div>
             <div class="tab-pane fade <?= $active_tab =="login" ? "show active" : ""; ?> border p-5 w-100" style="height: 300px" id="pills-login" role="tabpanel" aria-labelledby="pills-login-tab">
                 <div class="form-check form-switch">
-                    <input class="form-check-input" type="checkbox" id="loginForcePasswordChangeSwitch" data-settings-key1="login" data-settings-key2="force_password_change" <?= $settings_array["login"]["force_password_change"] === "yes" ? "checked" : "";  ?>>
+                    <input class="form-check-input" type="checkbox" id="loginForcePasswordChangeSwitch" data-settings-key1="login" data-settings-key2="force_password_change" <?= $entity_settings_array["login"]["force_password_change"] === "yes" ? "checked" : "";  ?>>
                     <label class="form-check-label" for="loginForcePasswordChangeSwitch">Force password change for new users on their first login.</label>
                 </div>
                 <div class="form-check form-switch">
-                    <input class="form-check-input" type="checkbox" id="loginForceMfaAdminSwitch" data-settings-key1="login" data-settings-key2="force_mfa_admin" <?= $settings_array["login"]["force_mfa_admin"] === "yes" ? "checked" : "";  ?>>
+                    <input class="form-check-input" type="checkbox" id="loginForceMfaAdminSwitch" data-settings-key1="login" data-settings-key2="force_mfa_admin" <?= $entity_settings_array["login"]["force_mfa_admin"] === "yes" ? "checked" : "";  ?>>
                     <label class="form-check-label" for="loginForceMfaAdminSwitch">Force Multi-factor Authentication to all Administrators.</label>
                 </div>
                 <div class="form-check form-switch">
-                    <input class="form-check-input" type="checkbox" id="loginForceMfaUserSwitch" data-settings-key1="login" data-settings-key2="force_mfa_user" <?= $settings_array["login"]["force_mfa_user"] === "yes" ? "checked" : "";  ?>>
+                    <input class="form-check-input" type="checkbox" id="loginForceMfaUserSwitch" data-settings-key1="login" data-settings-key2="force_mfa_user" <?= $entity_settings_array["login"]["force_mfa_user"] === "yes" ? "checked" : "";  ?>>
                     <label class="form-check-label" for="loginForceMfaUserSwitch">Force Multi-factor Authentication to all users.</label>
                 </div>
             </div>
@@ -153,8 +168,8 @@
         $(document).ready(function() {
             $("#btn-save-settings").prop('disabled', true);
 
-            const currentSettingsObj = <?= json_encode($settings_array); ?>;
-            const newSettingsObj = <?= json_encode($settings_array); ?>;
+            const currentSettingsObj = <?= json_encode($entity_settings_array); ?>;
+            const newSettingsObj = <?= json_encode($entity_settings_array); ?>;
             const defaultSettingsObj = <?= json_encode($default_settings_array); ?>;
 
             displaySettingsObject(currentSettingsObj, 'current-settings-array');

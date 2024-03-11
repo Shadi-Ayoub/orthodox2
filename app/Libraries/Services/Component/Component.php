@@ -21,6 +21,10 @@ class Component {
         require 'html/password.php';
     }
 
+    public function number($control_name, $value, $label="", $required=false, $props=[]) {
+        require 'html/number.php';
+    }
+
     public function mfa_code($control_name, $value="", $class="") {
         require 'html/mfa_code.php';
     }
@@ -53,5 +57,9 @@ class Component {
 
     public function recaptcha_statement() {
         require 'html/recaptcha_statement.php';
+    }
+
+    public function idel_timeout_javascript($idle_timeout, $logout_url) {
+        require 'js/idle_timeout_js.php';
     }
 }

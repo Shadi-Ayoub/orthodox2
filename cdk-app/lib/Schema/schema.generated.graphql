@@ -9,6 +9,11 @@ type Setting {
   settings: String!
 }
 
+type SettingType {
+  id: String
+  settings: String
+}
+
 input addCongregationInput {
   id: ID
   nameEnglish: String!
@@ -75,7 +80,7 @@ type PaginatedBranches {
 }
 
 type Query {
-  getAllSettings: [Setting]
+  getSettingsById(id: String): [SettingType]
   getCongregationsById(ids: [String!]!, limit: Int, nextToken: String): PaginatedCongregations!
   getAllCongregations(limit: Int, nextToken: String): PaginatedCongregations!
   getBranchesById(ids: [String!]!, limit: Int, nextToken: String): PaginatedBranches!
@@ -85,7 +90,7 @@ type Query {
 
 type Mutation {
   updateSettingsById(id: String!, settings: String): Setting
-  updateSettings(settings: String!): [Setting]
+  updateSettings(settings: [String]): [Setting]
   addCongregation(input: addCongregationInput!): Congregation
   addBranch(input: addBranchInput!): Branch
 }

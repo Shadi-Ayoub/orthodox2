@@ -9,6 +9,13 @@ class Utility {
     public function __construct() {
     }
 
+    public function print($obj, $die=false) {
+        print '<pre>'; esc(print_r($obj)); print '</pre>';
+        if($die) {
+            die();
+        }
+    }
+
     public function stringToSecret(string $string = NULL, bool $mask_all = false, bool $truncate = false) {
         if (!$string) {
             return NULL;

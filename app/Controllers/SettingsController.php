@@ -42,11 +42,26 @@ class SettingsController extends AdminController {
         }
 
         $settings_array = [];
+        $entity_settings_array = [];
+        $system_settings_array = [];
+        $congregation_id = "xxxx";
+        
         if (session()->getFlashdata('settings')) { // ex. after setings reset
             $settings_array = session()->getFlashdata('settings');
         } else {
-            $settings_array = $this->_settings->get_all();
+            $settings_array = $this->_settings->get($congregation_id);
         }
+        // var_dump($settings_array);
+        // die();
+
+        $entity_settings_array = $settings_array[0]["xxxx"];
+        $system_settings_array = $settings_array[1]["sys"];
+
+        // Update session data
+        $this->session->set([
+            "entity_settings"   => $entity_settings_array,
+            "system_settings"   => $system_settings_array,
+        ]);
 
         $default_settings_array = $this->_settings->default();
 
@@ -59,7 +74,9 @@ class SettingsController extends AdminController {
         // die();
         $data['active_tab'] = $this->_cookie_ux_value["settings"]["active_tab"] ?? "general";
         $data['cookie_ux_name'] = $cookie_ux_name;
-        $data["settings_array"] = $settings_array;
+        
+        $data["entity_settings_array"] = $entity_settings_array;
+        $data["system_settings_array"] = $system_settings_array;
         $data["default_settings_array"] = $default_settings_array;
         
         // For the Back button/link
@@ -69,21 +86,27 @@ class SettingsController extends AdminController {
             ]);
             // die(previous_url());
         }
-
+        
         return view("admin/settings", $data);
     }
 
     public function reset() {
-        $settings = $this->_settings->reset();
+        $entity_settings_array = $this->_settings->reset("xxxx");
+
+        // service("utility")->print($settings_array, true);
+
+        $this->session->set([
+            "entity_settings"   => $entity_settings_array,
+        ]);
 
         $message = "Settings were reset to default values successfully...";
-        return redirect()->to("/admin/settings")->withCookies()->with("success-message", $message)->with("settings", $settings);
+        return redirect()->to("/admin/settings")->withCookies()->with("success-message", $message)->with("settings", $entity_settings_array);
     }
 
     public function save() {
-        $settings = $this->_settings->save();
+        $entity_settings_array = $this->_settings->save("xxxx", $_POST["save-settings-json-string"]);
 
         $message = "New settings were saved successfully...";
-        return redirect()->to("/admin/settings")->withCookies()->with("success-message", $message)->with("settings", $settings);
+        return redirect()->to("/admin/settings")->withCookies()->with("success-message", $message)->with("settings", $entity_settings_array);
     }
 }

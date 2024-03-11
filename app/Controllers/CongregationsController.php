@@ -1,10 +1,12 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Controllers;
 
+use App\Libraries\Types\Congregation;
 
 class CongregationsController extends AdminController {
-
 
     public function index() {
 
@@ -15,9 +17,7 @@ class CongregationsController extends AdminController {
 
         $data['breadcrumbs'] = $this->breadcrumbs->render();
         $data['content_title'] = "";
-
-
-        // }
+        
         return view("admin/congregations/index", $data);
     }
 }

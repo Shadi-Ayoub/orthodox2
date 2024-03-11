@@ -181,21 +181,21 @@ $dashboard-secondary-header-height: 15px;
 ///////////////////////////////////////////////////////
 /// Congregation Dropdown Menu                       //
 ///////////////////////////////////////////////////////
-#dashboard-header #congregation-menu-dropdown {
+#dashboard-header #congregations-menu-dropdown {
     @include mr(3);
     @include ml(0);
 }
 
-#dashboard-header #congregation-menu-dropdown svg {
+#dashboard-header #congregations-menu-dropdown svg {
     width: calc(2 * #{$font-size-base});
     @include mr(1);
 }
 
-#dashboard-header #congregation-menu-dropdown .dropdown-item {
+#dashboard-header #congregations-menu-dropdown .dropdown-item {
     font-size: calc(1 * #{$font-size-base});
 }
 
-#dashboard-header #congregation-menu-dropdown .dropdown-item svg {
+#dashboard-header #congregations-menu-dropdown .dropdown-item svg {
     fill: $oc-gold-5;
     width: calc(1 * #{$font-size-base});
     @include ml(1);

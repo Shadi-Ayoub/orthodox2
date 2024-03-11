@@ -145,6 +145,18 @@ class AdminController extends BaseController {
         // $this->_graphql = service("graphql", $_ENV['APPSYNC_API_ENDPOINT'], $_ENV['APPSYNC_API_KEY'], $this->session->get(ID_TOKEN_NAME));
         $this->_graphql = service("graphql", $_ENV['APPSYNC_API_ENDPOINT'], $this->session->get(ID_TOKEN_NAME));
 
+        // Get entity and system settings to be stored in the current session
+        if(!isset($this->session->entity_settings)) {
+            $settings = service("settings");
+            $settings_array = $settings->get("xxxx");
+            // var_dump($settings_array);
+            // return;
+            $this->session->set([
+                "entity_settings"   => $settings_array[0]["xxxx"],
+                "system_settings"   => $settings_array[1]["sys"],
+            ]);
+        }
+
         // $this->_admin_user_info = $this->_get_login_user_info();
     }
 }

@@ -122,7 +122,7 @@ define('GRAPHQL_QUERY_NAME_UPDATE_SETTINGS_BY_ID', 'mutation_update_settings_by_
 define('GRAPHQL_QUERY_NAME_UPDATE_SETTINGS', 'mutation_update_settings');
 
 
-define('GRAPHQL_QUERY_NAME_GET_ALL_SETTINGS', 'query_get_all_settings');
+define('GRAPHQL_QUERY_NAME_GET_SETTINGS_BY_ID', 'query_get_settings_by_id');
 
 define('ACCESS_TOKEN_NAME', 'accessToken');
 define('ID_TOKEN_NAME', 'idToken');

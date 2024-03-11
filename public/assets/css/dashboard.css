@@ -133,18 +133,18 @@
   margin-left: 0.25rem ;
   margin-right: 0.5rem ;
 }
-#dashboard-header #congregation-menu-dropdown {
+#dashboard-header #congregations-menu-dropdown {
   margin-right: 1rem ;
   margin-left: 0 ;
 }
-#dashboard-header #congregation-menu-dropdown svg {
+#dashboard-header #congregations-menu-dropdown svg {
   width: calc(2 * 16px);
   margin-right: 0.25rem ;
 }
-#dashboard-header #congregation-menu-dropdown .dropdown-item {
+#dashboard-header #congregations-menu-dropdown .dropdown-item {
   font-size: calc(1 * 16px);
 }
-#dashboard-header #congregation-menu-dropdown .dropdown-item svg {
+#dashboard-header #congregations-menu-dropdown .dropdown-item svg {
   fill: #C5B358;
   width: calc(1 * 16px);
   margin-left: 0.25rem ;

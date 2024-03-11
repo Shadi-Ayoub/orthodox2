@@ -29,9 +29,9 @@ class GraphQL {
     public function __destruct() {
     }
 
-    public function query($query_name, $variables=[]) {
+    public function query($query_name, $operationName = null, $variables=[]) {
 
-        $graphqlPayloadJson = $this->_payload($query_name, $variables);
+        $graphqlPayloadJson = $this->_payload($query_name, $variables, $operationName);
 
         // var_dump($graphqlPayloadJson);
         // die();
@@ -42,7 +42,7 @@ class GraphQL {
         
         $this->_close();
 
-        // var_dump($graphqlPayloadJson);
+        // var_dump($result);
         // die();
         // Check for errors and handle the response
         if (isset($result->errors)) {
@@ -113,7 +113,7 @@ class GraphQL {
         curl_setopt($this->_ch, CURLOPT_RETURNTRANSFER, true);
     }
 
-    private function _payload($query_name, $variables=[]) {
+    private function _payload($query_name, $variables=[], $operationName = null) {
         $q = file_get_contents(GRAPGQL_QUERIES_PATH . $query_name . ".graphql");
 
         if ($q === false) {
@@ -137,7 +137,17 @@ class GraphQL {
                     $q
                     GRAPHQL;
 
-        return json_encode(['query' => $query, 'variables' => $variables]);
+        $payload = ['query' => $q];
+        
+        if (!empty($variables)) {
+            $payload['variables'] = $variables;
+        }
+
+        if ($operationName !== null) {
+            $payload['operationName'] = $operationName;
+        }
+                
+        return json_encode($payload);
     }
 
     private function _send($graphqlPayloadJson) {

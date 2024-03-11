@@ -8,6 +8,8 @@
       <?= lang('app.copyright'); ?> &copy; <?= date("Y"); ?> <?= anchor('/', lang('app.faith_hubspot')); ?>. <?= lang('app.all_rights_reserved'); ?>.
     </div>
 
+    <div>Idle for <span id="idle-timer-display"></span></div>
+
     <!-- To the right -->
     <div id="dashboard-version" class="d-none d-sm-block">
       <?= lang('app.version'); ?>:<?= $utility->print_version(); ?>

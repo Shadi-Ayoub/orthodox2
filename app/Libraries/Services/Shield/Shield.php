@@ -39,9 +39,9 @@ class Shield {
                 "manage_settings"
             ],
             "access_control" => [
-                "modules": [
+                "modules" => [
                     "Users" => [
-                        "access_type": ACCESS_TYPE_RW,
+                        "access_type" => ACCESS_TYPE_RW,
                     ],
                     "settings" => [
                         "access_type" => ACCESS_TYPE_R,
